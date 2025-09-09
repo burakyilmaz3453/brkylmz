@@ -5,32 +5,90 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Burak Yılmaz | Dijital Kartvizit</title>
   <style>
-    body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; margin:0; padding:0; background:#f9f9f9; }
-    .wrap { min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px; }
-    .card { max-width:560px; width:100%; border:1px solid #eee; border-radius:16px; padding:24px; box-shadow:0 6px 24px rgba(0,0,0,.06); background:#fff; text-align:center; }
-    h1 { margin:12px 0 8px; font-size:26px; }
-    p { margin:0 0 16px; line-height:1.5; color:#333; }
-    .btn { display:inline-block; padding:12px 20px; border-radius:12px; border:1px solid #0077cc; background:#0088ff; color:#fff; text-decoration:none; font-weight:bold; }
-    .btn:hover { background:#0077cc; }
-    .muted { color:#666; font-size:14px; }
-    .profile-img { width:150px; height:150px; border-radius:50%; object-fit:cover; margin-bottom:16px; }
+    :root{
+      --accent:#0d6efd;               /* kurum renginiz varsa burayı değiştirin */
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --ring:rgba(13,110,253,.15);
+      --radius:18px;
+    }
+    @media (prefers-color-scheme:dark){
+      :root{ --bg:#0b0c10; --card:#111317; --text:#f3f4f6; --muted:#9aa3af; --ring:rgba(13,110,253,.25); }
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{min-height:100dvh;display:grid;place-items:center;padding:32px}
+    .card{
+      width:min(760px,92vw);background:var(--card);border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(0,0,0,.08);padding:38px 30px; text-align:center;
+      border:1px solid rgba(0,0,0,.06)
+    }
+    .avatar{
+      width:140px;height:140px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 18px;
+      box-shadow:0 0 0 8px var(--ring), 0 6px 18px rgba(0,0,0,.12)
+    }
+    h1{margin:0 0 8px;font-size:32px;line-height:1.2}
+    .title{margin:0 0 18px;color:var(--muted)}
+    .grid{
+      display:grid;gap:10px;justify-content:center;margin:6px 0 18px
+    }
+    .row{
+      display:flex;gap:10px;align-items:center;justify-content:center;
+      padding:8px 12px;border-radius:12px
+    }
+    .row a{color:var(--text);text-decoration:none}
+    .row a:hover{color:var(--accent)}
+    .muted{color:var(--muted)}
+    .btn{
+      display:inline-flex;gap:10px;align-items:center;justify-content:center;
+      padding:12px 20px;border-radius:12px;border:1px solid var(--accent);
+      background:var(--accent);color:#fff;font-weight:700;text-decoration:none;
+      transition:.2s transform,.2s box-shadow;
+      box-shadow:0 8px 20px rgba(13,110,253,.25)
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(13,110,253,.3)}
+    .btn:active{transform:translateY(0)}
+    .foot{margin-top:18px;color:var(--muted);font-size:14px}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.08),transparent);margin:18px 0}
+    svg{width:18px;height:18px;flex:0 0 18px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <img src="./brkylmz.jpg" alt="Burak Yılmaz" class="profile-img">
+  <main class="wrap">
+    <section class="card" aria-label="Dijital kartvizit">
+      <img class="avatar" src="./brkylmz.jpg" alt="Burak Yılmaz profil fotoğrafı">
+
       <h1>Burak Yılmaz</h1>
-      <p class="muted">IT System Administrator<br>Osmanlı Menkul Değerler A.Ş.</p>
+      <p class="title">IT System Administrator · Osmanlı Menkul Değerler A.Ş.</p>
 
-      <p><strong>Telefon:</strong> +90 552 491 5334<br>
-         <strong>E-posta:</strong> buraky@osmanlimenkul.com.tr<br>
-         <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/burak-yilmaz-9a58305a" target="_blank">Profil</a></p>
+      <div class="grid" role="list">
+        <div class="row" role="listitem" aria-label="Telefon">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M22 16.9v2.3a2 2 0 0 1-2.18 2 19.9 19.9 0 0 1-8.67-3.09 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.8 3.95 2 2 0 0 1 4.77 2h2.3a2 2 0 0 1 2 1.72c.12.9.32 1.78.6 2.62a2 2 0 0 1-.45 2.07l-1 1a16 16 0 0 0 6 6l1-1a2 2 0 0 1 2.06-.45c.85.28 1.73.48 2.62.6A2 2 0 0 1 22 16.9Z" fill="currentColor"/></svg>
+          <span><strong>Telefon:</strong> <a href="tel:+905524915334">+90 552 491 5334</a></span>
+        </div>
 
-      <p><a class="btn" href="./BurakYılmazvCard.vcf">📥 Kişiye Ekle</a></p>
+        <div class="row" role="listitem" aria-label="E-posta">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2 8 5 8-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          <span><strong>E-posta:</strong> <a href="mailto:buraky@osmanlimenkul.com.tr">buraky@osmanlimenkul.com.tr</a></span>
+        </div>
 
-      <p class="muted">Bu butona tıklayarak kişi bilgilerini telefonunuza kaydedebilirsiniz.</p>
-    </div>
-  </div>
+        <div class="row" role="listitem" aria-label="LinkedIn">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 8.98h4v12H3v-12Zm7 0h3.8v1.64h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.65 4.76 6.1v6.21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9v5.6h-4l.02-12Z" fill="currentColor"/></svg>
+          <span><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/burak-yilmaz-9a58305a" target="_blank" rel="noopener">Profil</a></span>
+        </div>
+      </div>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <a class="btn" href="./BurakYılmazvCard.vcf">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 15v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"/></svg>
+        Kişiye Ekle
+      </a>
+
+      <p class="foot">Bu butona tıklayarak kişi bilgilerini telefonunuza kaydedebilirsiniz.</p>
+    </section>
+  </main>
 </body>
 </html>

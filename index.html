@@ -2,108 +2,158 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Burak Yılmaz | Dijital Kartvizit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Burak Yılmaz • Dijital Kart</title>
+  <meta name="description" content="Burak Yılmaz dijital kartvizit">
   <style>
     :root{
-      --accent:#0d6efd;
-      --bg:#0b0c10;         /* sizde koyu görünüm sevildiği için varsayılanı dark yaptım */
-      --card:#111317;
-      --text:#f3f4f6;
-      --muted:#9aa3af;
-      --ring:rgba(13,110,253,.25);
-      --radius:18px;
+      --accent: #3b82f6;         /* vurgu rengi (ör. kurum rengi ile değiştir) */
+      --accent2:#22d3ee;
+      --bg: #0b0c10;
+      --text:#f5f7fb;
+      --muted:#a8b3c7;
+      --glass: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.12);
+      --radius: 20px;
     }
-    @media (prefers-color-scheme: light){
-      :root{ --bg:#f6f7fb; --card:#ffffff; --text:#111827; --muted:#6b7280; --ring:rgba(13,110,253,.15); }
-    }
-
     *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    .wrap{min-height:100dvh;display:grid;place-items:center;padding:24px}
+    html{-webkit-text-size-adjust:100%}
+    body{
+      margin:0; color:var(--text); background: radial-gradient(1200px 800px at 20% -10%, rgba(59,130,246,.25), transparent 60%),
+                                      radial-gradient(1000px 700px at 120% 10%, rgba(34,211,238,.18), transparent 50%),
+                                      var(--bg);
+      font: 16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      min-height:100svh;
+    }
+    .wrap{
+      min-height:100svh; display:grid; place-items:center;
+      padding:calc(28px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom));
+    }
     .card{
-      width:min(760px,94vw);background:var(--card);border-radius:var(--radius);
-      box-shadow:0 10px 30px rgba(0,0,0,.18);padding:32px 20px;text-align:center;
-      border:1px solid rgba(255,255,255,.06)
+      width:min(780px, 94vw);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)) ;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:28px 22px 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+      backdrop-filter: blur(8px);
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
     }
+    /* hareketli gradient parıltı */
+    .card::before{
+      content:""; position:absolute; inset:-1px; z-index:-1;
+      background: conic-gradient(from 180deg, var(--accent), var(--accent2), transparent 40%, transparent 70%, var(--accent) );
+      filter: blur(30px); opacity:.18; animation: spin 14s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(1turn)}}
 
+    .avatar-wrap{
+      width:140px; height:140px; margin:2px auto 14px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), rgba(255,255,255,.05) 60%);
+      padding:6px; box-shadow: 0 0 0 6px rgba(59,130,246,.2);
+    }
     .avatar{
-      width:clamp(110px,26vw,150px);height:clamp(110px,26vw,150px);
-      border-radius:50%;object-fit:cover;display:block;margin:0 auto 16px;
-      box-shadow:0 0 0 8px var(--ring), 0 6px 18px rgba(0,0,0,.28)
+      width:100%; height:100%; object-fit:cover; border-radius:50%;
+      background:#fff;
     }
 
-    h1{margin:6px 0 6px;font-size:clamp(26px,6vw,36px);line-height:1.2}
-    .title{
-      margin:6px auto 18px;color:var(--muted);
-      max-width:min(560px,92vw); font-size:clamp(14px,3.6vw,18px);
+    h1{margin:6px 0 4px; font-weight:800; letter-spacing:.2px;
+       font-size: clamp(24px, 5.8vw, 36px); line-height:1.1; text-wrap:balance;}
+    .subtitle{
+      margin:0 auto 18px; color:var(--muted);
+      font-size: clamp(14px, 3.8vw, 18px); line-height:1.35; max-width:34ch; text-wrap:balance;
     }
 
-    /* Bilgi satırları: ikon + metin, sol hizalı; blok ortada */
     .info{
-      width:min(560px,92vw); margin:10px auto 22px; display:grid; gap:12px;
+      display:grid; gap:10px; justify-content:center; margin: 8px 0 16px;
     }
-    .row{
-      display:grid; grid-template-columns:auto 1fr; column-gap:12px; align-items:center;
-      text-align:left; padding:6px 4px;
-    }
-    .row strong{font-weight:700}
-    .row a{color:var(--text);text-decoration:none}
-    .row a:hover{color:var(--accent)}
-    svg{width:20px;height:20px;flex:0 0 20px;color:var(--text);opacity:.9}
+    .row{ display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap;
+          background:var(--glass); border:1px solid var(--border); padding:10px 14px; border-radius:14px;}
+    .row a{ color:var(--text); text-decoration:none }
+    .row a:hover{ color:var(--accent) }
+    svg{ width:18px; height:18px; flex:0 0 18px }
 
+    .actions{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:10px 0 6px }
     .btn{
-      display:inline-flex;gap:10px;align-items:center;justify-content:center;
-      padding:clamp(10px,2.8vw,14px) clamp(16px,5.2vw,22px);
-      border-radius:12px;border:1px solid var(--accent); background:var(--accent); color:#fff;
-      font-weight:800; font-size:clamp(15px,4.2vw,18px); text-decoration:none;
-      transition:.2s transform,.2s box-shadow; box-shadow:0 10px 26px rgba(13,110,253,.35)
+      --bg: var(--accent);
+      display:inline-flex; align-items:center; gap:10px;
+      background:var(--bg); color:#fff; text-decoration:none; font-weight:700;
+      padding:12px 18px; border-radius:14px; border:1px solid rgba(255,255,255,.1);
+      box-shadow: 0 8px 24px rgba(59,130,246,.35);
+      transition: .2s transform, .2s box-shadow, .2s background;
     }
-    .btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(13,110,253,.42)}
-    .foot{margin-top:14px;color:var(--muted);font-size:clamp(12px,3.4vw,14px)}
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 12px 30px rgba(59,130,246,.45) }
+    .btn.secondary{ --bg: transparent; color:var(--text); border-color:var(--border); box-shadow:none }
+    .btn.secondary:hover{ background:rgba(255,255,255,.06) }
 
-    /* Daha dar ekranlarda boşlukları azalt */
-    @media (max-width:420px){
-      .card{padding:24px 16px}
-      .row{padding:4px 0}
-      .title{margin-bottom:14px}
+    .badges{ display:flex; gap:10px; justify-content:center; margin: 8px 0 0; }
+    .badge{
+      font-size:12px; color:var(--muted); border:1px dashed var(--border); padding:6px 10px; border-radius:999px;
+      background:rgba(255,255,255,.04)
+    }
+    .foot{ color:var(--muted); font-size:13px; margin-top:14px }
+
+    /* çok dar ekran için sıkı düzen */
+    @media (max-width:360px){
+      .avatar-wrap{ width:120px; height:120px; padding:5px }
+      .row{ padding:8px 10px }
+      .btn{ width:100% }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <section class="card" aria-label="Dijital kartvizit">
-      <img class="avatar" src="./brkylmz.jpg" alt="Burak Yılmaz profil fotoğrafı">
+    <section class="card" aria-label="Dijital kart">
+      <div class="avatar-wrap">
+        <img class="avatar" src="./brkylmz.jpg" alt="Burak Yılmaz fotoğrafı">
+      </div>
 
       <h1>Burak Yılmaz</h1>
-      <p class="title">IT System Administrator</p>
-      <p class="title">Osmanlı Menkul Değerler A.Ş.</p>
+      <p class="subtitle">IT System Administrator · Osmanlı Menkul Değerler A.Ş.</p>
 
-      <div class="info" role="list">
-        <div class="row" role="listitem" aria-label="Telefon">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 16.9v2.3a2 2 0 0 1-2.18 2 19.9 19.9 0 0 1-8.67-3.09 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.8 3.95 2 2 0 0 1 4.77 2h2.3a2 2 0 0 1 2 1.72c.12.9.32 1.78.6 2.62a2 2 0 0 1-.45 2.07l-1 1a16 16 0 0 0 6 6l1-1a2 2 0 0 1 2.06-.45c.85.28 1.73.48 2.62.6A2 2 0 0 1 22 16.9Z" fill="currentColor"/></svg>
-          <div><strong>Telefon:</strong> <a href="tel:+905524915334">+90 552 491 5334</a></div>
+      <div class="info">
+        <div class="row" aria-label="Telefon">
+          <!-- phone icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.9v2.3a2 2 0 0 1-2.18 2 19.9 19.9 0 0 1-8.67-3.09 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.8 3.95 2 2 0 0 1 4.77 2h2.3a2 2 0 0 1 2 1.72c.12.9.32 1.78.6 2.62a2 2 0 0 1-.45 2.07l-1 1a16 16 0 0 0 6 6l1-1a2 2 0 0 1 2.06-.45c.85.28 1.73.48 2.62.6A2 2 0 0 1 22 16.9Z" fill="currentColor"/></svg>
+          <strong>Telefon:</strong>&nbsp;<a href="tel:+905524915334">+90 552 491 5334</a>
         </div>
 
-        <div class="row" role="listitem" aria-label="E-posta">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2 8 5 8-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-          <div><strong>E-posta:</strong> <a href="mailto:buraky@osmanlimenkul.com.tr">buraky@osmanlimenkul.com.tr</a></div>
+        <div class="row" aria-label="E-posta">
+          <!-- mail icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2 8 5 8-5" stroke="currentColor" stroke-width="2"/></svg>
+          <strong>E-posta:</strong>&nbsp;<a href="mailto:buraky@osmanlimenkul.com.tr">buraky@osmanlimenkul.com.tr</a>
         </div>
 
-        <div class="row" role="listitem" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 8.98h4v12H3v-12Zm7 0h3.8v1.64h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.65 4.76 6.1v6.21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9v5.6h-4l.02-12Z" fill="currentColor"/></svg>
-          <div><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/burak-yilmaz-9a58305a" target="_blank" rel="noopener">Profil</a></div>
+        <div class="row" aria-label="LinkedIn">
+          <!-- linkedin icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 8.98h4v12H3v-12Zm7 0h3.8v1.64h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.65 4.76 6.1v6.21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9v5.6h-4l.02-12Z" fill="currentColor"/></svg>
+          <strong>LinkedIn:</strong>&nbsp;<a href="https://www.linkedin.com/in/burak-yilmaz-9a58305a" target="_blank" rel="noopener">Profil</a>
         </div>
       </div>
 
-      <a class="btn" href="./BurakYılmazvCard.vcf">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 15v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"/></svg>
-        Kişiye Ekle
-      </a>
+      <div class="actions">
+        <a class="btn" href="./BurakYılmazvCard.vcf" aria-label="Kişiye ekle">
+          <!-- download icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 15v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"/></svg>
+          Kişiye Ekle
+        </a>
+        <a class="btn secondary" href="https://burakyilmaz3453.github.io/brkylmz/" target="_blank" rel="noopener" aria-label="Profil URL">
+          <!-- link icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M10 14a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-2 2a5 5 0 1 0 7 7l1-1" stroke="currentColor" stroke-width="2"/></svg>
+          Profil Linki
+        </a>
+      </div>
 
-      <p class="foot">Bu butona tıklayarak kişi bilgilerini telefonunuza kaydedebilirsiniz.</p>
+      <div class="badges">
+        <span class="badge">NFC • QR destekli</span>
+        <span class="badge">iOS & Android uyumlu</span>
+      </div>
+
+      <p class="foot">Bu sayfadaki “Kişiye Ekle” butonuyla bilgileri rehberinize kaydedebilirsiniz.</p>
     </section>
   </main>
 </body>
 </html>
-

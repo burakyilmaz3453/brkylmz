@@ -2,158 +2,186 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Burak Yılmaz • Dijital Kart</title>
   <meta name="description" content="Burak Yılmaz dijital kartvizit">
   <style>
     :root{
-      --accent: #3b82f6;         /* vurgu rengi (ör. kurum rengi ile değiştir) */
-      --accent2:#22d3ee;
-      --bg: #0b0c10;
-      --text:#f5f7fb;
-      --muted:#a8b3c7;
-      --glass: rgba(255,255,255,.06);
-      --border: rgba(255,255,255,.12);
-      --radius: 20px;
+      /* Boyut ve renk değişkenleri */
+      --heroH: clamp(360px, 56vh, 520px);   /* üst sabit alan yüksekliği */
+      --bg:#0b0c10; --sheet:#0f1216; --text:#f4f6fb; --muted:#9aa3af;
+      --accent:#0ea5e9; --accent2:#22c55e; --border:rgba(255,255,255,.12);
+      --radius:22px;
     }
     *{box-sizing:border-box}
     html{-webkit-text-size-adjust:100%}
     body{
-      margin:0; color:var(--text); background: radial-gradient(1200px 800px at 20% -10%, rgba(59,130,246,.25), transparent 60%),
-                                      radial-gradient(1000px 700px at 120% 10%, rgba(34,211,238,.18), transparent 50%),
-                                      var(--bg);
-      font: 16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      margin:0; color:var(--text);
+      background:
+        radial-gradient(1000px 700px at 120% -10%, rgba(14,165,233,.20), transparent 60%),
+        radial-gradient(900px 600px  at -10%  10%, rgba(34,197,94,.18), transparent 55%),
+        var(--bg);
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       min-height:100svh;
     }
-    .wrap{
-      min-height:100svh; display:grid; place-items:center;
-      padding:calc(28px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom));
-    }
-    .card{
-      width:min(780px, 94vw);
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)) ;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:28px 22px 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
-      backdrop-filter: blur(8px);
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-      isolation:isolate;
-    }
-    /* hareketli gradient parıltı */
-    .card::before{
-      content:""; position:absolute; inset:-1px; z-index:-1;
-      background: conic-gradient(from 180deg, var(--accent), var(--accent2), transparent 40%, transparent 70%, var(--accent) );
-      filter: blur(30px); opacity:.18; animation: spin 14s linear infinite;
-    }
-    @keyframes spin{to{transform:rotate(1turn)}}
 
-    .avatar-wrap{
-      width:140px; height:140px; margin:2px auto 14px; border-radius:50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), rgba(255,255,255,.05) 60%);
-      padding:6px; box-shadow: 0 0 0 6px rgba(59,130,246,.2);
+    /* === 1) ÜST SABİT KISIM (HERO) === */
+    .hero{
+      position:fixed; inset:0 0 auto 0; height:var(--heroH); z-index:1; overflow:hidden;
+      display:grid; place-items:end center; /* avatarı alt orta hizalamak için */
+      background:#111; isolation:isolate;
     }
+    .hero::before{
+      content:""; position:absolute; inset:0; z-index:-2;
+      background:url('./banner.jpg') center/cover no-repeat;
+      filter:saturate(1.05);
+    }
+    .hero::after{
+      /* üstte koyu, altta cam parıltı */
+      content:""; position:absolute; inset:0; z-index:-1;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.25) 45%, transparent 70%),
+        radial-gradient(600px 300px at 80% 0%, rgba(14,165,233,.25), transparent 60%);
+    }
+
     .avatar{
-      width:100%; height:100%; object-fit:cover; border-radius:50%;
+      position:relative;
+      width:132px;height:132px;border-radius:50%;object-fit:cover;
+      box-shadow:0 0 0 6px rgba(255,255,255,.9), 0 12px 32px rgba(0,0,0,.35);
+      margin-bottom:-42px; /* alt sayfa üstüne biraz taşsın */
       background:#fff;
     }
 
-    h1{margin:6px 0 4px; font-weight:800; letter-spacing:.2px;
-       font-size: clamp(24px, 5.8vw, 36px); line-height:1.1; text-wrap:balance;}
-    .subtitle{
-      margin:0 auto 18px; color:var(--muted);
-      font-size: clamp(14px, 3.8vw, 18px); line-height:1.35; max-width:34ch; text-wrap:balance;
+    /* === 2) AŞAĞI KAYAN KISIM (SHEET) — hero'nun ÜSTÜNE çıkar === */
+    .sheet{
+      position:relative; z-index:2;
+      margin-top:calc(var(--heroH) - 32px);   /* ilk anda hero'ya yaklaşır */
+      background:color-mix(in srgb, var(--sheet) 96%, #000);
+      border-radius:24px 24px 0 0; border:1px solid var(--border);
+      box-shadow:0 -10px 40px rgba(0,0,0,.45);
+      padding:48px 18px 24px;
     }
 
-    .info{
-      display:grid; gap:10px; justify-content:center; margin: 8px 0 16px;
-    }
-    .row{ display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap;
-          background:var(--glass); border:1px solid var(--border); padding:10px 14px; border-radius:14px;}
-    .row a{ color:var(--text); text-decoration:none }
-    .row a:hover{ color:var(--accent) }
-    svg{ width:18px; height:18px; flex:0 0 18px }
+    .name{margin:12px 0 2px; font-weight:800; letter-spacing:.2px;
+      font-size:clamp(22px,6vw,32px); line-height:1.15; text-align:center; text-wrap:balance}
+    .title{margin:0 auto 18px; color:var(--muted);
+      font-size:clamp(13px,3.6vw,16px); line-height:1.35; max-width:32ch; text-align:center}
 
-    .actions{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:10px 0 6px }
+    /* Hızlı eylem butonları */
+    .quick{
+      display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px;
+      margin:6px auto 18px; max-width:680px;
+    }
+    .qbtn{
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+      padding:14px 10px; border-radius:16px; background:#0d1116; color:var(--text);
+      border:1px solid var(--border); text-decoration:none; text-align:center;
+      box-shadow:0 2px 0 rgba(255,255,255,.04) inset;
+      transition:.2s transform,.2s background,.2s box-shadow;
+    }
+    .qbtn:hover{ transform:translateY(-2px); background:#0f141a; box-shadow:0 10px 20px rgba(0,0,0,.35) }
+    .qbtn svg{width:20px;height:20px;opacity:.9}
+
+    .section{max-width:860px; margin:0 auto; padding:8px 6px 18px}
+    .card{
+      background:#0e1318; border:1px solid var(--border); border-radius:16px; padding:14px 14px;
+    }
+    .row{display:flex; gap:10px; align-items:center; padding:10px 8px; border-radius:10px}
+    .row+ .row{border-top:1px dashed rgba(255,255,255,.08)}
+    .row strong{font-weight:700}
+    .row a{color:var(--text); text-decoration:none}
+    .row a:hover{color:var(--accent)}
+    .label{display:block; color:var(--muted); font-size:12px; margin-bottom:6px}
+
+    .cta{
+      display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin:10px 0 0
+    }
     .btn{
-      --bg: var(--accent);
       display:inline-flex; align-items:center; gap:10px;
-      background:var(--bg); color:#fff; text-decoration:none; font-weight:700;
-      padding:12px 18px; border-radius:14px; border:1px solid rgba(255,255,255,.1);
-      box-shadow: 0 8px 24px rgba(59,130,246,.35);
-      transition: .2s transform, .2s box-shadow, .2s background;
+      background:linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 80%, #000));
+      color:#fff; text-decoration:none; font-weight:800;
+      padding:12px 18px; border-radius:14px; border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 12px 32px rgba(14,165,233,.35);
+      transition:.2s transform,.2s box-shadow
     }
-    .btn:hover{ transform: translateY(-1px); box-shadow: 0 12px 30px rgba(59,130,246,.45) }
-    .btn.secondary{ --bg: transparent; color:var(--text); border-color:var(--border); box-shadow:none }
-    .btn.secondary:hover{ background:rgba(255,255,255,.06) }
+    .btn:hover{transform:translateY(-1px); box-shadow:0 16px 36px rgba(14,165,233,.45)}
+    .btn svg{width:20px;height:20px}
 
-    .badges{ display:flex; gap:10px; justify-content:center; margin: 8px 0 0; }
-    .badge{
-      font-size:12px; color:var(--muted); border:1px dashed var(--border); padding:6px 10px; border-radius:999px;
-      background:rgba(255,255,255,.04)
-    }
-    .foot{ color:var(--muted); font-size:13px; margin-top:14px }
-
-    /* çok dar ekran için sıkı düzen */
-    @media (max-width:360px){
-      .avatar-wrap{ width:120px; height:120px; padding:5px }
-      .row{ padding:8px 10px }
-      .btn{ width:100% }
+    /* küçük ekran düzeni */
+    @media (max-width:420px){
+      .quick{grid-template-columns:repeat(4,1fr); gap:8px}
+      .qbtn{padding:12px 8px; border-radius:14px; font-size:12px}
+      .sheet{padding-top:56px}
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="card" aria-label="Dijital kart">
-      <div class="avatar-wrap">
-        <img class="avatar" src="./brkylmz.jpg" alt="Burak Yılmaz fotoğrafı">
+  <!-- SABİT KAHRAMAN -->
+  <header class="hero" aria-label="Kapak alanı">
+    <img class="avatar" src="./brkylmz.jpg" alt="Burak Yılmaz">
+  </header>
+
+  <!-- AŞAĞI KAYAN SAYFA (üstteki alanın ÜSTÜNE çıkar) -->
+  <main class="sheet" aria-label="Profil içeriği">
+    <h1 class="name">Burak Yılmaz</h1>
+    <p class="title">Osmanlı Menkul Değerler A.Ş. · IT System Administrator</p>
+
+    <!-- Hızlı aksiyonlar (Call / E-mail / QR / Save) -->
+    <nav class="quick" aria-label="Hızlı eylemler">
+      <a class="qbtn" href="tel:+905524915334">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.9v2.3a2 2 0 0 1-2.18 2 19.9 19.9 0 0 1-8.67-3.09 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.8 3.95 2 2 0 0 1 4.77 2h2.3a2 2 0 0 1 2 1.72c.12.9.32 1.78.6 2.62a2 2 0 0 1-.45 2.07l-1 1a16 16 0 0 0 6 6l1-1a2 2 0 0 1 2.06-.45c.85.28 1.73.48 2.62.6A2 2 0 0 1 22 16.9Z" fill="currentColor"/></svg>
+        Call
+      </a>
+      <a class="qbtn" href="mailto:buraky@osmanlimenkul.com.tr">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2 8 5 8-5" stroke="currentColor" stroke-width="2"/></svg>
+        E-mail
+      </a>
+      <a class="qbtn" href="#qr">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6H4V4Zm0 10h6v6H4v-6Zm10-10h6v6h-6V4Zm3 10h-3v3h3v3h3v-6h-3Z" fill="currentColor"/></svg>
+        QR
+      </a>
+      <a class="qbtn" href="./BurakYılmazvCard.vcf">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 15v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"/></svg>
+        Save
+      </a>
+    </nav>
+
+    <!-- İletişim / adres / şirket bölümleri -->
+    <section class="section">
+      <div class="card">
+        <span class="label">Contact</span>
+        <div class="row"><strong>Telefon:</strong>&nbsp;<a href="tel:+905524915334">+90 552 491 5334</a></div>
+        <div class="row"><strong>E-posta:</strong>&nbsp;<a href="mailto:buraky@osmanlimenkul.com.tr">buraky@osmanlimenkul.com.tr</a></div>
+        <div class="row"><strong>LinkedIn:</strong>&nbsp;<a href="https://www.linkedin.com/in/burak-yilmaz-9a58305a" target="_blank" rel="noopener">Profil</a></div>
       </div>
+    </section>
 
-      <h1>Burak Yılmaz</h1>
-      <p class="subtitle">IT System Administrator · Osmanlı Menkul Değerler A.Ş.</p>
-
-      <div class="info">
-        <div class="row" aria-label="Telefon">
-          <!-- phone icon -->
-          <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.9v2.3a2 2 0 0 1-2.18 2 19.9 19.9 0 0 1-8.67-3.09 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.8 3.95 2 2 0 0 1 4.77 2h2.3a2 2 0 0 1 2 1.72c.12.9.32 1.78.6 2.62a2 2 0 0 1-.45 2.07l-1 1a16 16 0 0 0 6 6l1-1a2 2 0 0 1 2.06-.45c.85.28 1.73.48 2.62.6A2 2 0 0 1 22 16.9Z" fill="currentColor"/></svg>
-          <strong>Telefon:</strong>&nbsp;<a href="tel:+905524915334">+90 552 491 5334</a>
+    <section class="section">
+      <div class="card">
+        <span class="label">Address Information</span>
+        <div class="row"><strong>Office:</strong>&nbsp;Maslak, İstanbul</div>
+        <div class="cta">
+          <a class="btn" href="./BurakYılmazvCard.vcf">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 15v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"/></svg>
+            Kişiye Ekle
+          </a>
         </div>
-
-        <div class="row" aria-label="E-posta">
-          <!-- mail icon -->
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2 8 5 8-5" stroke="currentColor" stroke-width="2"/></svg>
-          <strong>E-posta:</strong>&nbsp;<a href="mailto:buraky@osmanlimenkul.com.tr">buraky@osmanlimenkul.com.tr</a>
-        </div>
-
-        <div class="row" aria-label="LinkedIn">
-          <!-- linkedin icon -->
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 8.98h4v12H3v-12Zm7 0h3.8v1.64h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.65 4.76 6.1v6.21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9v5.6h-4l.02-12Z" fill="currentColor"/></svg>
-          <strong>LinkedIn:</strong>&nbsp;<a href="https://www.linkedin.com/in/burak-yilmaz-9a58305a" target="_blank" rel="noopener">Profil</a>
-        </div>
       </div>
-
-      <div class="actions">
-        <a class="btn" href="./BurakYılmazvCard.vcf" aria-label="Kişiye ekle">
-          <!-- download icon -->
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 15v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"/></svg>
-          Kişiye Ekle
-        </a>
-        <a class="btn secondary" href="https://burakyilmaz3453.github.io/brkylmz/" target="_blank" rel="noopener" aria-label="Profil URL">
-          <!-- link icon -->
-          <svg viewBox="0 0 24 24" fill="none"><path d="M10 14a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-2 2a5 5 0 1 0 7 7l1-1" stroke="currentColor" stroke-width="2"/></svg>
-          Profil Linki
-        </a>
-      </div>
-
-      <div class="badges">
-        <span class="badge">NFC • QR destekli</span>
-        <span class="badge">iOS & Android uyumlu</span>
-      </div>
-
-      <p class="foot">Bu sayfadaki “Kişiye Ekle” butonuyla bilgileri rehberinize kaydedebilirsiniz.</p>
     </section>
   </main>
+
+  <!-- Basit QR modal (hash ile aç/kapa) -->
+  <div id="qr" style="position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.6);z-index:99;padding:24px">
+    <a href="#" style="position:absolute;inset:0"></a>
+    <div style="position:relative;background:#0f1216;border:1px solid var(--border);border-radius:16px;padding:16px 16px 10px;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fburakyilmaz3453.github.io%2Fbrkylmz%2F" alt="QR" style="display:block;border-radius:10px">
+    </div>
+  </div>
+  <script>
+    // hash hedefi #qr ise modalı göster
+    const modal = document.getElementById('qr');
+    function syncModal(){ modal.style.display = (location.hash === '#qr') ? 'grid' : 'none'; }
+    window.addEventListener('hashchange', syncModal); syncModal();
+  </script>
 </body>
 </html>

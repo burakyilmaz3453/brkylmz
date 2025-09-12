@@ -7,111 +7,97 @@
   <meta name="description" content="Burak Yılmaz dijital kartvizit">
   <style>
     :root{
-      /* Boyut ve renk değişkenleri */
-      --heroH: clamp(360px, 56vh, 520px);   /* üst sabit alan yüksekliği */
-      --bg:#0b0c10; --sheet:#0f1216; --text:#f4f6fb; --muted:#9aa3af;
-      --accent:#0ea5e9; --accent2:#22c55e; --border:rgba(255,255,255,.12);
-      --radius:22px;
+      /* === Ayarlayabileceğin değerler === */
+      --heroH: clamp(340px, 52vh, 520px);  /* Üst sabit alan yüksekliği */
+      --avatar: 132px;                    /* Avatar çapı */
+      --accent: #0ea5e9;
+      --bg:#0b0c10; --sheet:#0f1216; --text:#f4f6fb; --muted:#9aa3af; --border:rgba(255,255,255,.12);
     }
     *{box-sizing:border-box}
     html{-webkit-text-size-adjust:100%}
     body{
       margin:0; color:var(--text);
       background:
-        radial-gradient(1000px 700px at 120% -10%, rgba(14,165,233,.20), transparent 60%),
-        radial-gradient(900px 600px  at -10%  10%, rgba(34,197,94,.18), transparent 55%),
+        radial-gradient(900px 600px at 110% -10%, rgba(14,165,233,.20), transparent 60%),
+        radial-gradient(800px 500px at -10%  10%, rgba(34,197,94,.18), transparent 55%),
         var(--bg);
-      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif;
       min-height:100svh;
     }
 
     /* === 1) ÜST SABİT KISIM (HERO) === */
     .hero{
       position:fixed; inset:0 0 auto 0; height:var(--heroH); z-index:1; overflow:hidden;
-      display:grid; place-items:end center; /* avatarı alt orta hizalamak için */
       background:#111; isolation:isolate;
     }
+    /* Kapak görseli (banner.jpg eklemessen gradientle çalışır) */
     .hero::before{
       content:""; position:absolute; inset:0; z-index:-2;
-      background:url('./banner.jpg') center/cover no-repeat;
+      background:
+        url('./banner.jpg') center/cover no-repeat,
+        linear-gradient(#0f1115,#0f1115);
       filter:saturate(1.05);
     }
     .hero::after{
-      /* üstte koyu, altta cam parıltı */
       content:""; position:absolute; inset:0; z-index:-1;
-      background:
-        linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.25) 45%, transparent 70%),
-        radial-gradient(600px 300px at 80% 0%, rgba(14,165,233,.25), transparent 60%);
+      background:linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.25) 45%, transparent 70%);
     }
 
+    /* Avatar, sabitin alt kenarından YARIŞI dışarı taşsın */
     .avatar{
-      position:relative;
-      width:132px;height:132px;border-radius:50%;object-fit:cover;
-      box-shadow:0 0 0 6px rgba(255,255,255,.9), 0 12px 32px rgba(0,0,0,.35);
-      margin-bottom:-42px; /* alt sayfa üstüne biraz taşsın */
-      background:#fff;
+      position:absolute; left:50%; bottom:0; transform:translate(-50%, 50%);  /* yarısı aşağıda */
+      width:var(--avatar); height:var(--avatar); border-radius:50%; object-fit:cover; background:#fff;
+      box-shadow:0 0 0 6px rgba(255,255,255,.95), 0 12px 32px rgba(0,0,0,.35);
     }
 
     /* === 2) AŞAĞI KAYAN KISIM (SHEET) — hero'nun ÜSTÜNE çıkar === */
     .sheet{
       position:relative; z-index:2;
-      margin-top:calc(var(--heroH) - 32px);   /* ilk anda hero'ya yaklaşır */
-      background:color-mix(in srgb, var(--sheet) 96%, #000);
+      /* Sayfa, sabit alanın hemen altından başlar ve avatarın yarısı kadar ÜSTE biner */
+      margin-top: calc(var(--heroH) - (var(--avatar) / 2));
+      background: color-mix(in srgb, var(--sheet) 96%, #000);
       border-radius:24px 24px 0 0; border:1px solid var(--border);
-      box-shadow:0 -10px 40px rgba(0,0,0,.45);
-      padding:48px 18px 24px;
+      box-shadow:0 -10px 40px rgba(0,0,0,.46);
+      padding: calc((var(--avatar) / 2) + 18px) 18px 24px; /* üst padding: avatarın diğer yarısı + boşluk */
     }
 
-    .name{margin:12px 0 2px; font-weight:800; letter-spacing:.2px;
-      font-size:clamp(22px,6vw,32px); line-height:1.15; text-align:center; text-wrap:balance}
-    .title{margin:0 auto 18px; color:var(--muted);
-      font-size:clamp(13px,3.6vw,16px); line-height:1.35; max-width:32ch; text-align:center}
+    h1{margin:6px 0 4px; font-weight:800; letter-spacing:.2px;
+       font-size:clamp(22px, 6vw, 32px); line-height:1.15; text-align:center; text-wrap:balance}
+    .subtitle{margin:0 auto 16px; color:var(--muted); font-size:clamp(13px,3.6vw,16px);
+              line-height:1.35; max-width:32ch; text-align:center}
 
-    /* Hızlı eylem butonları */
-    .quick{
-      display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px;
-      margin:6px auto 18px; max-width:680px;
-    }
+    /* Hızlı aksiyonlar */
+    .quick{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:8px auto 18px; max-width:760px}
     .qbtn{
       display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
-      padding:14px 10px; border-radius:16px; background:#0d1116; color:var(--text);
-      border:1px solid var(--border); text-decoration:none; text-align:center;
-      box-shadow:0 2px 0 rgba(255,255,255,.04) inset;
-      transition:.2s transform,.2s background,.2s box-shadow;
+      padding:14px 10px; border-radius:16px; text-decoration:none; color:var(--text);
+      background:#0d1116; border:1px solid var(--border);
+      box-shadow:0 2px 0 rgba(255,255,255,.04) inset; transition:.2s transform,.2s background,.2s box-shadow
     }
-    .qbtn:hover{ transform:translateY(-2px); background:#0f141a; box-shadow:0 10px 20px rgba(0,0,0,.35) }
+    .qbtn:hover{transform:translateY(-2px); background:#0f141a; box-shadow:0 10px 20px rgba(0,0,0,.35)}
     .qbtn svg{width:20px;height:20px;opacity:.9}
 
     .section{max-width:860px; margin:0 auto; padding:8px 6px 18px}
-    .card{
-      background:#0e1318; border:1px solid var(--border); border-radius:16px; padding:14px 14px;
-    }
+    .card{background:#0e1318; border:1px solid var(--border); border-radius:16px; padding:14px}
     .row{display:flex; gap:10px; align-items:center; padding:10px 8px; border-radius:10px}
-    .row+ .row{border-top:1px dashed rgba(255,255,255,.08)}
-    .row strong{font-weight:700}
+    .row+.row{border-top:1px dashed rgba(255,255,255,.08)}
     .row a{color:var(--text); text-decoration:none}
     .row a:hover{color:var(--accent)}
     .label{display:block; color:var(--muted); font-size:12px; margin-bottom:6px}
 
-    .cta{
-      display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin:10px 0 0
-    }
     .btn{
       display:inline-flex; align-items:center; gap:10px;
       background:linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 80%, #000));
       color:#fff; text-decoration:none; font-weight:800;
       padding:12px 18px; border-radius:14px; border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 12px 32px rgba(14,165,233,.35);
-      transition:.2s transform,.2s box-shadow
+      box-shadow:0 12px 32px rgba(14,165,233,.35)
     }
-    .btn:hover{transform:translateY(-1px); box-shadow:0 16px 36px rgba(14,165,233,.45)}
     .btn svg{width:20px;height:20px}
 
-    /* küçük ekran düzeni */
     @media (max-width:420px){
-      .quick{grid-template-columns:repeat(4,1fr); gap:8px}
-      .qbtn{padding:12px 8px; border-radius:14px; font-size:12px}
-      .sheet{padding-top:56px}
+      :root{ --heroH: clamp(300px, 48vh, 480px); --avatar: 118px; }
+      .quick{gap:8px}
+      .qbtn{padding:12px 8px; font-size:12px}
     }
   </style>
 </head>
@@ -121,12 +107,11 @@
     <img class="avatar" src="./brkylmz.jpg" alt="Burak Yılmaz">
   </header>
 
-  <!-- AŞAĞI KAYAN SAYFA (üstteki alanın ÜSTÜNE çıkar) -->
-  <main class="sheet" aria-label="Profil içeriği">
-    <h1 class="name">Burak Yılmaz</h1>
-    <p class="title">Osmanlı Menkul Değerler A.Ş. · IT System Administrator</p>
+  <!-- KAYAN İÇERİK (hero’nun üstüne çıkar) -->
+  <main class="sheet" aria-label="Profil">
+    <h1>Burak Yılmaz</h1>
+    <p class="subtitle">Osmanlı Menkul Değerler A.Ş. · IT System Administrator</p>
 
-    <!-- Hızlı aksiyonlar (Call / E-mail / QR / Save) -->
     <nav class="quick" aria-label="Hızlı eylemler">
       <a class="qbtn" href="tel:+905524915334">
         <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.9v2.3a2 2 0 0 1-2.18 2 19.9 19.9 0 0 1-8.67-3.09 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.8 3.95 2 2 0 0 1 4.77 2h2.3a2 2 0 0 1 2 1.72c.12.9.32 1.78.6 2.62a2 2 0 0 1-.45 2.07l-1 1a16 16 0 0 0 6 6l1-1a2 2 0 0 1 2.06-.45c.85.28 1.73.48 2.62.6A2 2 0 0 1 22 16.9Z" fill="currentColor"/></svg>
@@ -146,26 +131,12 @@
       </a>
     </nav>
 
-    <!-- İletişim / adres / şirket bölümleri -->
     <section class="section">
       <div class="card">
         <span class="label">Contact</span>
         <div class="row"><strong>Telefon:</strong>&nbsp;<a href="tel:+905524915334">+90 552 491 5334</a></div>
         <div class="row"><strong>E-posta:</strong>&nbsp;<a href="mailto:buraky@osmanlimenkul.com.tr">buraky@osmanlimenkul.com.tr</a></div>
         <div class="row"><strong>LinkedIn:</strong>&nbsp;<a href="https://www.linkedin.com/in/burak-yilmaz-9a58305a" target="_blank" rel="noopener">Profil</a></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="card">
-        <span class="label">Address Information</span>
-        <div class="row"><strong>Office:</strong>&nbsp;Maslak, İstanbul</div>
-        <div class="cta">
-          <a class="btn" href="./BurakYılmazvCard.vcf">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 15v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"/></svg>
-            Kişiye Ekle
-          </a>
-        </div>
       </div>
     </section>
   </main>
@@ -178,7 +149,6 @@
     </div>
   </div>
   <script>
-    // hash hedefi #qr ise modalı göster
     const modal = document.getElementById('qr');
     function syncModal(){ modal.style.display = (location.hash === '#qr') ? 'grid' : 'none'; }
     window.addEventListener('hashchange', syncModal); syncModal();

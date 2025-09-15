@@ -3,11 +3,12 @@ VERSION:3.0
 N:Yılmaz;Burak;;;
 FN:Burak Yılmaz
 ORG:Osmanlı Menkul Değerler A.Ş.
-TITLE:IT System Administrator
-TEL;TYPE=CELL,VOICE:+90 552 491 5334
-EMAIL;TYPE=INTERNET,WORK:buraky@osmanlimenkul.com.tr
-URL;TYPE=WORK:https://www.linkedin.com/in/burak-yilmaz-9a58305a
+TITLE:System Administrator
+TEL;TYPE=CELL,VOICE,pref:+90 552 491 5334
+EMAIL;TYPE=INTERNET,WORK,pref:buraky@osmanlimenkul.com.tr
+URL:https://burakyilmaz3453.github.io/brkylmz/
+PHOTO;VALUE=URI:https://burakyilmaz3453.github.io/brkylmz/brkylmz.jpg
+ADR;TYPE=WORK:;;Maslak Mah. Büyükdere Cad. No. 255/802;Sarıyer;İstanbul;34398;Türkiye
 NOTE:Dijital kartvizit
-PHOTO;VALUE=URI:https://<kullaniciadiniz>.github.io/photo.jpg
-REV:2025-09-09T16:00:00Z
 END:VCARD
+

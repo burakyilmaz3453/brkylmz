@@ -57,7 +57,7 @@
   .btn.save{ background:#0f6d5d; border-color:rgba(255,255,255,.08) }
   .btn.save span{ color:#e9f7f3 }
 
-  /* ===== MODAL (Avatar + QR) ===== */
+  /* ===== MODAL ===== */
   .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:50 }
   .modal.open{ display:grid }
   .modal .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.65) }
@@ -68,7 +68,7 @@
     border:0; cursor:pointer; background:#fff; color:#000; font-weight:700;
   }
 
-  /* ===== ALT İLETİŞİM PANELİ (cp- prefix, üst CSS’e dokunmaz) ===== */
+  /* ===== ALT İLETİŞİM PANELİ (cp- prefix) ===== */
   .cp-panel{
     width:min(720px,92vw);
     margin:20px auto 60px;
@@ -125,9 +125,9 @@
         <span>QR</span>
       </a>
 
-      <!-- Save: RAW VCF (istersen ./BurakYilmazCard.vcf yapabilirsin) -->
+      <!-- Save: VCF (RAW). İstersen ./BurakYilmazvCard.vcf yapabilirsin -->
       <a class="btn save"
-         href="https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazCard.vcf"
+         href="https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazvCard.vcf"
          type="text/vcard" aria-label="Rehbere ekle">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-6 8a6 6 0 1112 0H6z"/>
@@ -139,7 +139,7 @@
   </div>
 </section>
 
-<!-- ===== ALT İLETİŞİM PANELİ (VCF'den doldurulur) ===== -->
+<!-- ===== ALT İLETİŞİM PANELİ ===== -->
 <section class="cp-panel" aria-label="İletişim">
   <div class="cp-grip"><span></span></div>
   <ul class="cp-list">
@@ -216,10 +216,18 @@ qrModal.querySelector('.overlay').addEventListener('click',()=> qrModal.classLis
 qrModal.querySelector('.close').addEventListener('click',()=> qrModal.classList.remove('open'));
 window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.remove('open'));
 
-/* ===== VCF'den bilgileri doldur (CELL/WORK/EMAIL/URL) ===== */
+/* ===== VCF'den bilgileri doldur ===== */
 (function(){
+  // Save butonundaki VCF URL’sini baz al
   const saveLink=document.querySelector('.btn.save');
-  let vcfUrl=saveLink ? saveLink.getAttribute('href') : './BurakYilmazCard.vcf';
+  const href=saveLink ? saveLink.getAttribute('href') : '';
+  // Birden fazla ihtimali sırayla dene
+  const candidates = [
+    href,
+    './BurakYilmazvCard.vcf',
+    'https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazvCard.vcf',
+    'https://burakyilmaz3453.github.io/brkylmz/BurakYilmazvCard.vcf'
+  ].filter(Boolean);
 
   const unfold = s => s.replace(/\r?\n[ \t]/g,''); // folded lines aç
   const parse = ln => {
@@ -232,12 +240,17 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
   const urlNorm  = v => (v||'').startsWith('http') ? v : ('https://' + (v||''));
 
   async function loadVCF(){
-    try{
-      const res = await fetch(vcfUrl, { cache:'no-store' });
-      if(!res.ok) throw res.status;
-      const text = await res.text();
-      fill(text);
-    }catch(e){ console.warn('VCF okunamadı:', e); }
+    for (const url of candidates){
+      try{
+        const res = await fetch(url, { cache:'no-store' });
+        if(res.ok){
+          const text = await res.text();
+          fill(text);
+          return; // başarıyla doldurduk
+        }
+      }catch(e){ /* bir sonrakine geç */ }
+    }
+    console.warn('VCF bulunamadı/okunamadı.');
   }
 
   function fill(raw){

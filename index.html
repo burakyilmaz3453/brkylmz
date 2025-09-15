@@ -24,14 +24,14 @@
     overflow:hidden; box-shadow:var(--shadow);
   }
 
-  /* KAPAK */
+  /* Kapak */
   .cover{
     height:clamp(140px, 32vw, 180px);
     background:#111 url("banner.jpg") center/cover no-repeat;
     position:relative;
   }
 
-  /* AVATAR */
+  /* Avatar */
   .avatar{
     position:absolute; left:50%; bottom:-56px; transform:translateX(-50%);
     width:112px; height:112px; border-radius:50%;
@@ -63,18 +63,14 @@
   .btn:active{ transform:translateY(1px) }
 
   /* Save butonunu vurgula (yeşil) */
-  .btn.save{
-    background:#0f6d5d; border-color:rgba(255,255,255,.08);
-  }
+  .btn.save{ background:#0f6d5d; border-color:rgba(255,255,255,.08) }
   .btn.save span{ color:#e9f7f3 }
 
-  /* Modal */
+  /* Modal (lightbox) */
   .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:50 }
   .modal.open{ display:grid }
   .modal .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.65) }
-  .modal .box{
-    position:relative; z-index:1; background:#0f1418; padding:10px; border-radius:16px;
-  }
+  .modal .box{ position:relative; z-index:1; background:#0f1418; padding:10px; border-radius:16px }
   .modal img{ display:block; max-width:min(92vw, 480px); height:auto; border-radius:16px }
   .modal .close{
     position:absolute; top:-10px; right:-10px; width:36px; height:36px; border-radius:50%;
@@ -112,9 +108,9 @@
           <span>QR</span>
         </a>
 
-        <a class="btn save" id="saveBtn" href="#" aria-label="Rehbere ekle">
+        <!-- SAVE: Düz .vcf link (JS yok) -->
+        <a class="btn save" href="./BurakYilmaz.vcf" type="text/vcard" aria-label="Rehbere ekle">
           <svg viewBox="0 0 24 24" fill="currentColor">
-            <!-- kişi + artı -->
             <path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-6 8a6 6 0 1112 0H6z"/>
             <path d="M19 8h-2V6h-2V4h2V2h2v2h2v2h-2v2z"/>
           </svg>
@@ -163,31 +159,6 @@
   qrModal.querySelector('.overlay').addEventListener('click', ()=> qrModal.classList.remove('open'));
   qrModal.querySelector('.close').addEventListener('click', ()=> qrModal.classList.remove('open'));
   window.addEventListener('keydown', e=> (e.key==='Escape') && qrModal.classList.remove('open'));
-
-  /* Save → Rehbere ekle (Web Share varsa paylaş, yoksa vCard'ı aç) */
-  const saveBtn = document.getElementById('saveBtn');
-  saveBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-
-    // vCard içeriği (CRLF satır sonları önemli)
-    const vcard =
-`BEGIN:VCARD\r\nVERSION:3.0\r\nN:Yılmaz;Burak;;;\r\nFN:Burak Yılmaz\r\nORG:Osmanlı Menkul Değerler A.Ş.\r\nTITLE:System Administrator\r\nTEL;TYPE=CELL,VOICE:+90 552 491 5334\r\nEMAIL;TYPE=INTERNET:buraky@osmanlimenkul.com.tr\r\nURL:https://burakyilmaz3453.github.io/brkylmz/\r\nEND:VCARD\r\n`;
-
-    const blob = new Blob([vcard], { type: 'text/vcard' });
-    const file = new File([blob], 'BurakYilmaz.vcf', { type: 'text/vcard' });
-
-    try {
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'Burak Yılmaz', text: 'Kişilere ekle' });
-        return;
-      }
-    } catch(_) { /* yok say */ }
-
-    // Fallback: doğru MIME ile aç → telefonda “Kişilere ekle” ekranı çıkar
-    const url = URL.createObjectURL(blob);
-    window.open(url, '_blank', 'noopener');
-    setTimeout(()=> URL.revokeObjectURL(url), 30000);
-  });
 </script>
 </body>
 </html>

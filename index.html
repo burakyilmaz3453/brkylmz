@@ -10,11 +10,13 @@
     --bg:#0b0f10; --panel:#0f1418; --text:#e9eef2; --muted:#b7c2ca;
     --radius:20px; --shadow:0 20px 60px rgba(0,0,0,.35);
   }
-  *{box-sizing:border-box} html,body{height:100%}
+  *{box-sizing:border-box}
+  html,body{height:100%}
   body{
     margin:0; background:var(--bg); color:var(--text);
     font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
     display:grid; place-items:start center;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0) + 16px);
   }
 
   /* ===== ÜST KART ===== */
@@ -23,7 +25,7 @@
     margin:0 auto;
     background:#0b1014; border-radius:var(--radius);
     overflow:hidden; box-shadow:var(--shadow);
-    position:sticky; top:0; z-index:5;
+    position:sticky; top:0; z-index:5;   /* alt panel bundan daha yüksek */
   }
   .cover{
     height:clamp(140px, 32vw, 180px);
@@ -34,6 +36,7 @@
     position:absolute; left:50%; bottom:-56px; transform:translateX(-50%);
     width:112px; height:112px; border-radius:50%;
     background:#fff url("brkylmz.jpg") center/cover no-repeat;
+    /* beyaz çerçeve + karanlık dış çizgi */
     box-shadow:0 0 0 4px #ffffff, 0 8px 24px rgba(0,0,0,.45);
     outline:6px solid #0f1418; cursor:zoom-in;
   }
@@ -74,6 +77,8 @@
     margin:20px auto 60px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
     border-radius:16px; box-shadow:0 14px 40px rgba(0,0,0,.35);
+    position:relative; z-index:20;          /* << Üst kartın üstünde */
+    transform: translateZ(0);               /* << iOS Safari stacking fix */
   }
   .cp-grip{ display:flex; justify-content:center; padding:8px 0 4px }
   .cp-grip span{ width:58px; height:4px; border-radius:999px; background:rgba(255,255,255,.18) }
@@ -94,6 +99,18 @@
   }
   .cp-copy:active{ transform:translateY(1px) }
   .cp-copy svg{ width:16px; height:16px }
+
+  /* ===== Mobil ayarlar ===== */
+  @media (max-width: 420px){
+    .cover{ height: 140px }
+    .avatar{ width:96px; height:96px; bottom:-48px }
+    .inner{ padding:64px 16px 16px }
+    .actions{ gap:10px }
+    .btn{ padding:12px 8px }
+    /* Dilersen sticky'i tamamen kapatabilirsiniz:
+       .card{ position:relative; top:auto }
+    */
+  }
 </style>
 </head>
 <body>
@@ -125,7 +142,6 @@
         <span>QR</span>
       </a>
 
-      <!-- Save: VCF (RAW). İstersen ./BurakYilmazvCard.vcf yapabilirsin -->
       <a class="btn save"
          href="https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazvCard.vcf"
          type="text/vcard" aria-label="Rehbere ekle">
@@ -218,10 +234,8 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 
 /* ===== VCF'den bilgileri doldur ===== */
 (function(){
-  // Save butonundaki VCF URL’sini baz al
   const saveLink=document.querySelector('.btn.save');
   const href=saveLink ? saveLink.getAttribute('href') : '';
-  // Birden fazla ihtimali sırayla dene
   const candidates = [
     href,
     './BurakYilmazvCard.vcf',
@@ -229,12 +243,12 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
     'https://burakyilmaz3453.github.io/brkylmz/BurakYilmazvCard.vcf'
   ].filter(Boolean);
 
-  const unfold = s => s.replace(/\r?\n[ \t]/g,''); // folded lines aç
+  const unfold = s => s.replace(/\r?\n[ \t]/g,'');
   const parse = ln => {
     const m = ln.match(/^([A-Z]+)(;[^:]+)?:([\s\S]*)$/i);
     return m ? {key:m[1].toUpperCase(), params:(m[2]||'').toLowerCase(), val:m[3].trim()} : null;
   };
-  const hasType = (params, token) => new RegExp(`(?:^|;|,)type=[^:]*\\b${token}\\b`,'i').test(params);
+  const hasType = (p, t) => new RegExp(`(?:^|;|,)type=[^:]*\\b${t}\\b`,'i').test(p);
   const telHref  = v => 'tel:'    + (v||'').replace(/[^+\d]/g,'');
   const mailHref = v => 'mailto:' + (v||'');
   const urlNorm  = v => (v||'').startsWith('http') ? v : ('https://' + (v||''));
@@ -243,12 +257,8 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
     for (const url of candidates){
       try{
         const res = await fetch(url, { cache:'no-store' });
-        if(res.ok){
-          const text = await res.text();
-          fill(text);
-          return; // başarıyla doldurduk
-        }
-      }catch(e){ /* bir sonrakine geç */ }
+        if(res.ok){ fill(await res.text()); return; }
+      }catch(e){}
     }
     console.warn('VCF bulunamadı/okunamadı.');
   }

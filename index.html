@@ -2,173 +2,106 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Burak Yılmaz | Kart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Burak Yılmaz | Dijital Kart</title>
+<meta name="theme-color" content="#0b0f10" />
 <style>
   :root{
-    /* Başlangıç görselleri (fallback) */
-    --cover:  url("./banner.jpg");
-    --avatar: url("./brkylmz.jpg");
-
-    --c-bg:#0b0f10; --c-panel:#11161a; --c-card:#0f1418;
-    --c-text:#f1f5f9; --c-dim:#a7b3bc;
-    --cover-h: 180px;          /* kapak yüksekliği */
+    --bg:#0b0f10; --panel:#0f1418; --text:#e9eef2; --muted:#b7c2ca;
+    --accent:#0ea5e9; --radius:20px; --shadow:0 20px 60px rgba(0,0,0,.35);
   }
   *{box-sizing:border-box}
+  html,body{height:100%}
   body{
-    margin:0; background:var(--c-bg); color:var(--c-text);
+    margin:0; background:var(--bg); color:var(--text);
     font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
-    display:flex; justify-content:center; min-height:100vh; padding:48px 14px;
-    -webkit-font-smoothing:antialiased;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    display:grid; place-items:start center;
   }
-  .profile{ width:100%; max-width:560px; position:relative; }
 
-  /* Kapak (avatar artık bunun DIŞINDA) */
+  /* KART */
+  .card{
+    width:min(720px, 92vw);
+    margin:56px auto;               /* üstte rahat nefes payı */
+    background:#0b1014;
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+
+  /* Kapak */
   .cover{
-    height:var(--cover-h);
-    background:var(--cover) center/cover no-repeat;
-    border-radius:20px 20px 0 0;
+    height:180px;
+    background:#111 url("banner.jpg") center/cover no-repeat;
     position:relative;
   }
-  /* Kalem butonları */
-  .edit-btn{
-    position:absolute; right:10px; top:10px;
-    width:34px; height:34px; border-radius:50%; border:none; cursor:pointer;
-    display:grid; place-items:center; color:#fff;
-    background:rgba(0,0,0,.55); backdrop-filter:blur(6px);
-    box-shadow:0 4px 12px rgba(0,0,0,.3);
-  }
-  .edit-btn:hover{ background:rgba(0,0,0,.72) }
-  .edit-btn svg{ width:18px; height:18px }
 
-  /* Avatar — kapaktan ayrı, profil konteynerine göre konumlu */
-  .avatar-wrap{
-    position:absolute; left:50%;
-    top:calc(var(--cover-h) - 52px);  /* 104px avatarın yarısı */
-    transform:translateX(-50%);
-    width:104px; height:104px;
-  }
+  /* Avatar (tam daire ve taşma) */
   .avatar{
-    width:100%; height:100%; border-radius:50%;
-    background:#fff var(--avatar) center/cover no-repeat;
-    border:4px solid #fff; box-shadow:0 10px 24px rgba(0,0,0,.45);
-  }
-  .avatar-wrap .edit-btn{
-    right:-6px; top:-6px; width:30px; height:30px; background:rgba(0,0,0,.6);
+    width:112px; height:112px; border-radius:50%;
+    background:#fff url("brkylmz.jpg") center/cover no-repeat;
+    position:absolute; left:50%; bottom:-56px; transform:translateX(-50%);
+    box-shadow:0 6px 22px rgba(0,0,0,.45), 0 0 0 6px #0f1418 inset;
+    outline:6px solid var(--bg);   /* dış çevre ile temiz birleşim */
   }
 
-  /* Kart */
-  .card{
-    background:var(--c-panel); border-radius:0 0 20px 20px;
-    padding:64px 20px 20px; text-align:center;
-    box-shadow:0 12px 30px rgba(0,0,0,.35);
+  /* İç kısım */
+  .inner{
+    background:var(--panel);
+    padding:72px 22px 22px;        /* 72px -> avatar yer açsın */
+    text-align:center;
   }
-  .name{font-weight:800; font-size:24px; margin:0}
-  .company{color:var(--c-dim); margin-top:6px; font-size:14px}
-  .title{color:var(--c-dim); margin-top:2px; font-size:13px}
+  .name{ font-weight:800; font-size:clamp(22px, 5vw, 28px); letter-spacing:.2px; margin:0 0 6px }
+  .company{ color:var(--muted); font-size:14px }
+  .title{ color:var(--muted); font-size:13px; margin-top:4px }
 
-  .actions{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:20px; }
-  .act{
-    text-decoration:none; color:var(--c-text); background:var(--c-card);
-    border-radius:14px; padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:6px;
+  /* Hızlı aksiyonlar */
+  .actions{
+    display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px; margin-top:22px;
   }
-  .act svg{ width:20px; height:20px; opacity:.9 }
-  .act span{ font-size:12px; color:var(--c-dim) }
-  .act:active{ transform:translateY(1px) }
-
-  @media (max-width:420px){
-    :root{ --cover-h:160px }
-    .name{ font-size:22px }
-    .avatar-wrap{ top:calc(var(--cover-h) - 48px); width:96px; height:96px }
+  .btn{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    background:#11171c; border:1px solid rgba(255,255,255,.06);
+    border-radius:14px; padding:14px 10px; color:var(--text); text-decoration:none;
   }
+  .btn svg{ width:20px; height:20px; opacity:.9 }
+  .btn span{ font-size:12px; color:#d2dde6 }
+  .btn:active{ transform:translateY(1px) }
 </style>
 </head>
 <body>
 
-  <div class="profile">
-    <div class="cover" id="cover">
-      <button class="edit-btn" id="btnCover" title="Kapağı değiştir">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm14.71-9.04a1.004 1.004 0 000-1.42l-1.59-1.59a1.004 1.004 0 00-1.42 0l-1.34 1.34 3.75 3.75 1.6-1.58z"/></svg>
-      </button>
+  <section class="card" aria-label="Dijital Kart">
+    <div class="cover">
+      <div class="avatar" aria-hidden="true"></div>
     </div>
 
-    <div class="avatar-wrap">
-      <div class="avatar" id="avatar"></div>
-      <button class="edit-btn" id="btnAvatar" title="Avatarı değiştir">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm14.71-9.04a1.004 1.004 0 000-1.42l-1.59-1.59a1.004 1.004 0 00-1.42 0l-1.34 1.34 3.75 3.75 1.6-1.58z"/></svg>
-      </button>
-    </div>
-
-    <section class="card">
+    <div class="inner">
       <h1 class="name">Burak Yılmaz</h1>
       <div class="company">Osmanlı Menkul Değerler A.Ş.</div>
       <div class="title">System Administrator</div>
 
-      <nav class="actions">
-        <a class="act" href="tel:+905524915334">
+      <nav class="actions" aria-label="Hızlı İşlemler">
+        <a class="btn" href="tel:+905524915334">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
           <span>Call</span>
         </a>
-        <a class="act" href="mailto:buraky@osmanlimenkul.com.tr">
+        <a class="btn" href="mailto:buraky@osmanlimenkul.com.tr">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
           <span>E-mail</span>
         </a>
-        <a class="act" href="./qr.svg">
+        <a class="btn" href="./qr.svg" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm-2 4h2v2h-2v-2zm4 0h4v4h-4v-4zm0-4h4v2h-4v-2z"/></svg>
           <span>QR</span>
         </a>
-        <a class="act" href="./BurakYilmaz.vcf" download>
+        <a class="btn" href="./BurakYilmaz.vcf" download>
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H5a2 2 0 00-2 2v14l4-4h10a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>
           <span>Save</span>
         </a>
       </nav>
-    </section>
-  </div>
+    </div>
+  </section>
 
-  <!-- Gizli dosya seçiciler -->
-  <input type="file" id="pick-cover"  accept="image/*" hidden />
-  <input type="file" id="pick-avatar" accept="image/*" hidden />
-
-<script>
-  // ------- Kapak & avatarı sunucuya kaydet (kalıcı) --------
-  const btnCover   = document.getElementById('btnCover');
-  const btnAvatar  = document.getElementById('btnAvatar');
-  const pickCover  = document.getElementById('pick-cover');
-  const pickAvatar = document.getElementById('pick-avatar');
-
-  btnCover .addEventListener('click', ()=> pickCover.click());
-  btnAvatar.addEventListener('click', ()=> pickAvatar.click());
-
-  async function upload(kind, file){
-    if(!file) return;
-    const fd = new FormData();
-    fd.append('file', file);
-    const res  = await fetch(`upload.php?type=${kind}`, { method:'POST', body:fd, cache:'no-store' });
-    const json = await res.json().catch(()=>({ok:false,error:'JSON'}));
-    if(!res.ok || !json.ok) { alert('Yükleme başarısız: ' + (json.error||res.status)); return; }
-    const url = json.url; // uploads/banner.jpg?v=...
-    document.documentElement.style.setProperty(kind==='cover' ? '--cover' : '--avatar', `url('${url}')`);
-  }
-  pickCover .addEventListener('change', e=> upload('cover',  e.target.files[0]));
-  pickAvatar.addEventListener('change', e=> upload('avatar', e.target.files[0]));
-
-  // ------- Sunucuda kayıtlı dosyalar varsa onları kullan (tüm cihazlarda görünür) -------
-  (async function applyServerImages(){
-    // Bu yollar upload.php'nin kaydettiği sabit yollar
-    const remote = {
-      cover:  'uploads/banner.jpg',
-      avatar: 'uploads/avatar.jpg'
-    };
-    // HEAD ile var mı bak; varsa CSS değişkenlerini güncelle
-    for (const [k, url] of Object.entries(remote)){
-      try{
-        const r = await fetch(url+'?t='+(Date.now()), {method:'HEAD', cache:'no-store'});
-        if(r.ok){
-          document.documentElement.style.setProperty(k==='cover' ? '--cover' : '--avatar', `url('${url}?t=${Date.now()}')`);
-        }
-      }catch(e){}
-    }
-  })();
-</script>
 </body>
 </html>

@@ -108,15 +108,13 @@
 
   /* ===== Mobil ayarlar ===== */
   @media (max-width: 420px){
-    .cover{ height: 140px }
-    .avatar{ width:96px; height:96px; bottom:-48px }
-    .inner{ padding:64px 16px 16px }
-    .actions{ gap:10px }
-    .btn{ padding:12px 8px }
-    /* Dilersen sticky'i tamamen kapatabilirsiniz:
-       .card{ position:relative; top:auto }
-    */
-  }
+  .cover{ height: 140px }
+  .avatar{ width:96px; height:96px; bottom:-48px }
+  .inner{ padding:64px 16px 120px }   /* << alt boşluğu büyüttük */
+  .actions{ gap:10px }
+  .btn{ padding:12px 8px }
+}
+
 </style>
 </head>
 <body>
@@ -330,5 +328,6 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 </script>
 </body>
 </html>
+
 
 

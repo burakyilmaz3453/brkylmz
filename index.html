@@ -26,6 +26,12 @@
     background:#0b1014; border-radius:var(--radius);
     overflow:hidden; box-shadow:var(--shadow);
     position:sticky; top:0; z-index:5;   /* alt panel bundan daha yüksek */
+  .card::after{
+    content:"";
+    display:block;
+    height:64px;   /* alt panel ile butonlar arası mesafe */
+}
+
   }
   .cover{
     height:clamp(140px, 32vw, 180px);
@@ -74,7 +80,7 @@
   /* ===== ALT İLETİŞİM PANELİ (cp- prefix) ===== */
   .cp-panel{
     width:min(720px,92vw);
-    margin:60px auto 60px;
+    margin:20px auto 60px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
     border-radius:16px; box-shadow:0 14px 40px rgba(0,0,0,.35);
     position:relative; z-index:20;          /* << Üst kartın üstünde */
@@ -324,4 +330,5 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 </script>
 </body>
 </html>
+
 

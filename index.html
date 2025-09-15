@@ -4,55 +4,172 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Burak Yılmaz | Dijital Kart</title>
+<meta name="theme-color" content="#0b0f10">
 <style>
   :root{
     --bg:#0b0f10; --panel:#0f1418; --text:#e9eef2; --muted:#b7c2ca;
+    --radius:20px; --shadow:0 20px 60px rgba(0,0,0,.35);
   }
-  body{margin:0; background:var(--bg); color:var(--text); font:16px system-ui; display:flex; justify-content:center; padding:40px}
-  .actions{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px;}
+  *{box-sizing:border-box} html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
+    display:grid; place-items:start center;
+  }
+
+  .card{
+    width:min(720px, 92vw);
+    margin:56px auto;
+    background:#0b1014; border-radius:var(--radius);
+    overflow:hidden; box-shadow:var(--shadow);
+  }
+
+  /* KAPAK */
+  .cover{
+    height:clamp(140px, 32vw, 180px);
+    background:#111 url("banner.jpg") center/cover no-repeat;
+    position:relative;
+  }
+
+  /* AVATAR */
+  .avatar{
+    position:absolute; left:50%; bottom:-56px; transform:translateX(-50%);
+    width:112px; height:112px; border-radius:50%;
+    background:#fff url("brkylmz.jpg") center/cover no-repeat;
+    box-shadow: 0 0 0 4px #ffffff, 0 8px 24px rgba(0,0,0,.45);
+    outline:6px solid #0f1418; cursor:zoom-in;
+  }
+
+  .inner{
+    background:var(--panel);
+    padding:72px 22px 22px;
+    text-align:center;
+  }
+  .name{ margin:0 0 6px; font-weight:800; font-size:clamp(22px,5vw,28px) }
+  .company{ color:var(--muted); font-size:14px }
+  .title{ color:var(--muted); font-size:13px; margin-top:4px }
+
+  .actions{
+    display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px; margin-top:22px;
+  }
   .btn{
-    display:flex; flex-direction:column; align-items:center; gap:6px;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
     border-radius:14px; padding:14px 10px; color:var(--text); text-decoration:none;
   }
-  .btn svg{width:22px; height:22px}
-  .btn span{font-size:13px; color:#d2dde6}
-  .btn.save{background:#0f6d5d; border-color:rgba(255,255,255,.08);}
-  .btn.save span{color:#e9f7f3}
+  .btn svg{ width:20px; height:20px; opacity:.9 }
+  .btn span{ font-size:12px; color:#d2dde6 }
+  .btn:active{ transform:translateY(1px) }
+
+  /* Save butonunu vurgula (yeşil) */
+  .btn.save{
+    background:#0f6d5d; border-color:rgba(255,255,255,.08);
+  }
+  .btn.save span{ color:#e9f7f3 }
+
+  /* Modal */
+  .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:50 }
+  .modal.open{ display:grid }
+  .modal .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.65) }
+  .modal .box{
+    position:relative; z-index:1; background:#0f1418; padding:10px; border-radius:16px;
+  }
+  .modal img{ display:block; max-width:min(92vw, 480px); height:auto; border-radius:16px }
+  .modal .close{
+    position:absolute; top:-10px; right:-10px; width:36px; height:36px; border-radius:50%;
+    border:0; cursor:pointer; background:#fff; color:#000; font-weight:700;
+  }
+  /* QR’ı daha küçük göster */
+  #qrModal img { max-width:280px; height:auto; }
 </style>
 </head>
 <body>
 
-  <nav class="actions">
-    <a class="btn" href="tel:+905524915334">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
-      <span>Call</span>
-    </a>
-    <a class="btn" href="mailto:buraky@osmanlimenkul.com.tr">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
-      <span>E-mail</span>
-    </a>
-    <a class="btn" id="qrBtn" href="#">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm-2 4h2v2h-2v-2zm4 0h4v4h-4v-4zm0-4h4v2h-4v-2z"/></svg>
-      <span>QR</span>
-    </a>
-    <a class="btn save" id="saveBtn" href="#">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <!-- kişi ikonu + artı -->
-        <path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-6 8a6 6 0 1112 0H6z"/>
-        <path d="M19 8h-2V6h-2V4h2V2h2v2h2v2h-2v2z"/>
-      </svg>
-      <span>Save</span>
-    </a>
-  </nav>
+  <section class="card" aria-label="Dijital Kart">
+    <div class="cover">
+      <div class="avatar" id="avatar" aria-label="Avatar"></div>
+    </div>
+
+    <div class="inner">
+      <h1 class="name">Burak Yılmaz</h1>
+      <div class="company">Osmanlı Menkul Değerler A.Ş.</div>
+      <div class="title">System Administrator</div>
+
+      <nav class="actions" aria-label="Hızlı İşlemler">
+        <a class="btn" href="tel:+905524915334" aria-label="Ara">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+          <span>Call</span>
+        </a>
+
+        <a class="btn" href="mailto:buraky@osmanlimenkul.com.tr" aria-label="E-posta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
+          <span>E-mail</span>
+        </a>
+
+        <a class="btn" id="qrBtn" href="#" aria-label="QR Göster">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm-2 4h2v2h-2v-2zm4 0h4v4h-4v-4zm0-4h4v2h-4v-2z"/></svg>
+          <span>QR</span>
+        </a>
+
+        <a class="btn save" id="saveBtn" href="#" aria-label="Rehbere ekle">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <!-- kişi + artı -->
+            <path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-6 8a6 6 0 1112 0H6z"/>
+            <path d="M19 8h-2V6h-2V4h2V2h2v2h2v2h-2v2z"/>
+          </svg>
+          <span>Save</span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Avatar Lightbox -->
+  <div class="modal" id="avModal" aria-hidden="true">
+    <div class="overlay"></div>
+    <div class="box">
+      <button class="close" aria-label="Kapat">×</button>
+      <img id="avBig" alt="Avatar">
+    </div>
+  </div>
+
+  <!-- QR Lightbox -->
+  <div class="modal" id="qrModal" aria-hidden="true">
+    <div class="overlay"></div>
+    <div class="box">
+      <button class="close" aria-label="Kapat">×</button>
+      <img src="./qr.svg" alt="QR Kod">
+    </div>
+  </div>
 
 <script>
-  const saveBtn = document.getElementById('saveBtn');
+  /* Avatar modalı */
+  const av = document.getElementById('avatar');
+  const avModal = document.getElementById('avModal');
+  const avBig = document.getElementById('avBig');
+  const bg = getComputedStyle(av).backgroundImage;              // url("brkylmz.jpg")
+  const src = bg.slice(bg.indexOf('"')+1, bg.lastIndexOf('"')); // brkylmz.jpg
+  avBig.src = src;
 
+  av.addEventListener('click', ()=> avModal.classList.add('open'));
+  avModal.querySelector('.overlay').addEventListener('click', ()=> avModal.classList.remove('open'));
+  avModal.querySelector('.close').addEventListener('click', ()=> avModal.classList.remove('open'));
+  window.addEventListener('keydown', e=> (e.key==='Escape') && avModal.classList.remove('open'));
+
+  /* QR modalı */
+  const qrBtn = document.getElementById('qrBtn');
+  const qrModal = document.getElementById('qrModal');
+  qrBtn.addEventListener('click', (e)=>{ e.preventDefault(); qrModal.classList.add('open'); });
+  qrModal.querySelector('.overlay').addEventListener('click', ()=> qrModal.classList.remove('open'));
+  qrModal.querySelector('.close').addEventListener('click', ()=> qrModal.classList.remove('open'));
+  window.addEventListener('keydown', e=> (e.key==='Escape') && qrModal.classList.remove('open'));
+
+  /* Save → Rehbere ekle (Web Share varsa paylaş, yoksa vCard'ı aç) */
+  const saveBtn = document.getElementById('saveBtn');
   saveBtn.addEventListener('click', async (e) => {
     e.preventDefault();
 
-    // vCard içeriği
+    // vCard içeriği (CRLF satır sonları önemli)
     const vcard =
 `BEGIN:VCARD\r\nVERSION:3.0\r\nN:Yılmaz;Burak;;;\r\nFN:Burak Yılmaz\r\nORG:Osmanlı Menkul Değerler A.Ş.\r\nTITLE:System Administrator\r\nTEL;TYPE=CELL,VOICE:+90 552 491 5334\r\nEMAIL;TYPE=INTERNET:buraky@osmanlimenkul.com.tr\r\nURL:https://burakyilmaz3453.github.io/brkylmz/\r\nEND:VCARD\r\n`;
 
@@ -60,23 +177,17 @@
     const file = new File([blob], 'BurakYilmaz.vcf', { type: 'text/vcard' });
 
     try {
-      // Mobil tarayıcı destekliyorsa paylaşım menüsünü aç
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: 'Burak Yılmaz',
-          text: 'Kişilere ekle'
-        });
+        await navigator.share({ files: [file], title: 'Burak Yılmaz', text: 'Kişilere ekle' });
         return;
       }
-    } catch(_) { }
+    } catch(_) { /* yok say */ }
 
-    // Fallback: dosyayı aç → telefon "Kişilere ekle" ekranı sunar
+    // Fallback: doğru MIME ile aç → telefonda “Kişilere ekle” ekranı çıkar
     const url = URL.createObjectURL(blob);
     window.open(url, '_blank', 'noopener');
     setTimeout(()=> URL.revokeObjectURL(url), 30000);
   });
 </script>
-
 </body>
 </html>

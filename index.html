@@ -17,14 +17,14 @@
     display:grid; place-items:start center;
   }
 
+  /* ===== ÜST KART ===== */
   .card{
-    width:min(720px, 92vw);
+    width:min(720px,92vw);
     margin:0 auto;
     background:#0b1014; border-radius:var(--radius);
     overflow:hidden; box-shadow:var(--shadow);
     position:sticky; top:0; z-index:5;
   }
-
   .cover{
     height:clamp(140px, 32vw, 180px);
     background:#111 url("banner.jpg") center/cover no-repeat;
@@ -35,16 +35,17 @@
     width:112px; height:112px; border-radius:50%;
     background:#fff url("brkylmz.jpg") center/cover no-repeat;
     box-shadow:0 0 0 4px #ffffff, 0 8px 24px rgba(0,0,0,.45);
-    outline:6px solid #0f1418;
-    cursor:zoom-in;
+    outline:6px solid #0f1418; cursor:zoom-in;
   }
-
   .inner{ background:var(--panel); padding:72px 22px 22px; text-align:center }
   .name{ margin:0 0 6px; font-weight:800; font-size:clamp(22px,5vw,28px) }
   .company{ color:var(--muted); font-size:14px }
   .title{ color:var(--muted); font-size:13px; margin-top:4px }
 
-  .actions{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:22px }
+  .actions{
+    display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px; margin-top:22px;
+  }
   .btn{
     display:flex; flex-direction:column; align-items:center; gap:8px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
@@ -53,152 +54,249 @@
   .btn svg{ width:20px; height:20px; opacity:.9 }
   .btn span{ font-size:12px; color:#d2dde6 }
   .btn:active{ transform:translateY(1px) }
+  .btn.save{ background:#0f6d5d; border-color:rgba(255,255,255,.08) }
+  .btn.save span{ color:#e9f7f3 }
 
-  /* Modal */
+  /* ===== MODAL (Avatar + QR) ===== */
   .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:50 }
   .modal.open{ display:grid }
   .modal .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.65) }
   .modal .box{ position:relative; z-index:1; background:#0f1418; padding:10px; border-radius:16px }
-  .modal img{ display:block; max-width:min(92vw, 480px); height:auto; border-radius:16px }
+  .modal img{ display:block; max-width:min(92vw, 320px); height:auto; border-radius:16px }
   .modal .close{
     position:absolute; top:-10px; right:-10px; width:36px; height:36px; border-radius:50%;
     border:0; cursor:pointer; background:#fff; color:#000; font-weight:700;
   }
 
-  /* ===== Alt iletişim paneli ===== */
-  .contact-panel{
-    width:min(720px,92vw); margin:18px auto 60px;
+  /* ===== ALT İLETİŞİM PANELİ (cp- prefix, üst CSS’e dokunmaz) ===== */
+  .cp-panel{
+    width:min(720px,92vw);
+    margin:20px auto 60px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
     border-radius:16px; box-shadow:0 14px 40px rgba(0,0,0,.35);
   }
-  .contact-grip{ display:flex; justify-content:center; padding:8px 0 4px }
-  .contact-grip span{ width:58px; height:4px; border-radius:999px; background:rgba(255,255,255,.18) }
+  .cp-grip{ display:flex; justify-content:center; padding:8px 0 4px }
+  .cp-grip span{ width:58px; height:4px; border-radius:999px; background:rgba(255,255,255,.18) }
 
-  .contact-list{ list-style:none; margin:8px; padding:0 }
-  .contact-row{
+  .cp-list{ list-style:none; margin:8px; padding:0 }
+  .cp-row{
     display:flex; align-items:center; justify-content:space-between;
     gap:10px; padding:12px; margin:8px 4px; border-radius:12px;
     background:#0f1418; border:1px solid rgba(255,255,255,.05);
   }
-  .contact-left{ display:flex; align-items:center; gap:10px; min-width:0 }
-  .contact-left svg{ width:18px; height:18px; opacity:.9; flex:0 0 auto }
-  .contact-text{ color:#e9eef2; text-decoration:none; word-break:break-word }
-  .copy-btn{
+  .cp-left{ display:flex; align-items:center; gap:10px; min-width:0 }
+  .cp-left svg{ width:18px; height:18px; opacity:.9; flex:0 0 auto }
+  .cp-text{ color:#e9eef2; text-decoration:none; word-break:break-word }
+  .cp-copy{
     display:inline-flex; align-items:center; justify-content:center;
     width:34px; height:34px; border-radius:10px; cursor:pointer;
     background:#0b1014; border:1px solid rgba(255,255,255,.12); color:#e9eef2;
   }
-  .copy-btn:active{ transform:translateY(1px) }
-  .copy-btn svg{ width:16px; height:16px }
+  .cp-copy:active{ transform:translateY(1px) }
+  .cp-copy svg{ width:16px; height:16px }
 </style>
 </head>
 <body>
 
-<!-- ==== ÜST KART ==== -->
+<!-- ===== ÜST KART ===== -->
 <section class="card" aria-label="Dijital Kart">
   <div class="cover">
     <div class="avatar" id="avatar" aria-label="Avatar"></div>
   </div>
+
   <div class="inner">
     <h1 class="name">Burak Yılmaz</h1>
     <div class="company">Osmanlı Menkul Değerler A.Ş.</div>
     <div class="title">System Administrator</div>
+
     <nav class="actions" aria-label="Hızlı İşlemler">
-      <a class="btn" href="tel:+905524915334"><span>Call</span></a>
-      <a class="btn" href="mailto:buraky@osmanlimenkul.com.tr"><span>E-mail</span></a>
-      <a class="btn" href="./qr.svg" target="_blank" rel="noopener"><span>QR</span></a>
+      <a class="btn" href="tel:+905524915334" aria-label="Ara">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+        <span>Call</span>
+      </a>
+
+      <a class="btn" href="mailto:buraky@osmanlimenkul.com.tr" aria-label="E-posta">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
+        <span>E-mail</span>
+      </a>
+
+      <a class="btn" id="qrBtn" href="#" aria-label="QR Göster">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm-2 4h2v2h-2v-2zm4 0h4v4h-4v-4zm0-4h4v2h-4v-2z"/></svg>
+        <span>QR</span>
+      </a>
+
+      <!-- Save: RAW VCF (istersen ./BurakYilmazCard.vcf yapabilirsin) -->
       <a class="btn save"
          href="https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazCard.vcf"
-         type="text/vcard"><span>Save</span></a>
+         type="text/vcard" aria-label="Rehbere ekle">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-6 8a6 6 0 1112 0H6z"/>
+          <path d="M19 8h-2V6h-2V4h2V2h2v2h2v2h-2v2z"/>
+        </svg>
+        <span>Save</span>
+      </a>
     </nav>
   </div>
 </section>
 
-<!-- ==== ALT İLETİŞİM PANELİ ==== -->
-<section class="contact-panel" aria-label="İletişim">
-  <div class="contact-grip"><span></span></div>
-  <ul class="contact-list">
-    <li class="contact-row" id="rowCell">
-      <div class="contact-left">
+<!-- ===== ALT İLETİŞİM PANELİ (VCF'den doldurulur) ===== -->
+<section class="cp-panel" aria-label="İletişim">
+  <div class="cp-grip"><span></span></div>
+  <ul class="cp-list">
+    <li class="cp-row" id="cpCellRow">
+      <div class="cp-left">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V4a2 2 0 00-2-2zm-5 19a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
-        <a id="cellLink" class="contact-text" href="#">—</a>
+        <a id="cpCell" class="cp-text" href="#">—</a>
       </div>
-      <button class="copy-btn" id="copyCell">⧉</button>
+      <button class="cp-copy" id="cpCopyCell" aria-label="Kopyala">⧉</button>
     </li>
-    <li class="contact-row" id="rowWork">
-      <div class="contact-left">
+
+    <li class="cp-row" id="cpWorkRow">
+      <div class="cp-left">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
-        <a id="workLink" class="contact-text" href="#">—</a>
+        <a id="cpWork" class="cp-text" href="#">—</a>
       </div>
-      <button class="copy-btn" id="copyWork">⧉</button>
+      <button class="cp-copy" id="cpCopyWork" aria-label="Kopyala">⧉</button>
     </li>
-    <li class="contact-row" id="rowMail">
-      <div class="contact-left">
+
+    <li class="cp-row" id="cpMailRow">
+      <div class="cp-left">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
-        <a id="mailLink" class="contact-text" href="#">—</a>
+        <a id="cpMail" class="cp-text" href="#">—</a>
       </div>
-      <button class="copy-btn" id="copyMail">⧉</button>
+      <button class="cp-copy" id="cpCopyMail" aria-label="Kopyala">⧉</button>
     </li>
-    <li class="contact-row" id="rowWeb">
-      <div class="contact-left">
+
+    <li class="cp-row" id="cpWebRow">
+      <div class="cp-left">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5h5v2h-3v8h-2V7zM7 9h4v2H9v6H7V9z"/></svg>
-        <a id="webLink" class="contact-text" href="#">—</a>
+        <a id="cpWeb" class="cp-text" href="#" target="_blank" rel="noopener">—</a>
       </div>
-      <button class="copy-btn" id="copyWeb">⧉</button>
+      <button class="cp-copy" id="cpCopyWeb" aria-label="Kopyala">⧉</button>
     </li>
   </ul>
 </section>
 
 <!-- Avatar Modal -->
-<div class="modal" id="avModal"><div class="overlay"></div><div class="box"><button class="close">×</button><img id="avBig"></div></div>
+<div class="modal" id="avModal" aria-hidden="true">
+  <div class="overlay"></div>
+  <div class="box">
+    <button class="close" aria-label="Kapat">×</button>
+    <img id="avBig" alt="Avatar">
+  </div>
+</div>
+
+<!-- QR Modal -->
+<div class="modal" id="qrModal" aria-hidden="true">
+  <div class="overlay"></div>
+  <div class="box">
+    <button class="close" aria-label="Kapat">×</button>
+    <img src="./qr.svg" alt="QR Kod">
+  </div>
+</div>
 
 <script>
-// Avatar büyütme
-const av=document.getElementById('avatar'),modal=document.getElementById('avModal'),big=document.getElementById('avBig');
-const bg=getComputedStyle(av).backgroundImage,src=bg.slice(bg.indexOf('"')+1,bg.lastIndexOf('"')); big.src=src;
-av.addEventListener('click',()=>modal.classList.add('open'));
-modal.querySelector('.overlay').addEventListener('click',()=>modal.classList.remove('open'));
-modal.querySelector('.close').addEventListener('click',()=>modal.classList.remove('open'));
+/* ===== Avatar modal ===== */
+const av=document.getElementById('avatar');
+const avModal=document.getElementById('avModal');
+const avBig=document.getElementById('avBig');
+const bg=getComputedStyle(av).backgroundImage;
+const src=bg.slice(bg.indexOf('"')+1,bg.lastIndexOf('"'));
+avBig.src=src;
+av.addEventListener('click',()=>avModal.classList.add('open'));
+avModal.querySelector('.overlay').addEventListener('click',()=>avModal.classList.remove('open'));
+avModal.querySelector('.close').addEventListener('click',()=>avModal.classList.remove('open'));
+window.addEventListener('keydown',e=> (e.key==='Escape') && avModal.classList.remove('open'));
 
-// VCF'den bilgileri doldur
-(async ()=>{
-  const saveA=document.querySelector('.btn.save'); let vcfUrl=saveA?saveA.getAttribute('href'):'./BurakYilmazCard.vcf';
-  try{
-    const res=await fetch(vcfUrl,{cache:'no-store'}); if(!res.ok) throw 0;
-    const text=await res.text(); fillFromVCF(text);
-  }catch(e){console.warn('VCF okunamadı');}
+/* ===== QR modal ===== */
+const qrBtn=document.getElementById('qrBtn');
+const qrModal=document.getElementById('qrModal');
+qrBtn.addEventListener('click',e=>{ e.preventDefault(); qrModal.classList.add('open'); });
+qrModal.querySelector('.overlay').addEventListener('click',()=> qrModal.classList.remove('open'));
+qrModal.querySelector('.close').addEventListener('click',()=> qrModal.classList.remove('open'));
+window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.remove('open'));
 
-  function unfold(s){return s.replace(/\r?\n[ \t]/g,'');}
-  function telHref(v){return 'tel:'+v.replace(/[^+\d]/g,'');}
-  function mailHref(v){return 'mailto:'+v;}
-  function urlNorm(v){return v.startsWith('http')?v:'https://'+v;}
+/* ===== VCF'den bilgileri doldur (CELL/WORK/EMAIL/URL) ===== */
+(function(){
+  const saveLink=document.querySelector('.btn.save');
+  let vcfUrl=saveLink ? saveLink.getAttribute('href') : './BurakYilmazCard.vcf';
 
-  function fillFromVCF(raw){
-    const lines=unfold(raw).split(/\r?\n/); const d={};
-    for(const l of lines){
-      if(l.startsWith('TEL;TYPE=CELL')) d.cell=l.split(':')[1];
-      if(l.startsWith('TEL;TYPE=WORK')) d.work=l.split(':')[1];
-      if(l.startsWith('EMAIL')) d.email=l.split(':')[1];
-      if(l.startsWith('URL')) d.url=l.split(':')[1];
-    }
-    if(d.cell){cellLink.textContent=d.cell; cellLink.href=telHref(d.cell); copyCell.dataset.copy=d.cell;}
-    else rowCell.style.display='none';
-    if(d.work){workLink.textContent=d.work; workLink.href=telHref(d.work); copyWork.dataset.copy=d.work;}
-    else rowWork.style.display='none';
-    if(d.email){mailLink.textContent=d.email; mailLink.href=mailHref(d.email); copyMail.dataset.copy=d.email;}
-    else rowMail.style.display='none';
-    if(d.url){webLink.textContent=d.url; webLink.href=urlNorm(d.url); copyWeb.dataset.copy=d.url;}
-    else rowWeb.style.display='none';
+  const unfold = s => s.replace(/\r?\n[ \t]/g,''); // folded lines aç
+  const parse = ln => {
+    const m = ln.match(/^([A-Z]+)(;[^:]+)?:([\s\S]*)$/i);
+    return m ? {key:m[1].toUpperCase(), params:(m[2]||'').toLowerCase(), val:m[3].trim()} : null;
+  };
+  const hasType = (params, token) => new RegExp(`(?:^|;|,)type=[^:]*\\b${token}\\b`,'i').test(params);
+  const telHref  = v => 'tel:'    + (v||'').replace(/[^+\d]/g,'');
+  const mailHref = v => 'mailto:' + (v||'');
+  const urlNorm  = v => (v||'').startsWith('http') ? v : ('https://' + (v||''));
+
+  async function loadVCF(){
+    try{
+      const res = await fetch(vcfUrl, { cache:'no-store' });
+      if(!res.ok) throw res.status;
+      const text = await res.text();
+      fill(text);
+    }catch(e){ console.warn('VCF okunamadı:', e); }
   }
 
-  document.querySelectorAll('.copy-btn').forEach(btn=>{
+  function fill(raw){
+    const lines = unfold(raw).split(/\r?\n/).map(parse).filter(Boolean);
+    const d = {cell:null, work:null, email:null, url:null};
+
+    for(const it of lines){
+      if(it.key==='TEL'){
+        if(hasType(it.params,'cell') || hasType(it.params,'mobile')) d.cell ??= it.val;
+        else if(hasType(it.params,'work')) d.work ??= it.val;
+        else if(!d.cell) d.cell = it.val;
+      }
+      if(it.key==='EMAIL'){
+        if(hasType(it.params,'work')) d.email ??= it.val;
+        else if(!d.email) d.email = it.val;
+      }
+      if(it.key==='URL'){ d.url ??= it.val; }
+    }
+
+    const cellRow=document.getElementById('cpCellRow');
+    if(d.cell){
+      const a=document.getElementById('cpCell');
+      a.textContent=d.cell; a.href=telHref(d.cell);
+      document.getElementById('cpCopyCell').dataset.copy=d.cell;
+    } else { cellRow.style.display='none'; }
+
+    const workRow=document.getElementById('cpWorkRow');
+    if(d.work){
+      const a=document.getElementById('cpWork');
+      a.textContent=d.work; a.href=telHref(d.work);
+      document.getElementById('cpCopyWork').dataset.copy=d.work;
+    } else { workRow.style.display='none'; }
+
+    const mailRow=document.getElementById('cpMailRow');
+    if(d.email){
+      const a=document.getElementById('cpMail');
+      a.textContent=d.email; a.href=mailHref(d.email);
+      document.getElementById('cpCopyMail').dataset.copy=d.email;
+    } else { mailRow.style.display='none'; }
+
+    const webRow=document.getElementById('cpWebRow');
+    if(d.url){
+      const a=document.getElementById('cpWeb');
+      a.textContent=d.url; a.href=urlNorm(d.url);
+      document.getElementById('cpCopyWeb').dataset.copy=d.url;
+    } else { webRow.style.display='none'; }
+  }
+
+  document.querySelectorAll('.cp-copy').forEach(btn=>{
     const orig=btn.innerHTML;
-    btn.addEventListener('click',async()=>{
-      try{await navigator.clipboard.writeText(btn.dataset.copy||'');
+    btn.addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText(btn.dataset.copy || '');
         btn.textContent='✓'; setTimeout(()=>btn.innerHTML=orig,900);
-      }catch{alert('Kopyalanamadı');}
+      }catch{ alert('Kopyalanamadı'); }
     });
   });
+
+  loadVCF();
 })();
 </script>
 </body>

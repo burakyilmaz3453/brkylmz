@@ -3,116 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Burak Yılmaz | Kart Üst Blok</title>
+<title>Burak Yılmaz | Kart</title>
 <style>
   :root{
-    /* Kolayca değiştir: */
-    --cover:url("./kapak.jpg");         /* arka kapak görseli */
-    --avatar:url("./brkylmz.jpg");      /* profil fotoğrafı   */
-    --c-bg:#0b0f10;
-    --c-panel:#11161a;
-    --c-card:#0f1418;
-    --c-text:#f1f5f9;
-    --c-dim:#a7b3bc;
-    --c-primary:#0ea5e9; /* buton vurgusu */
-    --radius:18px;
+    --avatar:url("./brkylmz.jpg");    /* Profil fotoğrafın */
+    --c-bg:#0b0f10;                   /* Sayfa arka planı */
+    --c-panel:#11161a;                /* Kart zemini */
+    --c-card:#0f1418;                 /* Buton zemini */
+    --c-text:#f1f5f9;                 /* Metin */
+    --c-dim:#a7b3bc;                  /* Yardımcı metin */
   }
   *{box-sizing:border-box}
   body{
     margin:0; background:var(--c-bg); color:var(--c-text);
     font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
     -webkit-font-smoothing:antialiased;
+    display:flex; justify-content:center; align-items:flex-start;
+    min-height:100vh; padding:40px 12px;
   }
 
-  /* KAPAK */
-  .cover{
-    height:230px; position:relative; overflow:hidden;
-    background:
-      linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.45) 60%, rgba(11,15,16,1) 100%),
-      var(--cover) center/cover no-repeat;
-  }
-
-  /* AVATAR (her zaman önde) */
-  .avatar{
-  position:absolute; 
-  left:50%; 
-  bottom:-60px;   /* >>> -44 yerine -60 */
-  transform:translateX(-50%);
-  width:92px; 
-  height:92px; 
-  border-radius:50%;
-  background: #fff var(--avatar) center/cover no-repeat;
-  border:4px solid #fff;
-  box-shadow:0 10px 24px rgba(0,0,0,.45);
-  z-index:3;
-}
-
-
-  /* KART */
+  /* Kart */
   .card{
-  position: relative;
-  max-width: 520px;
-  margin: 40px auto 24px;
-  background: var(--c-panel);
-  border-radius: 24px;
-  padding: 80px 18px 18px;      /* Üst padding avatar için yer açar */
-  box-shadow: 0 12px 30px rgba(0,0,0,.35);
-  text-align: center;
-  overflow: visible;            /* Avatarın taşmasını engelleme */
-}
+    position: relative;
+    max-width: 420px;
+    width:100%;
+    background: var(--c-panel);
+    border-radius: 20px;
+    padding: 80px 20px 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    text-align: center;
+  }
 
-/* AVATAR — kartın üst kenarına “oturur” */
-.card .avatar{
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translate(-50%, -50%); /* merkezini üst kenara getirir */
-  width: 92px; height: 92px;
-  border-radius: 50%;
-  background: #fff var(--avatar) center/cover no-repeat;
-  border: 4px solid #fff;
-  box-shadow: 0 10px 24px rgba(0,0,0,.45);
-  z-index: 3;
-}
-  .name{font-weight:800; font-size:clamp(20px,5vw,28px); letter-spacing:.2px}
+  /* Avatar */
+  .avatar{
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    background: #fff var(--avatar) center/cover no-repeat;
+    border: 4px solid #fff;
+    box-shadow: 0 10px 24px rgba(0,0,0,.45);
+    z-index: 3;
+  }
+
+  .name{font-weight:800; font-size:22px; margin:0}
   .company{color:var(--c-dim); margin-top:6px; font-size:14px}
   .title{color:var(--c-dim); margin-top:2px; font-size:13px}
 
-  /* Hızlı aksiyonlar */
+  /* Butonlar */
   .actions{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:18px;
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:10px; margin-top:20px;
   }
   .act{
     text-decoration:none; color:var(--c-text);
-    background:var(--c-card); border:1px solid rgba(255,255,255,.06);
+    background:var(--c-card);
     border-radius:14px; padding:12px 8px;
-    display:flex; flex-direction:column; align-items:center; gap:8px;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    font-size:12px;
   }
   .act svg{width:20px;height:20px;opacity:.9}
   .act span{font-size:12px;color:var(--c-dim)}
   .act:active{transform:translateY(1px)}
-
-  /* Basit QR modalı (istersen kullan) */
-  .modal{position:fixed; inset:0; display:none; place-items:center; z-index:50}
-  .modal.open{display:grid}
-  .overlay{position:absolute; inset:0; background:rgba(0,0,0,.6)}
-  .box{position:relative; z-index:1; background:#fff; color:#000; border-radius:16px; padding:18px; width:min(92vw,360px); text-align:center}
-  .box img{max-width:100%}
-  .btn{border:0; padding:10px 14px; border-radius:12px; background:#1b2430; color:#fff; cursor:pointer}
 </style>
 </head>
 <body>
 
-  <!-- ÜST BLOK (sadece bu var) -->
-  <header class="cover">
+  <section class="card">
     <div class="avatar" aria-hidden="true"></div>
-  </header>
 
-  <section class="card" aria-label="Profil Başlığı">
     <h1 class="name">Burak Yılmaz</h1>
     <div class="company">Osmanlı Menkul Değerler A.Ş.</div>
     <div class="title">System Administrator</div>
 
-    <nav class="actions" aria-label="Hızlı Aksiyonlar">
+    <nav class="actions">
       <a class="act" href="tel:+905524915334">
         <!-- phone -->
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
@@ -125,11 +90,11 @@
         <span>E-mail</span>
       </a>
 
-      <button class="act" id="openQR" data-qr="./qr.svg" type="button">
+      <a class="act" href="./qr.svg">
         <!-- qr -->
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm-2 4h2v2h-2v-2zm4 0h4v4h-4v-4zm0-4h4v2h-4v-2z"/></svg>
         <span>QR</span>
-      </button>
+      </a>
 
       <a class="act" href="./BurakYilmaz.vcf" download>
         <!-- save -->
@@ -139,28 +104,5 @@
     </nav>
   </section>
 
-  <!-- (opsiyonel) QR modal -->
-  <div class="modal" id="qrModal">
-    <div class="overlay"></div>
-    <div class="box">
-      <img id="qrImg" alt="QR">
-      <div style="font-weight:700;margin:.4rem 0">Burak Yılmaz</div>
-      <button class="btn" id="closeQR">Kapat</button>
-    </div>
-  </div>
-
-<script>
-  // QR Modal küçük JS (istersen kaldır)
-  const open = document.getElementById('openQR');
-  const modal = document.getElementById('qrModal');
-  const img   = document.getElementById('qrImg');
-  const close = document.getElementById('closeQR');
-  open?.addEventListener('click', () => { img.src=open.dataset.qr||'./qr.svg'; modal.classList.add('open'); });
-  modal.querySelector('.overlay').addEventListener('click', ()=> modal.classList.remove('open'));
-  close.addEventListener('click', ()=> modal.classList.remove('open'));
-  window.addEventListener('keydown', e=> (e.key==='Escape') && modal.classList.remove('open'));
-</script>
 </body>
 </html>
-
-

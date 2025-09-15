@@ -26,11 +26,12 @@
     background:#0b1014; border-radius:var(--radius);
     overflow:hidden; box-shadow:var(--shadow);
     position:sticky; top:0; z-index:5;   /* alt panel bundan daha yüksek */
+  }
   .card::after{
     content:"";
     display:block;
     height:64px;   /* alt panel ile butonlar arası mesafe */
-}
+  }
 
   }
   .cover{
@@ -328,6 +329,7 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 </script>
 </body>
 </html>
+
 
 
 

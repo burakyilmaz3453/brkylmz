@@ -2,200 +2,139 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Burak Yılmaz | Dijital Kart</title>
-<meta name="theme-color" content="#0b0f10">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Burak Yılmaz | Kart Üst Blok</title>
 <style>
   :root{
-    --c-bg:#0b0f10;          /* sayfa arka planı */
-    --c-panel:#11161a;       /* üst kart zemini  */
-    --c-card:#0f1418;        /* alt kart zemini  */
-    --c-text:#e9eef2;
+    /* Kolayca değiştir: */
+    --cover:url("./kapak.jpg");         /* arka kapak görseli */
+    --avatar:url("./brkylmz.jpg");      /* profil fotoğrafı   */
+    --c-bg:#0b0f10;
+    --c-panel:#11161a;
+    --c-card:#0f1418;
+    --c-text:#f1f5f9;
     --c-dim:#a7b3bc;
-    --c-primary:#0ea5e9;
+    --c-primary:#0ea5e9; /* buton vurgusu */
     --radius:18px;
-    --shadow:0 10px 30px rgba(0,0,0,.35);
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
   body{
     margin:0; background:var(--c-bg); color:var(--c-text);
     font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
-    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    -webkit-font-smoothing:antialiased;
   }
 
-  /* === SABİT ÜST BÖLÜM (KAPAK + AVATAR + İSİM/BUTONLAR) === */
-  .top{
-    position:sticky; top:0; z-index:1;    /* sabit */
-  }
-  .hero{
-    height:46vh; min-height:280px; max-height:520px;
-    position:relative; overflow:hidden; background:#000;
-  }
-  .hero::before{
-    content:""; position:absolute; inset:0;
+  /* KAPAK */
+  .cover{
+    height:230px; position:relative; overflow:hidden;
     background:
-      linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.55) 70%, rgba(11,15,16,1) 100%),
-      url("./kapak.jpg") center/cover no-repeat;
-    filter:saturate(1.05) contrast(1.05);
+      linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.45) 60%, rgba(11,15,16,1) 100%),
+      var(--cover) center/cover no-repeat;
   }
-  /* avatar, panelin üst kenarından taşar; ÖNDE dursun */
+
+  /* AVATAR (her zaman önde) */
   .avatar{
-    position:absolute; left:50%; bottom:-64px; transform:translateX(-50%);
-    width:116px; height:116px; border-radius:50%;
-    background:#fff url("./brkylmz.jpg") center/cover no-repeat;
-    box-shadow:0 6px 22px rgba(0,0,0,.45), 0 0 0 6px #0e1820 inset;
-    outline:6px solid var(--c-bg);
-    z-index:5; /* <<< ÖNE ALINDI */
+    position:absolute; left:50%; bottom:-44px; transform:translateX(-50%);
+    width:92px; height:92px; border-radius:50%;
+    background: #fff var(--avatar) center/cover no-repeat;
+    border:4px solid #fff;
+    box-shadow:0 10px 24px rgba(0,0,0,.45);
+    z-index:3;
   }
 
-  .sheet{ max-width:720px; margin:0 auto; padding:0 16px; }
-  .panel{
-    background:var(--c-panel); border-radius:calc(var(--radius) + 4px);
-    box-shadow:var(--shadow); padding:84px 20px 18px; position:relative;
-    text-align:center; margin-top:-56px;   /* avatarı karta yedirir */
+  /* KART */
+  .card{
+    position:relative; z-index:2;     /* avatarın altında kalmaz */
+    max-width:520px; margin:-18px auto 24px;
+    background:var(--c-panel); border-radius:24px; padding:64px 18px 18px;
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+    text-align:center;
   }
-  .panel .name{ font-weight:800; font-size:clamp(20px, 4.8vw, 28px); letter-spacing:.2px; }
-  .panel .company{ color:var(--c-dim); margin-top:6px; font-size:14px }
-  .panel .title{ color:var(--c-dim); margin-top:2px; font-size:13px }
+  .name{font-weight:800; font-size:clamp(20px,5vw,28px); letter-spacing:.2px}
+  .company{color:var(--c-dim); margin-top:6px; font-size:14px}
+  .title{color:var(--c-dim); margin-top:2px; font-size:13px}
 
-  .quick{
-    display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:10px; margin:16px 0 4px;
+  /* Hızlı aksiyonlar */
+  .actions{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:18px;
   }
-  .qbtn{
+  .act{
+    text-decoration:none; color:var(--c-text);
     background:var(--c-card); border:1px solid rgba(255,255,255,.06);
-    border-radius:14px; padding:12px 8px; color:var(--c-text);
+    border-radius:14px; padding:12px 8px;
     display:flex; flex-direction:column; align-items:center; gap:8px;
   }
-  .qbtn svg{ width:20px; height:20px; opacity:.9 }
-  .qbtn span{ font-size:12px; color:var(--c-dim) }
-  .qbtn:active{ transform:translateY(1px) }
+  .act svg{width:20px;height:20px;opacity:.9}
+  .act span{font-size:12px;color:var(--c-dim)}
+  .act:active{transform:translateY(1px)}
 
-  /* === ALT İÇERİK — ÜSTÜN ÜZERİNDEN AKSIN === */
-  .blocks{
-    position:relative; z-index:2;        /* üst bloğun ÜZERİNDE gezsin */
-    margin:-90px auto 0;                 /* scrollda üst bloğun üstüne çıkar */
-    max-width:720px; padding:0 16px 18px;
-    display:flex; flex-direction:column; gap:14px
-  }
-  .card{
-    background:var(--c-card); border:1px dashed rgba(255,255,255,.08);
-    border-radius:var(--radius); padding:16px 14px;
-  }
-  .card h3{ margin:0 0 10px; font-size:15px; font-weight:700; color:#cfe7f8 }
-  .row{ display:grid; grid-template-columns:120px 1fr; gap:10px; align-items:center; padding:10px 0; }
-  .row + .row{ border-top:1px dashed rgba(255,255,255,.06) }
-  .label{ color:#cdd6dd; font-size:13px; opacity:.85 }
-  .val a, .val{ color:var(--c-text); text-decoration:none; word-break:break-word; font-size:14px }
-
-  /* alt bar (KVKK/Save) — mobilde yapışık görünür */
-  .savebar{
-    position:sticky; bottom:0; z-index:3;
-    display:flex; gap:10px; background:linear-gradient(180deg, transparent, rgba(11,15,16,.92) 22%, rgba(11,15,16,1) 70%);
-    padding:14px 0 18px;
-  }
-  .btn{ appearance:none; border:0; cursor:pointer; border-radius:14px; padding:12px 16px; font-weight:700; }
-  .btn.primary{ background:var(--c-primary); color:#051017; box-shadow:0 8px 20px rgba(14,165,233,.35) }
-  .btn.secondary{ background:#1a2329; color:#e6f4ff; border:1px solid rgba(255,255,255,.08) }
-
-  /* QR Modal */
-  .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:50 }
-  .modal.open{ display:grid }
-  .modal .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.6) }
-  .modal .box{ position:relative; z-index:1; background:#fff; color:#000; border-radius:16px; padding:18px; width:min(92vw, 360px); text-align:center; }
-  .modal img{ max-width:100%; height:auto; display:block; margin:0 auto 10px }
-  .modal .close{ margin-top:6px }
-
-  @media (min-width:768px){
-    .sheet{padding:0 22px}
-    .blocks{padding:0 22px 22px}
-    .panel{padding-top:92px}
-  }
+  /* Basit QR modalı (istersen kullan) */
+  .modal{position:fixed; inset:0; display:none; place-items:center; z-index:50}
+  .modal.open{display:grid}
+  .overlay{position:absolute; inset:0; background:rgba(0,0,0,.6)}
+  .box{position:relative; z-index:1; background:#fff; color:#000; border-radius:16px; padding:18px; width:min(92vw,360px); text-align:center}
+  .box img{max-width:100%}
+  .btn{border:0; padding:10px 14px; border-radius:12px; background:#1b2430; color:#fff; cursor:pointer}
 </style>
 </head>
 <body>
 
-  <!-- SABİT ÜST ALAN -->
-  <div class="top">
-    <header class="hero">
-      <div class="avatar" aria-hidden="true"></div>
-    </header>
+  <!-- ÜST BLOK (sadece bu var) -->
+  <header class="cover">
+    <div class="avatar" aria-hidden="true"></div>
+  </header>
 
-    <div class="sheet">
-      <section class="panel">
-        <h1 class="name">Burak Yılmaz</h1>
-        <div class="company">Osmanlı Menkul Değerler A.Ş. · IT</div>
-        <div class="title">System Administrator</div>
+  <section class="card" aria-label="Profil Başlığı">
+    <h1 class="name">Burak Yılmaz</h1>
+    <div class="company">Osmanlı Menkul Değerler A.Ş.</div>
+    <div class="title">System Administrator</div>
 
-        <nav class="quick" style="margin-top:18px">
-          <a class="qbtn" href="tel:+905524915334" aria-label="Ara">
-            <!-- phone -->
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
-            <span>Call</span>
-          </a>
-          <a class="qbtn" href="mailto:buraky@osmanlimenkul.com.tr" aria-label="E-posta">
-            <!-- mail -->
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
-            <span>E-mail</span>
-          </a>
-          <button class="qbtn" id="openQR" data-qr="./qr.svg" aria-label="QR">
-            <!-- qr -->
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm-2 4h2v2h-2v-2zm4 0h4v4h-4v-4zm0-4h4v2h-4v-2z"/></svg>
-            <span>QR</span>
-          </button>
-          <a class="qbtn" href="./BurakYilmaz.vcf" download>
-            <!-- save -->
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H5a2 2 0 00-2 2v14l4-4h10a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>
-            <span>Save</span>
-          </a>
-        </nav>
-      </section>
-    </div>
-  </div>
+    <nav class="actions" aria-label="Hızlı Aksiyonlar">
+      <a class="act" href="tel:+905524915334">
+        <!-- phone -->
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+        <span>Call</span>
+      </a>
 
-  <!-- HAREKETLİ ALT İÇERİK -->
-  <section class="blocks" aria-label="İletişim Bilgileri">
-    <div class="card">
-      <h3>Contact</h3>
-      <div class="row"><div class="label">Telefon</div><div class="val"><a href="tel:+905524915334">+90 552 491 5334</a></div></div>
-      <div class="row"><div class="label">E-posta</div><div class="val"><a href="mailto:buraky@osmanlimenkul.com.tr">buraky@osmanlimenkul.com.tr</a></div></div>
-      <div class="row"><div class="label">LinkedIn</div><div class="val"><a target="_blank" href="https://www.linkedin.com/in/burak-yilmaz-9a58305a">Profil</a></div></div>
-    </div>
+      <a class="act" href="mailto:buraky@osmanlimenkul.com.tr">
+        <!-- mail -->
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
+        <span>E-mail</span>
+      </a>
 
-    <div class="card">
-      <h3>Firma Bilgisi</h3>
-      <div class="row"><div class="label">Şirket</div><div class="val">Osmanlı Menkul Değerler A.Ş.</div></div>
-      <div class="row"><div class="label">Şehir</div><div class="val">İstanbul</div></div>
-    </div>
+      <button class="act" id="openQR" data-qr="./qr.svg" type="button">
+        <!-- qr -->
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm-2 4h2v2h-2v-2zm4 0h4v4h-4v-4zm0-4h4v2h-4v-2z"/></svg>
+        <span>QR</span>
+      </button>
 
-    <div class="savebar">
-      <button class="btn secondary" onclick="navigator.share?.({title:'Burak Yılmaz', url: location.href})">Paylaş</button>
-      <a class="btn primary" href="./BurakYilmaz.vcf" download>Kişiye Ekle</a>
-    </div>
+      <a class="act" href="./BurakYilmaz.vcf" download>
+        <!-- save -->
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H5a2 2 0 00-2 2v14l4-4h10a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>
+        <span>Save</span>
+      </a>
+    </nav>
   </section>
 
-  <!-- QR Modal -->
-  <div class="modal" id="qrModal" aria-hidden="true">
-    <div class="overlay" role="button" tabindex="0" aria-label="Kapat"></div>
-    <div class="box" role="dialog" aria-modal="true">
+  <!-- (opsiyonel) QR modal -->
+  <div class="modal" id="qrModal">
+    <div class="overlay"></div>
+    <div class="box">
       <img id="qrImg" alt="QR">
-      <div style="font-weight:700; margin-bottom:6px">Burak Yılmaz</div>
-      <button class="btn secondary close">Kapat</button>
+      <div style="font-weight:700;margin:.4rem 0">Burak Yılmaz</div>
+      <button class="btn" id="closeQR">Kapat</button>
     </div>
   </div>
 
 <script>
-  // QR modal
-  const openBtn = document.getElementById('openQR');
+  // QR Modal küçük JS (istersen kaldır)
+  const open = document.getElementById('openQR');
   const modal = document.getElementById('qrModal');
-  const qrImg = document.getElementById('qrImg');
-  openBtn?.addEventListener('click', () => {
-    qrImg.src = openBtn.dataset.qr || './qr.svg';
-    modal.classList.add('open');
-  });
+  const img   = document.getElementById('qrImg');
+  const close = document.getElementById('closeQR');
+  open?.addEventListener('click', () => { img.src=open.dataset.qr||'./qr.svg'; modal.classList.add('open'); });
   modal.querySelector('.overlay').addEventListener('click', ()=> modal.classList.remove('open'));
-  modal.querySelector('.close').addEventListener('click', ()=> modal.classList.remove('open'));
+  close.addEventListener('click', ()=> modal.classList.remove('open'));
   window.addEventListener('keydown', e=> (e.key==='Escape') && modal.classList.remove('open'));
 </script>
 </body>

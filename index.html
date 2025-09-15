@@ -1,61 +1,59 @@
 <!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Burak Yılmaz | Dijital Kart</title>
-<meta name="theme-color" content="#0b0f10" />
+<meta name="theme-color" content="#0b0f10">
 <style>
   :root{
     --bg:#0b0f10; --panel:#0f1418; --text:#e9eef2; --muted:#b7c2ca;
-    --accent:#0ea5e9; --radius:20px; --shadow:0 20px 60px rgba(0,0,0,.35);
+    --radius:20px; --shadow:0 20px 60px rgba(0,0,0,.35);
   }
-  *{box-sizing:border-box}
-  html,body{height:100%}
+  *{box-sizing:border-box} html,body{height:100%}
   body{
     margin:0; background:var(--bg); color:var(--text);
     font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
-    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
     display:grid; place-items:start center;
   }
 
-  /* KART */
   .card{
     width:min(720px, 92vw);
-    margin:56px auto;               /* üstte rahat nefes payı */
-    background:#0b1014;
-    border-radius:var(--radius);
-    overflow:hidden;
-    box-shadow:var(--shadow);
+    margin:56px auto;
+    background:#0b1014; border-radius:var(--radius);
+    overflow:hidden; box-shadow:var(--shadow);
   }
 
-  /* Kapak */
+  /* KAPAK — mobilde küçük, geniş ekranda dengeli */
   .cover{
-    height:180px;
+    height:clamp(140px, 32vw, 180px);
     background:#111 url("banner.jpg") center/cover no-repeat;
     position:relative;
   }
 
-  /* Avatar (tam daire ve taşma) */
+  /* AVATAR — beyaz halka + gölge, tam daire */
   .avatar{
+    position:absolute; left:50%; bottom:-56px; transform:translateX(-50%);
     width:112px; height:112px; border-radius:50%;
     background:#fff url("brkylmz.jpg") center/cover no-repeat;
-    position:absolute; left:50%; bottom:-56px; transform:translateX(-50%);
-    box-shadow:0 6px 22px rgba(0,0,0,.45), 0 0 0 6px #0f1418 inset;
-    outline:6px solid var(--bg);   /* dış çevre ile temiz birleşim */
+    /* dış beyaz halka + dış gölge */
+    box-shadow:
+      0 0 0 4px #ffffff,
+      0 8px 24px rgba(0,0,0,.45);
+    /* panelle temiz birleşim için dış outline */
+    outline:6px solid #0f1418;
+    cursor:zoom-in;
   }
 
-  /* İç kısım */
   .inner{
     background:var(--panel);
-    padding:72px 22px 22px;        /* 72px -> avatar yer açsın */
+    padding:72px 22px 22px;        /* avatar için başlık üst boşluğu */
     text-align:center;
   }
-  .name{ font-weight:800; font-size:clamp(22px, 5vw, 28px); letter-spacing:.2px; margin:0 0 6px }
+  .name{ margin:0 0 6px; font-weight:800; font-size:clamp(22px,5vw,28px) }
   .company{ color:var(--muted); font-size:14px }
   .title{ color:var(--muted); font-size:13px; margin-top:4px }
 
-  /* Hızlı aksiyonlar */
   .actions{
     display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
     gap:12px; margin-top:22px;
@@ -68,13 +66,26 @@
   .btn svg{ width:20px; height:20px; opacity:.9 }
   .btn span{ font-size:12px; color:#d2dde6 }
   .btn:active{ transform:translateY(1px) }
+
+  /* Basit lightbox */
+  .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:50 }
+  .modal.open{ display:grid }
+  .modal .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.65) }
+  .modal .box{
+    position:relative; z-index:1; background:#0f1418; padding:10px; border-radius:16px;
+  }
+  .modal img{ display:block; max-width:min(92vw, 480px); height:auto; border-radius:16px }
+  .modal .close{
+    position:absolute; top:-10px; right:-10px; width:36px; height:36px; border-radius:50%;
+    border:0; cursor:pointer; background:#fff; color:#000; font-weight:700;
+  }
 </style>
 </head>
 <body>
 
   <section class="card" aria-label="Dijital Kart">
     <div class="cover">
-      <div class="avatar" aria-hidden="true"></div>
+      <div class="avatar" id="avatar" aria-label="Avatar"></div>
     </div>
 
     <div class="inner">
@@ -103,5 +114,28 @@
     </div>
   </section>
 
+  <!-- Avatar Lightbox -->
+  <div class="modal" id="avModal" aria-hidden="true">
+    <div class="overlay"></div>
+    <div class="box">
+      <button class="close" aria-label="Kapat">×</button>
+      <img id="avBig" alt="Avatar">
+    </div>
+  </div>
+
+<script>
+  // Avatarı büyüt
+  const av = document.getElementById('avatar');
+  const modal = document.getElementById('avModal');
+  const big = document.getElementById('avBig');
+  const bg = getComputedStyle(av).backgroundImage;              // url("brkylmz.jpg")
+  const src = bg.slice(bg.indexOf('"')+1, bg.lastIndexOf('"')); // brkylmz.jpg
+  big.src = src;
+
+  av.addEventListener('click', ()=> modal.classList.add('open'));
+  modal.querySelector('.overlay').addEventListener('click', ()=> modal.classList.remove('open'));
+  modal.querySelector('.close').addEventListener('click', ()=> modal.classList.remove('open'));
+  window.addEventListener('keydown', e=> (e.key==='Escape') && modal.classList.remove('open'));
+</script>
 </body>
 </html>

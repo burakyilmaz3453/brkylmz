@@ -15,7 +15,7 @@
   body{
     margin:0; background:var(--bg); color:var(--text);
     font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
-    display:grid; place-items:start center;
+    /* grid KALDIRILDI – sticky ile iOS çatışıyordu */
     padding-bottom: calc(env(safe-area-inset-bottom, 0) + 16px);
   }
 
@@ -25,9 +25,9 @@
     margin:0 auto;
     background:#0b1014; border-radius:var(--radius);
     overflow:hidden; box-shadow:var(--shadow);
-    position:sticky; top:0; z-index:5; /* alt panel bunun üstünde görünecek */
+    position:sticky; top:0; z-index:5; /* alt panel bundan düşük ya da eşit olmalı */
   }
-  /* Kart ile alt panel arasına boşluk (butonlar kapanmasın) */
+  /* Kart ile alt panel arasındaki gerçek boşluk (butonlar kapanmasın) */
   .card::after{
     content:"";
     display:block;
@@ -52,8 +52,10 @@
   .title{ color:var(--muted); font-size:13px; margin-top:4px }
 
   .actions{
+    width:min(720px,92vw); /* iOS’ta genişlik taşmasını engeller */
+    margin:22px auto 0;
     display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:12px; margin-top:22px;
+    gap:12px;
   }
   .btn{
     display:flex; flex-direction:column; align-items:center; gap:8px;
@@ -83,8 +85,8 @@
     margin:20px auto 60px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
     border-radius:16px; box-shadow:0 14px 40px rgba(0,0,0,.35);
-    position:relative; z-index:20;      /* kaydırınca üstte görünür */
-    transform: translateZ(0);           /* iOS stacking fix */
+    position:relative; z-index:20;     /* kaydırınca üstte görünür */
+    transform: translateZ(0);
   }
   .cp-grip{ display:flex; justify-content:center; padding:8px 0 4px }
   .cp-grip span{ width:58px; height:4px; border-radius:999px; background:rgba(255,255,255,.18) }
@@ -110,8 +112,8 @@
   @media (max-width: 420px){
     .cover{ height:140px }
     .avatar{ width:96px; height:96px; bottom:-48px }
-    .inner{ padding:64px 16px 16px }   /* alt padding normal */
-    .card::after{ height:140px }       /* asıl boşluk burada */
+    .inner{ padding:64px 16px 16px }   /* alt padding normal kalsın */
+    .card::after{ height:140px }       /* butonlar için boşluk buradan */
     .actions{ gap:10px }
     .btn{ padding:12px 8px }
   }
@@ -184,7 +186,7 @@
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
         <a id="cpMail" class="cp-text" href="#">—</a>
       </div>
-      <button class="cp-copy" id="cpCopyMail" aria-label="Kopyala">⧉</button>
+        <button class="cp-copy" id="cpCopyMail" aria-label="Kopyala">⧉</button>
     </li>
 
     <li class="cp-row" id="cpWebRow">

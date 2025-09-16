@@ -9,6 +9,8 @@
   :root{
     --bg:#0b0f10; --panel:#0f1418; --text:#e9eef2; --muted:#b7c2ca;
     --radius:20px; --shadow:0 20px 60px rgba(0,0,0,.35);
+    /* Kart altındaki görünmez boşluk – alt paneli bunun kadar yukarı çekeceğiz */
+    --stack-gap:64px; /* desktop */
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -18,20 +20,19 @@
     padding-bottom: calc(env(safe-area-inset-bottom, 0) + 16px);
   }
 
-  /* ===== STICKY SARMA (kartın üstünde) ===== */
+  /* ===== STICKY SARMA ===== */
   .sticky-wrap{
     position: sticky;
     top: env(safe-area-inset-top, 0);
-    z-index: 5;                 /* alt panel üzerine çıkabilsin istiyorsan 10 da olur */
+    z-index: 5;
   }
-  /* İlk ekranda butonlar kapanmasın diye boşluk */
   .sticky-wrap::after{
     content:"";
     display:block;
-    height:64px;                /* masaüstü boşluk */
+    height:var(--stack-gap); /* ikonlar ile alt panelin “görünmez” boşluğu */
   }
 
-  /* ===== ÜST KART (artık sticky değil) ===== */
+  /* ===== ÜST KART ===== */
   .card{
     width:min(720px,92vw);
     margin:0 auto;
@@ -84,12 +85,13 @@
   /* ===== ALT İLETİŞİM PANELİ ===== */
   .cp-panel{
     width:min(720px,92vw);
-    margin:20px auto 60px;
+    /* Negatif margin ile paneli görünmez boşluğun kadar yukarı çekiyoruz.
+       Böylece başlangıçta ikonların hemen altında durur, scroll'da yukarı çıkar. */
+    margin: calc(-1 * var(--stack-gap)) auto 60px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
     border-radius:16px; box-shadow:0 14px 40px rgba(0,0,0,.35);
-    position:relative;
-    z-index:20;                 /* kaydırınca STICKY'nin önüne geçebilsin */
-    transform: translateZ(0);   /* iOS stacking fix */
+    position:relative; z-index:20;      /* kartın önüne geçebilsin */
+    transform: translateZ(0);           /* iOS stacking fix */
   }
   .cp-grip{ display:flex; justify-content:center; padding:8px 0 4px }
   .cp-grip span{ width:58px; height:4px; border-radius:999px; background:rgba(255,255,255,.18) }
@@ -113,12 +115,12 @@
 
   /* ===== Mobil ayarlar ===== */
   @media (max-width: 420px){
-    .sticky-wrap::after{ height: 140px; } /* mobilde ikonların altına daha fazla boşluk */
+    :root{ --stack-gap:140px; }      /* mobilde ikonların altındaki görünmez boşluk */
     .cover{ height:140px }
     .avatar{ width:96px; height:96px; bottom:-48px }
-    .inner{ padding:64px 16px 16px }  /* iç padding normal – boşluk sticky-wrap’ten geliyor */
-    .btn{ padding:12px 8px }
+    .inner{ padding:64px 16px 16px } /* iç padding normal; boşluk wrap'ten geliyor */
     .actions{ gap:10px }
+    .btn{ padding:12px 8px }
   }
 </style>
 </head>
@@ -197,7 +199,7 @@
     <li class="cp-row" id="cpWebRow">
       <div class="cp-left">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5h5v2h-3v8h-2V7zM7 9h4v2H9v6H7V9z"/></svg>
-      <a id="cpWeb" class="cp-text" href="#" target="_blank" rel="noopener">—</a>
+        <a id="cpWeb" class="cp-text" href="#" target="_blank" rel="noopener">—</a>
       </div>
       <button class="cp-copy" id="cpCopyWeb" aria-label="Kopyala">⧉</button>
     </li>
@@ -266,10 +268,10 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 
   async function loadVCF(){
     for (const url of candidates){
-    try{
-      const res = await fetch(url, { cache:'no-store' });
-      if(res.ok){ fill(await res.text()); return; }
-    }catch(e){}
+      try{
+        const res = await fetch(url, { cache:'no-store' });
+        if(res.ok){ fill(await res.text()); return; }
+      }catch(e){}
     }
     console.warn('VCF bulunamadı/okunamadı.');
   }

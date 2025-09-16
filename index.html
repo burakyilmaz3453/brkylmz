@@ -359,219 +359,130 @@
 </div>
 
 <script>
-/* ===== Avatar modal ===== */
-const av=document.getElementById('avatar');
-const avModal=document.getElementById('avModal');
-const avBig=document.getElementById('avBig');
-const bg=getComputedStyle(av).backgroundImage;
-const src=bg.slice(bg.indexOf('"')+1,bg.lastIndexOf('"'));
-avBig.src=src;
-av.addEventListener('click',()=>avModal.classList.add('open'));
-avModal.querySelector('.overlay').addEventListener('click',()=>avModal.classList.remove('open'));
-avModal.querySelector('.close').addEventListener('click',()=>avModal.classList.remove('open'));
-window.addEventListener('keydown',e=> (e.key==='Escape') && avModal.classList.remove('open'));
-
-/* ===== QR modal ===== */
-const qrBtn=document.getElementById('qrBtn');
-const qrModal=document.getElementById('qrModal');
-qrBtn.addEventListener('click',e=>{ e.preventDefault(); qrModal.classList.add('open'); });
-qrModal.querySelector('.overlay').addEventListener('click',()=> qrModal.classList.remove('open'));
-qrModal.querySelector('.close').addEventListener('click',()=> qrModal.classList.remove('open'));
-window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.remove('open'));
+/* ===== QR modal ve üst kısım aynı kalsın… ===== */
 
 /* ===== VCF'den bilgileri doldur ===== */
 (function(){
   const saveLink=document.querySelector('.btn.save');
   const href=saveLink ? saveLink.getAttribute('href') : '';
-  const candidates = [
-    href,
-    './BurakYilmazvCard.vcf',
-    'https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazvCard.vcf',
-    'https://burakyilmaz3453.github.io/brkylmz/BurakYilmazvCard.vcf'
-  ].filter(Boolean);
+  const candidates=[href,'./BurakYilmazvCard.vcf','https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazvCard.vcf','https://burakyilmaz3453.github.io/brkylmz/BurakYilmazvCard.vcf'].filter(Boolean);
 
-  const unfold = s => s.replace(/\r?\n[ \t]/g,'');
-  const parse = ln => {
-    const m = ln.match(/^([A-Z-]+)(;[^:]+)?:([\s\S]*)$/i);
-    return m ? {key:m[1].toUpperCase(), params:(m[2]||'').toLowerCase(), val:m[3].trim()} : null;
-  };
-  const hasType = (p, t) => new RegExp(`(?:^|;|,)type=[^:]*\\b${t}\\b`,'i').test(p);
-  const telHref  = v => 'tel:'    + (v||'').replace(/[^+\d]/g,'');
-  const mailHref = v => 'mailto:' + (v||'');
-  const urlNorm  = v => (v||'').startsWith('http') ? v : ('https://' + (v||''));
+  const unfold=s=>s.replace(/\r?\n[ \t]/g,'');
+  const parse=ln=>{ const m=ln.match(/^([A-Z-]+)(;[^:]+)?:([\s\S]*)$/i); return m?{key:m[1].toUpperCase(),params:(m[2]||'').toLowerCase(),val:m[3].trim()}:null };
+  const hasType=(p,t)=>new RegExp(`(?:^|;|,)type=[^:]*\\b${t}\\b`,'i').test(p);
+  const telHref=v=>'tel:'+(v||'').replace(/[^+\d]/g,'');
+  const mailHref=v=>'mailto:'+(v||'');
+  const urlNorm=v=>(v||'').startsWith('http')?v:('https://'+(v||''));
 
   function formatADR(v){
-    // ADR format: PO;;street;city;region;postal;country
-    const parts = v.split(';');
-    const street = parts[2]||'', city=parts[3]||'', region=parts[4]||'', postal=parts[5]||'', country=parts[6]||'';
+    const parts=v.split(';');
+    const street=parts[2]||'', city=parts[3]||'', region=parts[4]||'', postal=parts[5]||'', country=parts[6]||'';
     return [street, postal && (postal+' '+city) || city, region, country].filter(Boolean).join(' / ');
   }
 
   async function loadVCF(){
-    for (const url of candidates){
-      try{
-        const res = await fetch(url, { cache:'no-store' });
-        if(res.ok){ fill(await res.text()); return; }
-      }catch(e){}
+    for(const url of candidates){
+      try{ const res=await fetch(url,{cache:'no-store'}); if(res.ok){ fill(await res.text()); return; } }catch(e){}
     }
     console.warn('VCF bulunamadı/okunamadı.');
   }
 
   function fill(raw){
-    const lines = unfold(raw).split(/\r?\n/).map(parse).filter(Boolean);
-    const d = {
-      cell:null, work:null, email:null, url:null,
-      org:null, addrLabel:null, addrAdr:null,
-      linkedin:null, taxOffice:null, taxNumber:null
-    };
-
-    // iOS item.* pattern yakalamak için yardımcı depolar
-    const items = {};
+    const lines=unfold(raw).split(/\r?\n/).map(parse).filter(Boolean);
+    const d={cell:null,work:null,email:null,url:null,org:null,addrLabel:null,addrAdr:null,linkedin:null,taxOffice:null,taxNumber:null};
+    const items={};
 
     for(const it of lines){
-      const k = it.key;
+      const k=it.key;
       if(k==='TEL'){
-        if(hasType(it.params,'cell') || hasType(it.params,'mobile')) d.cell ??= it.val;
-        else if(hasType(it.params,'work')) d.work ??= it.val;
-        else if(!d.cell) d.cell = it.val;
+        if(hasType(it.params,'cell')||hasType(it.params,'mobile')) d.cell??=it.val;
+        else if(hasType(it.params,'work')) d.work??=it.val;
+        else if(!d.cell) d.cell=it.val;
       }
-      if(k==='EMAIL'){
-        if(hasType(it.params,'work')) d.email ??= it.val;
-        else if(!d.email) d.email = it.val;
-      }
-      if(k==='URL'){ d.url ??= it.val; }
+      if(k==='EMAIL'){ if(hasType(it.params,'work')) d.email??=it.val; else if(!d.email) d.email=it.val; }
+      if(k==='URL'){ d.url??=it.val; }
 
-      if(k==='ORG'){ d.org = it.val; }
-      if(k==='LABEL' && hasType(it.params,'work')) d.addrLabel = it.val.replace(/\\n/g,' ');
-      if(k==='ADR'   && hasType(it.params,'work')) d.addrAdr   = formatADR(it.val);
+      if(k==='ORG') d.org=it.val;
+      if(k==='LABEL'&&hasType(it.params,'work')) d.addrLabel=it.val.replace(/\\n/g,' ');
+      if(k==='ADR'  &&hasType(it.params,'work')) d.addrAdr=formatADR(it.val);
 
-      // Apple Contacts formatı (item1.URL + item1.X-ABLabel: LinkedIn)
       const itm = it.key.match(/^ITEM\d+\.([A-Z-]+)$/i);
-      if(itm){
-        const [_, sub] = itm;
-        const id = it.key.split('.')[0].toLowerCase();
-        items[id] ??= {};
-        items[id][sub.toUpperCase()] = it.val;
-      }
+      if(itm){ const id=it.key.split('.')[0].toLowerCase(); items[id]??={}; items[id][itm[1].toUpperCase()]=it.val; }
 
-      // X- alanları
-      if(k==='X-SOCIALPROFILE' && /linkedin/i.test(it.params+it.val)) d.linkedin ??= it.val;
-      if(k==='X-LINKEDIN') d.linkedin ??= it.val;
+      if(k==='X-SOCIALPROFILE' && /linkedin/i.test(it.params+it.val)) d.linkedin??=it.val;
+      if(k==='X-LINKEDIN') d.linkedin??=it.val;
 
-      // Vergi alanları (esnek)
-      if(/^X-.*TAX.*OFFICE/i.test(k) || /VERGI.*DAIRESI/i.test(k)) d.taxOffice ??= it.val;
-      if(/^X-.*TAX.*NUMBER/i.test(k) || /VERGI.*NO/i.test(k)) d.taxNumber ??= it.val;
+      if(/^X-.*TAX.*OFFICE/i.test(k)||/VERGI.*DAIRESI/i.test(k)) d.taxOffice??=it.val;
+      if(/^X-.*TAX.*NUMBER/i.test(k)||/VERGI.*NO/i.test(k))     d.taxNumber??=it.val;
       if(k==='NOTE'){
-        // NOTE içinde "Tax Office:" gibi geçiyorsa çek
-        const t = it.val;
-        const m1 = t.match(/Tax Office\s*:\s*(.+)/i) || t.match(/Vergi Dairesi\s*:\s*(.+)/i);
-        const m2 = t.match(/Tax Number\s*:\s*([\d\.]+)/i) || t.match(/Vergi No\s*:\s*([\d\.]+)/i);
-        if(m1) d.taxOffice ??= m1[1].trim();
-        if(m2) d.taxNumber ??= m2[1].trim();
+        const t=it.val;
+        const m1=t.match(/Tax Office\s*:\s*(.+)/i)||t.match(/Vergi Dairesi\s*:\s*(.+)/i);
+        const m2=t.match(/Tax Number\s*:\s*([\d\.]+)/i)||t.match(/Vergi No\s*:\s*([\d\.]+)/i);
+        if(m1) d.taxOffice??=m1[1].trim();
+        if(m2) d.taxNumber??=m2[1].trim();
       }
     }
-
-    // Apple item.* LinkedIn çözümü
     for(const id in items){
-      const obj = items[id];
-      if(obj['URL'] && /linkedin/i.test((obj['X-ABLABEL']||'') + obj['URL'])){
-        d.linkedin ??= obj['URL'];
+      const obj=items[id];
+      if(obj.URL && /linkedin/i.test((obj['X-ABLABEL']||'')+obj.URL)) d.linkedin??=obj.URL;
+    }
+
+    // Üst liste
+    if(d.cell){ const a=document.getElementById('cpCell'); a.textContent=d.cell; a.href=telHref(d.cell); document.getElementById('cpCopyCell').dataset.copy=d.cell; }
+    else document.getElementById('cpCellRow').style.display='none';
+
+    if(d.work){ const a=document.getElementById('cpWork'); a.textContent=d.work; a.href=telHref(d.work); document.getElementById('cpCopyWork').dataset.copy=d.work; }
+    else document.getElementById('cpWorkRow').style.display='none';
+
+    if(d.email){ const a=document.getElementById('cpMail'); a.textContent=d.email; a.href=mailHref(d.email); document.getElementById('cpCopyMail').dataset.copy=d.email; }
+    else document.getElementById('cpMailRow').style.display='none';
+
+    if(d.url){ const a=document.getElementById('cpWeb'); a.textContent=d.url; a.href=urlNorm(d.url); document.getElementById('cpCopyWeb').dataset.copy=d.url; }
+    else document.getElementById('cpWebRow').style.display='none';
+
+    // Address
+    const address=d.addrLabel||d.addrAdr||'';
+    if(address){
+      const sec=document.getElementById('secAddress'); sec.hidden=false;
+      document.getElementById('addrText').textContent=address;
+      const q=encodeURIComponent(address);
+      document.getElementById('mapFrame').src=`https://www.google.com/maps?q=${q}&output=embed`;
+      document.getElementById('btnDirections').href=`https://www.google.com/maps/dir/?api=1&destination=${q}`;
+    }
+
+    // Social
+    if(d.linkedin){
+      const s=document.getElementById('secSocial'); s.hidden=false;
+      const a=document.getElementById('linkedinId'); a.hidden=false; a.href=urlNorm(d.linkedin);
+    }
+
+    // Company
+    if(d.org||address||d.taxOffice||d.taxNumber){
+      const sec=document.getElementById('secCompany'); sec.hidden=false;
+
+      if(d.org){ const el=document.getElementById('ciName'); el.querySelector('span').textContent=d.org; el.parentElement.nextElementSibling.dataset.copy=d.org; }
+      if(address){ const el=document.getElementById('ciAddr'); el.querySelector('span').textContent=address; el.parentElement.nextElementSibling.dataset.copy=address; }
+
+      if(d.taxOffice){
+        document.getElementById('rowTaxOffice').hidden=false;
+        const el=document.getElementById('ciTaxOffice'); el.querySelector('span').textContent=d.taxOffice;
+        el.parentElement.nextElementSibling.dataset.copy=d.taxOffice;
+      }
+      if(d.taxNumber){
+        document.getElementById('rowTaxNo').hidden=false;
+        const el=document.getElementById('ciTaxNo'); el.querySelector('span').textContent=d.taxNumber;
+        el.parentElement.nextElementSibling.dataset.copy=d.taxNumber;
       }
     }
+  } // <-- BURASI fill(raw) kapanışı
 
-    /* Üstteki iletişim satırları */
-    if(d.cell){
-      const a=document.getElementById('cpCell');
-      a.textContent=d.cell; a.href=telHref(d.cell);
-      document.getElementById('cpCopyCell').dataset.copy=d.cell;
-    } else document.getElementById('cpCellRow').style.display='none';
-
-    if(d.work){
-      const a=document.getElementById('cpWork');
-      a.textContent=d.work; a.href=telHref(d.work);
-      document.getElementById('cpCopyWork').dataset.copy=d.work;
-    } else document.getElementById('cpWorkRow').style.display='none';
-
-    if(d.email){
-      const a=document.getElementById('cpMail');
-      a.textContent=d.email; a.href=mailHref(d.email);
-      document.getElementById('cpCopyMail').dataset.copy=d.email;
-    } else document.getElementById('cpMailRow').style.display='none';
-
-    if(d.url){
-      const a=document.getElementById('cpWeb');
-      a.textContent=d.url; a.href=urlNorm(d.url);
-      document.getElementById('cpCopyWeb').dataset.copy=d.url;
-    } else document.getElementById('cpWebRow').style.display='none';
-
-    /* Address Information */
-    const address = d.addrLabel || d.addrAdr || '';
-    if(address){
-      const sec = document.getElementById('secAddress'); sec.hidden=false;
-      document.getElementById('addrText').textContent = address;
-
-      const q = encodeURIComponent(address);
-      const map = document.getElementById('mapFrame');
-      map.src = `https://www.google.com/maps?q=${q}&output=embed`;
-
-      const dir = document.getElementById('btnDirections');
-      dir.href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
-    }
-
-    /* Social Media */
-if (d.linkedin) {
-  const s = document.getElementById('secSocial');
-  s.hidden = false;
-  const a = document.getElementById('linkedinId'); // HTML ile aynı ID
-  if (a) {
-    a.hidden = false;
-    a.href = urlNorm(d.linkedin);
-  }
-}
-
-/* Company Info */
-if (d.org || address || d.taxOffice || d.taxNumber) {
-  const sec = document.getElementById('secCompany'); sec.hidden = false;
-
-  // Şirket Adı
-  if (d.org) {
-    const el = document.getElementById('ciName');
-    el.querySelector('span').textContent = d.org;
-    el.parentElement.nextElementSibling.dataset.copy = d.org;
-  }
-
-  // Adres
-  if (address) {
-    const el = document.getElementById('ciAddr');
-    el.querySelector('span').textContent = address;
-    el.parentElement.nextElementSibling.dataset.copy = address;
-  }
-
-  // Vergi Dairesi
-  if (d.taxOffice) {
-    document.getElementById('rowTaxOffice').hidden = false;
-    const el = document.getElementById('ciTaxOffice');
-    el.querySelector('span').textContent = d.taxOffice;
-    el.parentElement.nextElementSibling.dataset.copy = d.taxOffice;
-  }
-
-  // Vergi No
-  if (d.taxNumber) {
-    document.getElementById('rowTaxNo').hidden = false;
-    const el = document.getElementById('ciTaxNo');
-    el.querySelector('span').textContent = d.taxNumber;
-    el.parentElement.nextElementSibling.dataset.copy = d.taxNumber;
-  }
-}
-
-  // kopyalama butonları
+  // Kopyalama butonları
   function wireCopies(){
-    // üst satırlardaki kopyalar zaten bağlıydı; alttaki .copy sınıfı için:
-    document.querySelectorAll('.copy, .cp-copy').forEach(btn=>{
+    document.querySelectorAll('.copy-mini, .cp-copy').forEach(btn=>{
       const orig=btn.textContent;
       btn.addEventListener('click', async ()=>{
         try{
-          await navigator.clipboard.writeText(btn.dataset.copy || '');
+          await navigator.clipboard.writeText(btn.dataset.copy||'');
           btn.textContent='✓'; setTimeout(()=>btn.textContent=orig,900);
         }catch{ alert('Kopyalanamadı'); }
       });
@@ -579,10 +490,11 @@ if (d.org || address || d.taxOffice || d.taxNumber) {
   }
 
   loadVCF().then(wireCopies);
-})();
+})(); // IIFE kapanışı
 </script>
 </body>
 </html>
+
 
 
 

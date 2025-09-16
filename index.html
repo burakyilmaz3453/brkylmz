@@ -155,6 +155,29 @@
     .actions{ gap:10px }
     .btn{ padding:12px 8px }
   }
+/* Şirket Bilgileri – kartlı liste */
+.kv2 { display: grid; gap: 10px; margin: 6px 4px 0; }
+.kv2-item{
+  display:flex; align-items:flex-start; gap:12px;
+  background:#0f1418; border:1px solid rgba(255,255,255,.08);
+  border-radius:12px; padding:12px;
+}
+.kv2-ico{
+  width:36px; height:36px; border-radius:10px;
+  background:#121a20; border:1px solid rgba(255,255,255,.06);
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;
+}
+.kv2-ico svg{ width:18px; height:18px; opacity:.9 }
+.kv2-body{ flex:1; min-width:0 }
+.kv2-label{ color:#9fb0bb; font-size:12px; margin-bottom:2px }
+.kv2-value{
+  color:#e9eef2; font-size:14px; line-height:1.35;
+  word-break:break-word;
+}
+.copy-mini{
+  width:32px; height:32px; border-radius:8px; margin-left:10px;
+  background:#0b1014; border:1px solid rgba(255,255,255,.12); color:#e9eef2;
+}
 </style>
 </head>
 <body>
@@ -256,24 +279,72 @@
   </div>
 </div>
 
-  <!-- Company Information -->
-  <div class="cp-section" id="secCompany" hidden>
-    <div class="cp-title">Company Information</div>
-    <div class="kv">
-      <div class="k">Company Name</div>
-      <div class="v" id="ciName"><span>—</span><button class="copy" data-copy="">⧉</button></div>
+  <!-- Şirket Bilgileri -->
+<div class="cp-section" id="secCompany" hidden>
+  <div class="cp-title">Şirket Bilgileri</div>
 
-      <div class="k">Company Address</div>
-      <div class="v" id="ciAddr"><span>—</span><button class="copy" data-copy="">⧉</button></div>
+  <div class="kv2">
+    <!-- Şirket Adı -->
+    <div class="kv2-item" id="rowName">
+      <div class="kv2-ico" aria-hidden="true">
+        <!-- building icon -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 22h18v-2H3v2zm2-4h2V6H5v12zm4 0h2V2H9v16zm4 0h2V8h-2v10zm4 0h2v-6h-2v6z"/>
+        </svg>
+      </div>
+      <div class="kv2-body">
+        <div class="kv2-label">Şirket Adı</div>
+        <div class="kv2-value" id="ciName"><span>—</span></div>
+      </div>
+      <button class="copy-mini" data-copy="">⧉</button>
+    </div>
 
-      <div class="k" id="kTaxOffice" hidden>Tax Office</div>
-      <div class="v" id="ciTaxOffice" hidden><span>—</span><button class="copy" data-copy="">⧉</button></div>
+    <!-- Şirket Adresi -->
+    <div class="kv2-item" id="rowAddr">
+      <div class="kv2-ico" aria-hidden="true">
+        <!-- map pin -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/>
+        </svg>
+      </div>
+      <div class="kv2-body">
+        <div class="kv2-label">Şirket Adresi</div>
+        <div class="kv2-value" id="ciAddr"><span>—</span></div>
+      </div>
+      <button class="copy-mini" data-copy="">⧉</button>
+    </div>
 
-      <div class="k" id="kTaxNo" hidden>Tax Number</div>
-      <div class="v" id="ciTaxNo" hidden><span>—</span><button class="copy" data-copy="">⧉</button></div>
+    <!-- Vergi Dairesi -->
+    <div class="kv2-item" id="rowTaxOffice" hidden>
+      <div class="kv2-ico" aria-hidden="true">
+        <!-- courthouse -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M2 10h20v2H2v-2zm2 4h2v6H4v-6zm4 0h2v6H8v-6zm4 0h2v6h-2v-6zm4 0h2v6h-2v-6zm4 0h2v6h-2v-6zM3 9l9-6 9 6H3z"/>
+        </svg>
+      </div>
+      <div class="kv2-body">
+        <div class="kv2-label">Vergi Dairesi</div>
+        <div class="kv2-value" id="ciTaxOffice"><span>—</span></div>
+      </div>
+      <button class="copy-mini" data-copy="">⧉</button>
+    </div>
+
+    <!-- Vergi No -->
+    <div class="kv2-item" id="rowTaxNo" hidden>
+      <div class="kv2-ico" aria-hidden="true">
+        <!-- id card -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 4h18a2 2 0 012 2v12a2 2 0 01-2 2H3a2 2 0 01-2-2V6a2 2 0 012-2zm0 4h18V6H3v2zm6 4H5v2h4v-2zm10 0h-8v2h8v-2z"/>
+        </svg>
+      </div>
+      <div class="kv2-body">
+        <div class="kv2-label">Vergi No</div>
+        <div class="kv2-value" id="ciTaxNo"><span>—</span></div>
+      </div>
+      <button class="copy-mini" data-copy="">⧉</button>
     </div>
   </div>
-</section>
+</div>
 
 <!-- Avatar Modal -->
 <div class="modal" id="avModal" aria-hidden="true">
@@ -458,32 +529,40 @@ if (d.linkedin) {
   }
 }
 
-    /* Company Info */
-    if(d.org || address || d.taxOffice || d.taxNumber){
-      const sec = document.getElementById('secCompany'); sec.hidden=false;
+/* Company Info */
+if (d.org || address || d.taxOffice || d.taxNumber) {
+  const sec = document.getElementById('secCompany'); sec.hidden = false;
 
-      if(d.org){
-        const el = document.getElementById('ciName'); el.querySelector('span').textContent = d.org;
-        el.querySelector('.copy').dataset.copy = d.org;
-      }
-      if(address){
-        const el = document.getElementById('ciAddr'); el.querySelector('span').textContent = address;
-        el.querySelector('.copy').dataset.copy = address;
-      }
-      if(d.taxOffice){
-        document.getElementById('kTaxOffice').hidden=false;
-        const el = document.getElementById('ciTaxOffice'); el.hidden=false;
-        el.querySelector('span').textContent = d.taxOffice;
-        el.querySelector('.copy').dataset.copy = d.taxOffice;
-      }
-      if(d.taxNumber){
-        document.getElementById('kTaxNo').hidden=false;
-        const el = document.getElementById('ciTaxNo'); el.hidden=false;
-        el.querySelector('span').textContent = d.taxNumber;
-        el.querySelector('.copy').dataset.copy = d.taxNumber;
-      }
-    }
+  // Şirket Adı
+  if (d.org) {
+    const el = document.getElementById('ciName');
+    el.querySelector('span').textContent = d.org;
+    el.parentElement.nextElementSibling.dataset.copy = d.org;
   }
+
+  // Adres
+  if (address) {
+    const el = document.getElementById('ciAddr');
+    el.querySelector('span').textContent = address;
+    el.parentElement.nextElementSibling.dataset.copy = address;
+  }
+
+  // Vergi Dairesi
+  if (d.taxOffice) {
+    document.getElementById('rowTaxOffice').hidden = false;
+    const el = document.getElementById('ciTaxOffice');
+    el.querySelector('span').textContent = d.taxOffice;
+    el.parentElement.nextElementSibling.dataset.copy = d.taxOffice;
+  }
+
+  // Vergi No
+  if (d.taxNumber) {
+    document.getElementById('rowTaxNo').hidden = false;
+    const el = document.getElementById('ciTaxNo');
+    el.querySelector('span').textContent = d.taxNumber;
+    el.parentElement.nextElementSibling.dataset.copy = d.taxNumber;
+  }
+}
 
   // kopyalama butonları
   function wireCopies(){
@@ -504,5 +583,6 @@ if (d.linkedin) {
 </script>
 </body>
 </html>
+
 
 

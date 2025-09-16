@@ -116,30 +116,22 @@
 
   .social-list{ display:flex; gap:10px; padding:6px 4px 0 }
   /* Sosyal medya butonları */
-.social-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border-radius: 8px;
-  background: #0a66c2;   /* LinkedIn mavisi */
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.2s, transform 0.15s;
+.social-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;   /* sadece ikon */
+  height:44px;
+  padding:0;
+  border-radius:10px;
+  background:#0a66c2;
+  color:#fff;
+  text-decoration:none;
+  transition:background .2s, transform .15s;
 }
+.social-btn svg{ width:20px; height:20px; fill:#fff }
+.social-btn:hover{ background:#004182; transform:translateY(-2px) }
 
-.social-btn svg {
-  width: 18px;
-  height: 18px;
-  fill: #fff;
-}
-
-.social-btn:hover {
-  background: #004182;
-  transform: translateY(-2px);
-}
 
   .kv{ display:grid; grid-template-columns:180px 1fr; gap:6px 10px; padding:6px 4px 0 }
   .kv .k{ color:#9fb0bb; font-size:12px }
@@ -255,18 +247,12 @@
 <div class="cp-section" id="secSocial" hidden>
   <div class="cp-title">Social Media Links</div>
   <div class="social-list">
-    <a id="linkedinId" class="social-btn" target="_blank" rel="noopener">
-      <!-- LinkedIn icon -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-        <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341C24 107 0 83 0 53.6 
-                 0 24.3 24 0 53.8 0 83.6 0 107 24.3 107 53.6c0 
-                 29.4-23.4 53.4-53.16 53.4zM447.9 448h-92.4V304.1c0-34.3-12.3-57.7-43.1-57.7-23.5 
-                 0-37.5 15.8-43.6 31.1-2.2 5.4-2.8 12.9-2.8 
-                 20.4V448h-92.4s1.2-272.1 0-299.1h92.4v42.4c12.3-19 
-                 34.4-46.1 83.7-46.1 61.2 0 107.2 39.9 107.2 125.4V448z"/>
-      </svg>
-      LinkedIn
-    </a>
+    <a id="linkedinId" class="social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true">
+    <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341C24 107 0 83 0 53.6 0 24.3 24 0 53.8 0 83.6 0 107 24.3 107 53.6c0 29.4-23.4 53.4-53.16 53.4zM447.9 448h-92.4V304.1c0-34.3-12.3-57.7-43.1-57.7-23.5 0-37.5 15.8-43.6 31.1-2.2 5.4-2.8 12.9-2.8 20.4V448h-92.4s1.2-272.1 0-299.1h92.4v42.4c12.3-19 34.4-46.1 83.7-46.1 61.2 0 107.2 39.9 107.2 125.4V448z"/>
+  </svg>
+</a>
+
   </div>
 </div>
 
@@ -462,10 +448,15 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
     }
 
     /* Social Media */
-    if(d.linkedin){
-      const s = document.getElementById('secSocial'); s.hidden=false;
-      const a = document.getElementById('lnkLinkedIn'); a.hidden=false; a.href = urlNorm(d.linkedin);
-    }
+if (d.linkedin) {
+  const s = document.getElementById('secSocial');
+  s.hidden = false;
+  const a = document.getElementById('linkedinId'); // HTML ile aynı ID
+  if (a) {
+    a.hidden = false;
+    a.href = urlNorm(d.linkedin);
+  }
+}
 
     /* Company Info */
     if(d.org || address || d.taxOffice || d.taxNumber){
@@ -513,4 +504,5 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 </script>
 </body>
 </html>
+
 

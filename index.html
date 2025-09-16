@@ -9,8 +9,8 @@
   :root{
     --bg:#0b0f10; --panel:#0f1418; --text:#e9eef2; --muted:#b7c2ca;
     --radius:20px; --shadow:0 20px 60px rgba(0,0,0,.35);
-    /* Kart altındaki görünmez boşluk – alt paneli bunun kadar yukarı çekeceğiz */
-    --stack-gap:64px; /* desktop */
+    --stack-gap:64px;
+    --line:#22303a;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -20,35 +20,22 @@
     padding-bottom: calc(env(safe-area-inset-bottom, 0) + 16px);
   }
 
-  /* ===== STICKY SARMA ===== */
-  .sticky-wrap{
-    position: sticky;
-    top: env(safe-area-inset-top, 0);
-    z-index: 5;
-  }
-  .sticky-wrap::after{
-    content:"";
-    display:block;
-    height:var(--stack-gap); /* ikonlar ile alt panelin “görünmez” boşluğu */
-  }
+  /* sticky sarma */
+  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:5 }
+  .sticky-wrap::after{ content:""; display:block; height:var(--stack-gap) }
 
-  /* ===== ÜST KART ===== */
+  /* kart */
   .card{
-    width:min(720px,92vw);
-    margin:0 auto;
+    width:min(720px,92vw); margin:0 auto;
     background:#0b1014; border-radius:var(--radius);
     overflow:hidden; box-shadow:var(--shadow);
   }
-  .cover{
-    height:clamp(140px, 32vw, 180px);
-    background:#111 url("banner.jpg") center/cover no-repeat;
-    position:relative;
-  }
+  .cover{ height:clamp(140px,32vw,180px); background:#111 url("banner.jpg") center/cover no-repeat; position:relative }
   .avatar{
     position:absolute; left:50%; bottom:-56px; transform:translateX(-50%);
     width:112px; height:112px; border-radius:50%;
     background:#fff url("brkylmz.jpg") center/cover no-repeat;
-    box-shadow:0 0 0 4px #ffffff, 0 8px 24px rgba(0,0,0,.45);
+    box-shadow:0 0 0 4px #fff, 0 8px 24px rgba(0,0,0,.45);
     outline:6px solid #0f1418; cursor:zoom-in;
   }
   .inner{ background:var(--panel); padding:72px 22px 22px; text-align:center }
@@ -71,7 +58,7 @@
   .btn.save{ background:#0f6d5d; border-color:rgba(255,255,255,.08) }
   .btn.save span{ color:#e9f7f3 }
 
-  /* ===== MODAL ===== */
+  /* modal */
   .modal{ position:fixed; inset:0; display:none; place-items:center; z-index:50 }
   .modal.open{ display:grid }
   .modal .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.65) }
@@ -82,16 +69,13 @@
     border:0; cursor:pointer; background:#fff; color:#000; font-weight:700;
   }
 
-  /* ===== ALT İLETİŞİM PANELİ ===== */
+  /* cp panel – iletişim + ek bloklar */
   .cp-panel{
     width:min(720px,92vw);
-    /* Negatif margin ile paneli görünmez boşluğun kadar yukarı çekiyoruz.
-       Böylece başlangıçta ikonların hemen altında durur, scroll'da yukarı çıkar. */
     margin: calc(-1 * var(--stack-gap)) auto 60px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
     border-radius:16px; box-shadow:0 14px 40px rgba(0,0,0,.35);
-    position:relative; z-index:20;      /* kartın önüne geçebilsin */
-    transform: translateZ(0);           /* iOS stacking fix */
+    position:relative; z-index:20; transform:translateZ(0);
   }
   .cp-grip{ display:flex; justify-content:center; padding:8px 0 4px }
   .cp-grip span{ width:58px; height:4px; border-radius:999px; background:rgba(255,255,255,.18) }
@@ -113,12 +97,49 @@
   .cp-copy:active{ transform:translateY(1px) }
   .cp-copy svg{ width:16px; height:16px }
 
-  /* ===== Mobil ayarlar ===== */
+  /* yeni: alt blok stilleri */
+  .cp-section{ padding:4px 12px 16px; border-top:1px solid var(--line); margin:10px 8px 0; border-radius:12px }
+  .cp-title{ margin:12px 4px 10px; font-size:14px; font-weight:700; color:#d7e2ea }
+  .cp-note{ color:#b9c6cf; font-size:13px; margin:6px 4px 0 }
+
+  .map-card{
+    background:#0f1418; border:1px solid rgba(255,255,255,.05);
+    border-radius:12px; overflow:hidden; margin:8px 4px 6px;
+  }
+  .map-embed{ width:100%; aspect-ratio: 16/9; border:0; display:block }
+  .map-actions{ display:flex; justify-content:flex-end; padding:10px; }
+  .btn-dir{
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    background:#0f6d5d; color:#e9f7f3; padding:8px 12px; border-radius:10px;
+    font-size:13px; border:1px solid rgba(255,255,255,.12);
+  }
+
+  .social-list{ display:flex; gap:10px; padding:6px 4px 0 }
+  .social-btn{
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    background:#0b1014; color:#e9eef2; padding:10px 14px; border-radius:10px;
+    border:1px solid rgba(255,255,255,.12); font-size:13px;
+  }
+
+  .kv{ display:grid; grid-template-columns:180px 1fr; gap:6px 10px; padding:6px 4px 0 }
+  .kv .k{ color:#9fb0bb; font-size:12px }
+  .kv .v{
+    background:#0f1418; border:1px solid rgba(255,255,255,.05);
+    border-radius:10px; padding:10px; font-size:14px; word-break:break-word;
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+  }
+  .kv .copy{ width:30px; height:30px; border-radius:8px; background:#0b1014; border:1px solid rgba(255,255,255,.12); color:#e9eef2 }
+
+  @media (max-width: 560px){
+    .kv{ grid-template-columns:1fr }
+    .kv .k{ margin-top:8px }
+  }
+
   @media (max-width: 420px){
-    :root{ --stack-gap:140px; }      /* mobilde ikonların altındaki görünmez boşluk */
+    :root{ --stack-gap:140px }
     .cover{ height:140px }
     .avatar{ width:96px; height:96px; bottom:-48px }
-    .inner{ padding:64px 16px 16px } /* iç padding normal; boşluk wrap'ten geliyor */
+    .inner{ padding:64px 16px 16px }
     .actions{ gap:10px }
     .btn{ padding:12px 8px }
   }
@@ -126,13 +147,10 @@
 </head>
 <body>
 
-<!-- ===== STICKY SARMA + KART ===== -->
+<!-- STICKY + KART -->
 <div class="sticky-wrap">
   <section class="card" aria-label="Dijital Kart">
-    <div class="cover">
-      <div class="avatar" id="avatar" aria-label="Avatar"></div>
-    </div>
-
+    <div class="cover"><div class="avatar" id="avatar" aria-label="Avatar"></div></div>
     <div class="inner">
       <h1 class="name">Burak Yılmaz</h1>
       <div class="company">Osmanlı Menkul Değerler A.Ş.</div>
@@ -143,24 +161,16 @@
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
           <span>Call</span>
         </a>
-
         <a class="btn" href="mailto:buraky@osmanlimenkul.com.tr" aria-label="E-posta">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/></svg>
           <span>E-mail</span>
         </a>
-
         <a class="btn" id="qrBtn" href="#" aria-label="QR Göster">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm6-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm-2 4h2v2h-2v-2zm4 0h4v4h-4v-4zm0-4h4v2h-4v-2z"/></svg>
           <span>QR</span>
         </a>
-
-        <a class="btn save"
-           href="https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazvCard.vcf"
-           type="text/vcard" aria-label="Rehbere ekle">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-6 8a6 6 0 1112 0H6z"/>
-            <path d="M19 8h-2V6h-2V4h2V2h2v2h2v2h-2v2z"/>
-          </svg>
+        <a class="btn save" href="https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazvCard.vcf" type="text/vcard" aria-label="Rehbere ekle">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-6 8a6 6 0 1112 0H6z"/><path d="M19 8h-2V6h-2V4h2V2h2v2h2v2h-2v2z"/></svg>
           <span>Save</span>
         </a>
       </nav>
@@ -168,7 +178,7 @@
   </section>
 </div>
 
-<!-- ===== ALT İLETİŞİM PANELİ ===== -->
+<!-- ALT PANEL -->
 <section class="cp-panel" aria-label="İletişim">
   <div class="cp-grip"><span></span></div>
   <ul class="cp-list">
@@ -204,24 +214,64 @@
       <button class="cp-copy" id="cpCopyWeb" aria-label="Kopyala">⧉</button>
     </li>
   </ul>
+
+  <!-- Address Information -->
+  <div class="cp-section" id="secAddress" hidden>
+    <div class="cp-title">Address Information</div>
+    <div class="map-card">
+      <iframe id="mapFrame" class="map-embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="map-actions">
+        <a id="btnDirections" class="btn-dir" target="_blank" rel="noopener">
+          <!-- arrow icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l10 10-10 10L2 12 12 2zm1 7h-2v3H8v2h3v3h2v-3h3v-2h-3V9z"/></svg>
+          Get Directions
+        </a>
+      </div>
+    </div>
+    <div class="cp-note" id="addrText"></div>
+  </div>
+
+  <!-- Social Media Links -->
+  <div class="cp-section" id="secSocial" hidden>
+    <div class="cp-title">Social Media Links</div>
+    <div class="social-list">
+      <a id="lnkLinkedIn" class="social-btn" target="_blank" rel="noopener" hidden>
+        <!-- LinkedIn icon -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8.98h5V24H0V8.98zM8.98 8.98h4.78v2.05h.07c.67-1.27 2.32-2.6 4.77-2.6 5.1 0 6.04 3.36 6.04 7.74V24h-5v-6.75c0-1.61-.03-3.7-2.25-3.7-2.25 0-2.6 1.75-2.6 3.57V24h-5V8.98z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+
+  <!-- Company Information -->
+  <div class="cp-section" id="secCompany" hidden>
+    <div class="cp-title">Company Information</div>
+    <div class="kv">
+      <div class="k">Company Name</div>
+      <div class="v" id="ciName"><span>—</span><button class="copy" data-copy="">⧉</button></div>
+
+      <div class="k">Company Address</div>
+      <div class="v" id="ciAddr"><span>—</span><button class="copy" data-copy="">⧉</button></div>
+
+      <div class="k" id="kTaxOffice" hidden>Tax Office</div>
+      <div class="v" id="ciTaxOffice" hidden><span>—</span><button class="copy" data-copy="">⧉</button></div>
+
+      <div class="k" id="kTaxNo" hidden>Tax Number</div>
+      <div class="v" id="ciTaxNo" hidden><span>—</span><button class="copy" data-copy="">⧉</button></div>
+    </div>
+  </div>
 </section>
 
 <!-- Avatar Modal -->
 <div class="modal" id="avModal" aria-hidden="true">
   <div class="overlay"></div>
-  <div class="box">
-    <button class="close" aria-label="Kapat">×</button>
-    <img id="avBig" alt="Avatar">
-  </div>
+  <div class="box"><button class="close" aria-label="Kapat">×</button><img id="avBig" alt="Avatar"></div>
 </div>
 
 <!-- QR Modal -->
 <div class="modal" id="qrModal" aria-hidden="true">
   <div class="overlay"></div>
-  <div class="box">
-    <button class="close" aria-label="Kapat">×</button>
-    <img src="./qr.svg" alt="QR Kod">
-  </div>
+  <div class="box"><button class="close" aria-label="Kapat">×</button><img src="./qr.svg" alt="QR Kod"></div>
 </div>
 
 <script>
@@ -258,13 +308,20 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 
   const unfold = s => s.replace(/\r?\n[ \t]/g,'');
   const parse = ln => {
-    const m = ln.match(/^([A-Z]+)(;[^:]+)?:([\s\S]*)$/i);
+    const m = ln.match(/^([A-Z-]+)(;[^:]+)?:([\s\S]*)$/i);
     return m ? {key:m[1].toUpperCase(), params:(m[2]||'').toLowerCase(), val:m[3].trim()} : null;
   };
   const hasType = (p, t) => new RegExp(`(?:^|;|,)type=[^:]*\\b${t}\\b`,'i').test(p);
   const telHref  = v => 'tel:'    + (v||'').replace(/[^+\d]/g,'');
   const mailHref = v => 'mailto:' + (v||'');
   const urlNorm  = v => (v||'').startsWith('http') ? v : ('https://' + (v||''));
+
+  function formatADR(v){
+    // ADR format: PO;;street;city;region;postal;country
+    const parts = v.split(';');
+    const street = parts[2]||'', city=parts[3]||'', region=parts[4]||'', postal=parts[5]||'', country=parts[6]||'';
+    return [street, postal && (postal+' '+city) || city, region, country].filter(Boolean).join(' / ');
+  }
 
   async function loadVCF(){
     for (const url of candidates){
@@ -278,61 +335,153 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 
   function fill(raw){
     const lines = unfold(raw).split(/\r?\n/).map(parse).filter(Boolean);
-    const d = {cell:null, work:null, email:null, url:null};
+    const d = {
+      cell:null, work:null, email:null, url:null,
+      org:null, addrLabel:null, addrAdr:null,
+      linkedin:null, taxOffice:null, taxNumber:null
+    };
+
+    // iOS item.* pattern yakalamak için yardımcı depolar
+    const items = {};
 
     for(const it of lines){
-      if(it.key==='TEL'){
+      const k = it.key;
+      if(k==='TEL'){
         if(hasType(it.params,'cell') || hasType(it.params,'mobile')) d.cell ??= it.val;
         else if(hasType(it.params,'work')) d.work ??= it.val;
         else if(!d.cell) d.cell = it.val;
       }
-      if(it.key==='EMAIL'){
+      if(k==='EMAIL'){
         if(hasType(it.params,'work')) d.email ??= it.val;
         else if(!d.email) d.email = it.val;
       }
-      if(it.key==='URL'){ d.url ??= it.val; }
+      if(k==='URL'){ d.url ??= it.val; }
+
+      if(k==='ORG'){ d.org = it.val; }
+      if(k==='LABEL' && hasType(it.params,'work')) d.addrLabel = it.val.replace(/\\n/g,' ');
+      if(k==='ADR'   && hasType(it.params,'work')) d.addrAdr   = formatADR(it.val);
+
+      // Apple Contacts formatı (item1.URL + item1.X-ABLabel: LinkedIn)
+      const itm = it.key.match(/^ITEM\d+\.([A-Z-]+)$/i);
+      if(itm){
+        const [_, sub] = itm;
+        const id = it.key.split('.')[0].toLowerCase();
+        items[id] ??= {};
+        items[id][sub.toUpperCase()] = it.val;
+      }
+
+      // X- alanları
+      if(k==='X-SOCIALPROFILE' && /linkedin/i.test(it.params+it.val)) d.linkedin ??= it.val;
+      if(k==='X-LINKEDIN') d.linkedin ??= it.val;
+
+      // Vergi alanları (esnek)
+      if(/^X-.*TAX.*OFFICE/i.test(k) || /VERGI.*DAIRESI/i.test(k)) d.taxOffice ??= it.val;
+      if(/^X-.*TAX.*NUMBER/i.test(k) || /VERGI.*NO/i.test(k)) d.taxNumber ??= it.val;
+      if(k==='NOTE'){
+        // NOTE içinde "Tax Office:" gibi geçiyorsa çek
+        const t = it.val;
+        const m1 = t.match(/Tax Office\s*:\s*(.+)/i) || t.match(/Vergi Dairesi\s*:\s*(.+)/i);
+        const m2 = t.match(/Tax Number\s*:\s*([\d\.]+)/i) || t.match(/Vergi No\s*:\s*([\d\.]+)/i);
+        if(m1) d.taxOffice ??= m1[1].trim();
+        if(m2) d.taxNumber ??= m2[1].trim();
+      }
     }
 
-    const cellRow=document.getElementById('cpCellRow');
+    // Apple item.* LinkedIn çözümü
+    for(const id in items){
+      const obj = items[id];
+      if(obj['URL'] && /linkedin/i.test((obj['X-ABLABEL']||'') + obj['URL'])){
+        d.linkedin ??= obj['URL'];
+      }
+    }
+
+    /* Üstteki iletişim satırları */
     if(d.cell){
       const a=document.getElementById('cpCell');
       a.textContent=d.cell; a.href=telHref(d.cell);
       document.getElementById('cpCopyCell').dataset.copy=d.cell;
-    } else { cellRow.style.display='none'; }
+    } else document.getElementById('cpCellRow').style.display='none';
 
-    const workRow=document.getElementById('cpWorkRow');
     if(d.work){
       const a=document.getElementById('cpWork');
       a.textContent=d.work; a.href=telHref(d.work);
       document.getElementById('cpCopyWork').dataset.copy=d.work;
-    } else { workRow.style.display='none'; }
+    } else document.getElementById('cpWorkRow').style.display='none';
 
-    const mailRow=document.getElementById('cpMailRow');
     if(d.email){
       const a=document.getElementById('cpMail');
       a.textContent=d.email; a.href=mailHref(d.email);
       document.getElementById('cpCopyMail').dataset.copy=d.email;
-    } else { mailRow.style.display='none'; }
+    } else document.getElementById('cpMailRow').style.display='none';
 
-    const webRow=document.getElementById('cpWebRow');
     if(d.url){
       const a=document.getElementById('cpWeb');
       a.textContent=d.url; a.href=urlNorm(d.url);
       document.getElementById('cpCopyWeb').dataset.copy=d.url;
-    } else { webRow.style.display='none'; }
+    } else document.getElementById('cpWebRow').style.display='none';
+
+    /* Address Information */
+    const address = d.addrLabel || d.addrAdr || '';
+    if(address){
+      const sec = document.getElementById('secAddress'); sec.hidden=false;
+      document.getElementById('addrText').textContent = address;
+
+      const q = encodeURIComponent(address);
+      const map = document.getElementById('mapFrame');
+      map.src = `https://www.google.com/maps?q=${q}&output=embed`;
+
+      const dir = document.getElementById('btnDirections');
+      dir.href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+    }
+
+    /* Social Media */
+    if(d.linkedin){
+      const s = document.getElementById('secSocial'); s.hidden=false;
+      const a = document.getElementById('lnkLinkedIn'); a.hidden=false; a.href = urlNorm(d.linkedin);
+    }
+
+    /* Company Info */
+    if(d.org || address || d.taxOffice || d.taxNumber){
+      const sec = document.getElementById('secCompany'); sec.hidden=false;
+
+      if(d.org){
+        const el = document.getElementById('ciName'); el.querySelector('span').textContent = d.org;
+        el.querySelector('.copy').dataset.copy = d.org;
+      }
+      if(address){
+        const el = document.getElementById('ciAddr'); el.querySelector('span').textContent = address;
+        el.querySelector('.copy').dataset.copy = address;
+      }
+      if(d.taxOffice){
+        document.getElementById('kTaxOffice').hidden=false;
+        const el = document.getElementById('ciTaxOffice'); el.hidden=false;
+        el.querySelector('span').textContent = d.taxOffice;
+        el.querySelector('.copy').dataset.copy = d.taxOffice;
+      }
+      if(d.taxNumber){
+        document.getElementById('kTaxNo').hidden=false;
+        const el = document.getElementById('ciTaxNo'); el.hidden=false;
+        el.querySelector('span').textContent = d.taxNumber;
+        el.querySelector('.copy').dataset.copy = d.taxNumber;
+      }
+    }
   }
 
-  document.querySelectorAll('.cp-copy').forEach(btn=>{
-    const orig=btn.innerHTML;
-    btn.addEventListener('click', async ()=>{
-      try{
-        await navigator.clipboard.writeText(btn.dataset.copy || '');
-        btn.textContent='✓'; setTimeout(()=>btn.innerHTML=orig,900);
-      }catch{ alert('Kopyalanamadı'); }
+  // kopyalama butonları
+  function wireCopies(){
+    // üst satırlardaki kopyalar zaten bağlıydı; alttaki .copy sınıfı için:
+    document.querySelectorAll('.copy, .cp-copy').forEach(btn=>{
+      const orig=btn.textContent;
+      btn.addEventListener('click', async ()=>{
+        try{
+          await navigator.clipboard.writeText(btn.dataset.copy || '');
+          btn.textContent='✓'; setTimeout(()=>btn.textContent=orig,900);
+        }catch{ alert('Kopyalanamadı'); }
+      });
     });
-  });
+  }
 
-  loadVCF();
+  loadVCF().then(wireCopies);
 })();
 </script>
 </body>

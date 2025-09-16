@@ -9,7 +9,11 @@ TEL;TYPE=WORK:+90 212 366 8823
 EMAIL;TYPE=INTERNET,WORK,pref:buraky@osmanlimenkul.com.tr
 URL:https://www.osmanlimenkul.com.tr
 PHOTO;VALUE=URI:https://burakyilmaz3453.github.io/brkylmz/brkylmz.jpg
-ADR;TYPE=WORK:;;Maslak Mah. Büyükdere Cad. No. 255/802;Sarıyer;İstanbul;34398;Türkiye
+Adres;TYPE=WORK:;;Maslak Mah. Büyükdere Cad. No. 255/802;Sarıyer;İstanbul;34398;Türkiye
 NOTE:Dijital kartvizit
+LinkedIn: X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/burak-yilmaz-9a58305a
+Vergi Dairesi: X-TAX-OFFICE:Boğaziçi Kurumlar
+Vergi No: X-TAX-NUMBER:47000087388
 END:VCARD
+
 

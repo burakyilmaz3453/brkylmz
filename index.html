@@ -235,54 +235,62 @@
 <section class="cp-panel" aria-label="İletişim">
   <div class="cp-grip"><span></span></div>
   <ul class="cp-list">
-    <li class="cp-row" id="cpCellRow">
-      <div class="cp-left">
-  <span class="cp-ico ico-cell">
-    <svg ...> ... </svg>
-  </span>
-  <a id="cpCell" class="cp-text" href="#">—</a>
-      </div>
-      <button class="cp-copy" id="cpCopyCell" aria-label="Kopyala">⧉</button>
-    </li>
+  <!-- Cep Telefonu -->
+  <li class="cp-row" id="cpCellRow">
+    <div class="cp-left">
+      <span class="cp-ico ico-cell" aria-hidden="true">
+        <!-- mobile-solid -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h10V4H7zm5 14a1.25 1.25 0 1 0 0-2.5A1.25 1.25 0 0 0 12 18z"/>
+        </svg>
+      </span>
+      <a id="cpCell" class="cp-text" href="#">—</a>
+    </div>
+    <button class="cp-copy" id="cpCopyCell" aria-label="Kopyala">⧉</button>
+  </li>
 
-    <li class="cp-row" id="cpWorkRow">
-      <div class="cp-left">
-  <span class="cp-ico ico-work">
-    <!-- modern handset -->
-    <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24 11.36 11.36 0 0 0 3.56.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 7a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.56 1 1 0 0 1-.24 1.01l-2.2 2.2z"/></svg>
-  </span>
-  <a id="cpWork" class="cp-text" href="#">—</a>
-</div>
+  <!-- İş Telefonu -->
+  <li class="cp-row" id="cpWorkRow">
+    <div class="cp-left">
+      <span class="cp-ico ico-work" aria-hidden="true">
+        <!-- handset -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24 11.36 11.36 0 0 0 3.56.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 7a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.21.2 2.41.57 3.56a1 1 0 0 1-.24 1.01l-2.2 2.2z"/>
+        </svg>
+      </span>
+      <a id="cpWork" class="cp-text" href="#">—</a>
+    </div>
+    <button class="cp-copy" id="cpCopyWork" aria-label="Kopyala">⧉</button>
+  </li>
 
-      <button class="cp-copy" id="cpCopyWork" aria-label="Kopyala">⧉</button>
-    </li>
+  <!-- E-posta -->
+  <li class="cp-row" id="cpMailRow">
+    <div class="cp-left">
+      <span class="cp-ico ico-mail" aria-hidden="true">
+        <!-- envelope -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 3-8 5L4 7V6l8 5 8-5v1Z"/>
+        </svg>
+      </span>
+      <a id="cpMail" class="cp-text" href="#">—</a>
+    </div>
+    <button class="cp-copy" id="cpCopyMail" aria-label="Kopyala">⧉</button>
+  </li>
 
-    <li class="cp-row" id="cpMailRow">
-      <div class="cp-left">
-  <span class="cp-ico ico-mail">
-    <!-- envelope -->
-    <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 3-8 5L4 7V6l8 5 8-5v1Z"/></svg>
-  </span>
-  <a id="cpMail" class="cp-text" href="#">—</a>
-</div>
-
-      <button class="cp-copy" id="cpCopyMail" aria-label="Kopyala">⧉</button>
-    </li>
-
-    <li class="cp-row" id="cpWebRow">
-      <div class="cp-left">
-  <span class="cp-ico ico-web">
-    <!-- globe -->
-    <svg viewBox="0 0 24 24">
-      <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 2c1.9 0 3.65 1.94 4.6 5H7.4C8.35 5.94 10.1 4 12 4Zm-6.9 7h4.64c-.05.33-.09.66-.12 1H4.3a8.03 8.03 0 0 1 .8-1Zm-.8 3h5.32c.03.34.07.67.12 1H5.1a8.03 8.03 0 0 1-.8-1Zm2.3 3h4.4c-.95 3.06-2.7 5-4.6 5-1.04 0-2.02-.38-2.8-1.01A7.97 7.97 0 0 1 6.6 17ZM12 20c1.9 0 3.65-1.94 4.6-5h-9.2c.95 3.06 2.7 5 4.6 5Zm2.68-6H20a8.03 8.03 0 0 1-.8 1h-4.64c.05-.33.09-.66.12-1Zm-.12-2c-.03-.34-.07-.67-.12-1H19.7c.32.31.6.65.8 1h-5.02Zm2.84-3h-4.4C12.95 5.94 14.7 4 16.6 4c1.04 0 2.02.38 2.8 1.01A7.97 7.97 0 0 0 17.4 7Z"/>
-    </svg>
-  </span>
-  <a id="cpWeb" class="cp-text" href="#" target="_blank" rel="noopener">—</a>
-</div>
-
-      <button class="cp-copy" id="cpCopyWeb" aria-label="Kopyala">⧉</button>
-    </li>
-  </ul>
+  <!-- Web -->
+  <li class="cp-row" id="cpWebRow">
+    <div class="cp-left">
+      <span class="cp-ico ico-web" aria-hidden="true">
+        <!-- globe/www -->
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 3c.9.67 1.67 1.52 2.25 2.5H14.7c-.49-1.8-1.34-3.1-2.2-3.5 1.5 0 2.94.01 4.1 1Zm-9.2 0C8.56 3.01 10 3 11.5 3c-.86.4-1.7 1.7-2.2 3.5H5.15A8.06 8.06 0 0 1 7.4 5ZM4.3 11c.2-.35.48-.69.8-1h4.64c-.05.33-.09.66-.12 1H4.3Zm.8 3h5.32c.03.34.07.67.12 1H5.1c-.32-.31-.6-.65-.8-1Zm1.5 3h4.4c-.95 3.06-2.7 5-4.6 5-1.04 0-2.02-.38-2.8-1.01.6-1 1.38-1.85 3-3.99ZM12 21c1.9 0 3.65-1.94 4.6-5h-9.2c.95 3.06 2.7 5 4.6 5Zm2.56-6c.03-.33.07-.66.12-1H20c-.2.35-.48.69-.8 1h-4.64Zm-.12-2c-.05-.34-.09-.67-.12-1h5.02c.32.31.6.65.8 1h-5.7Zm1.16-5c-.49-1.8-1.34-3.1-2.2-3.5 1.5 0 2.94.01 4.1 1 .9.67 1.67 1.52 2.25 2.5h-4.15Z"/>
+        </svg>
+      </span>
+      <a id="cpWeb" class="cp-text" href="#" target="_blank" rel="noopener">—</a>
+    </div>
+    <button class="cp-copy" id="cpCopyWeb" aria-label="Kopyala">⧉</button>
+  </li>
+</ul>
 
   <!-- Address Information -->
   <div class="cp-section" id="secAddress" hidden>
@@ -528,6 +536,7 @@
 </script>
 </body>
 </html>
+
 
 
 

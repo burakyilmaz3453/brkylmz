@@ -115,11 +115,31 @@
   }
 
   .social-list{ display:flex; gap:10px; padding:6px 4px 0 }
-  .social-btn{
-    display:inline-flex; align-items:center; gap:8px; text-decoration:none;
-    background:#0b1014; color:#e9eef2; padding:10px 14px; border-radius:10px;
-    border:1px solid rgba(255,255,255,.12); font-size:13px;
-  }
+  /* Sosyal medya butonları */
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #0a66c2;   /* LinkedIn mavisi */
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.social-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+}
+
+.social-btn:hover {
+  background: #004182;
+  transform: translateY(-2px);
+}
 
   .kv{ display:grid; grid-template-columns:180px 1fr; gap:6px 10px; padding:6px 4px 0 }
   .kv .k{ color:#9fb0bb; font-size:12px }
@@ -232,16 +252,23 @@
   </div>
 
   <!-- Social Media Links -->
-  <div class="cp-section" id="secSocial" hidden>
-    <div class="cp-title">Social Media Links</div>
-    <div class="social-list">
-      <a id="lnkLinkedIn" class="social-btn" target="_blank" rel="noopener" hidden>
-        <!-- LinkedIn icon -->
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8.98h5V24H0V8.98zM8.98 8.98h4.78v2.05h.07c.67-1.27 2.32-2.6 4.77-2.6 5.1 0 6.04 3.36 6.04 7.74V24h-5v-6.75c0-1.61-.03-3.7-2.25-3.7-2.25 0-2.6 1.75-2.6 3.57V24h-5V8.98z"/></svg>
-        LinkedIn
-      </a>
-    </div>
+<div class="cp-section" id="secSocial" hidden>
+  <div class="cp-title">Social Media Links</div>
+  <div class="social-list">
+    <a id="linkedinId" class="social-btn" target="_blank" rel="noopener">
+      <!-- LinkedIn icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+        <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341C24 107 0 83 0 53.6 
+                 0 24.3 24 0 53.8 0 83.6 0 107 24.3 107 53.6c0 
+                 29.4-23.4 53.4-53.16 53.4zM447.9 448h-92.4V304.1c0-34.3-12.3-57.7-43.1-57.7-23.5 
+                 0-37.5 15.8-43.6 31.1-2.2 5.4-2.8 12.9-2.8 
+                 20.4V448h-92.4s1.2-272.1 0-299.1h92.4v42.4c12.3-19 
+                 34.4-46.1 83.7-46.1 61.2 0 107.2 39.9 107.2 125.4V448z"/>
+      </svg>
+      LinkedIn
+    </a>
   </div>
+</div>
 
   <!-- Company Information -->
   <div class="cp-section" id="secCompany" hidden>
@@ -486,3 +513,4 @@ window.addEventListener('keydown',e=> (e.key==='Escape') && qrModal.classList.re
 </script>
 </body>
 </html>
+

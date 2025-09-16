@@ -4,16 +4,18 @@ N:Yılmaz;Burak;;;
 FN:Burak Yılmaz
 ORG:Osmanlı Menkul Değerler A.Ş.
 TITLE:System Administrator
-TEL;TYPE=CELL,VOICE,pref:+90 552 491 5334
+TEL;TYPE=CELL,VOICE,PREF:+90 552 491 5334
 TEL;TYPE=WORK:+90 212 366 8823
-EMAIL;TYPE=INTERNET,WORK,pref:buraky@osmanlimenkul.com.tr
+EMAIL;TYPE=INTERNET,WORK,PREF:buraky@osmanlimenkul.com.tr
 URL:https://www.osmanlimenkul.com.tr
 PHOTO;VALUE=URI:https://burakyilmaz3453.github.io/brkylmz/brkylmz.jpg
-Adres;TYPE=WORK:;;Maslak Mah. Büyükdere Cad. No. 255/802;Sarıyer;İstanbul;34398;Türkiye
-NOTE:Dijital kartvizit
-LinkedIn: X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/burak-yilmaz-9a58305a
-Vergi Dairesi: X-TAX-OFFICE:Boğaziçi Kurumlar
-Vergi No: X-TAX-NUMBER:47000087388
+LABEL;TYPE=WORK:Maslak Mah. Büyükdere Cad. No. 255/802\nNurol Plaza 34398 Sarıyer / İstanbul / TÜRKİYE
+ADR;TYPE=WORK:;;Maslak Mah. Büyükdere Cad. No. 255/802;Sarıyer;İstanbul;34398;Türkiye
+X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/burak-yilmaz-9a58305a
+X-TAX-OFFICE:Boğaziçi Kurumlar
+X-TAX-NUMBER:47000087388
 END:VCARD
+
+
 
 

@@ -87,7 +87,7 @@
     background:#0f1418; border:1px solid rgba(255,255,255,.05);
   }
   .cp-left{ display:flex; align-items:center; gap:10px; min-width:0 }
-  .cp-left svg{ width:18px; height:18px; opacity:.9; flex:0 0 auto }
+  .cp-left > svg{ width:18px; height:18px; opacity:.9; flex:0 0 auto }
   .cp-text{ color:#e9eef2; text-decoration:none; word-break:break-word }
   .cp-copy{
     display:inline-flex; align-items:center; justify-content:center;
@@ -179,7 +179,7 @@
   background:#0b1014; border:1px solid rgba(255,255,255,.12); color:#e9eef2;
 }
 /* ==== İkon kapsülleri ==== */
-.cp-left svg { display:none }              /* eski svg'leri gizleyeceğiz */
+.cp-left > svg { display:none }              /* eski svg'leri gizleyeceğiz */
 .cp-ico{
   width:36px; height:36px; border-radius:10px;
   display:inline-flex; align-items:center; justify-content:center;
@@ -188,7 +188,7 @@
   box-shadow:0 3px 10px rgba(0,0,0,.35), inset 0 0 8px rgba(255,255,255,.04);
   flex:0 0 auto;
 }
-.cp-ico svg{ width:18px; height:18px; fill:currentColor; }
+.cp-ico svg{ width:18px; height:18px; fill:currentColor; display:block; }
 
 /* Her satır için vurgu renkleri */
 .ico-cell { --i-bg:#12342d; --i-fg:#53d2b2; }   /* Cep */
@@ -536,6 +536,7 @@
 </script>
 </body>
 </html>
+
 
 
 

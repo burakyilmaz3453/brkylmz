@@ -491,9 +491,52 @@
 
   loadVCF().then(wireCopies);
 })(); // IIFE kapanışı
+// === Avatar & QR modalları ===
+(function () {
+  const body = document.body;
+
+  // Ortak yardımcılar
+  const open = (m) => { m.classList.add('open'); m.setAttribute('aria-hidden','false'); body.style.overflow='hidden'; };
+  const close = (m) => { m.classList.remove('open'); m.setAttribute('aria-hidden','true'); body.style.overflow=''; };
+
+  // --- Avatar modal ---
+  const avTrigger = document.getElementById('avatar');
+  const avModal   = document.getElementById('avModal');
+  const avImg     = document.getElementById('avBig');
+
+  if (avTrigger && avModal && avImg) {
+    // Arkaplanda kullanılan görseli otomatik al
+    const bg = getComputedStyle(avTrigger).backgroundImage; // url("brkylmz.jpg")
+    const match = bg && bg.match(/url\(["']?(.*?)["']?\)/i);
+    const src = match ? match[1] : './brkylmz.jpg';
+    avImg.src = src;
+
+    avTrigger.addEventListener('click', () => open(avModal));
+    avModal.querySelector('.overlay').addEventListener('click', () => close(avModal));
+    avModal.querySelector('.close').addEventListener('click', () => close(avModal));
+  }
+
+  // --- QR modal ---
+  const qrBtn   = document.getElementById('qrBtn');
+  const qrModal = document.getElementById('qrModal');
+  if (qrBtn && qrModal) {
+    qrBtn.addEventListener('click', (e) => { e.preventDefault(); open(qrModal); });
+    qrModal.querySelector('.overlay').addEventListener('click', () => close(qrModal));
+    qrModal.querySelector('.close').addEventListener('click', () => close(qrModal));
+  }
+
+  // --- Klavyeden ESC ile kapatma ---
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (document.querySelector('#avModal.open')) close(avModal);
+      if (document.querySelector('#qrModal.open')) close(qrModal);
+    }
+  });
+})();
 </script>
 </body>
 </html>
+
 
 
 

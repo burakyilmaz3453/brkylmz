@@ -30,10 +30,19 @@
     <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/>
   </symbol>
 
-  <!-- Vergi dairesi (bank/kamu) -->
-  <symbol id="icon-tax-office" viewBox="0 0 24 24">
-    <path d="M3 9l9-6 9 6H3zm2 4h2v6H5v-6zm4 0h2v6H9v-6zm4 0h2v6h-2v-6zm4 0h2v6h-2v-6z"/>
-  </symbol>
+<symbol id="icon-tax-office" viewBox="0 0 24 24">
+  <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Çatı -->
+    <path d="M12 3L21 8H3L12 3Z"/>
+    <!-- Saçak -->
+    <path d="M4 9.5H20"/>
+    <!-- Sütunlar -->
+    <path d="M6 10.5V17.5M10 10.5V17.5M14 10.5V17.5M18 10.5V17.5"/>
+    <!-- Alt taban -->
+    <rect x="4" y="18" width="16" height="2" rx="1"/>
+  </g>
+</symbol>
+
 
 <!-- Vergi No / kart (outline bank icon) -->
 <symbol id="icon-tax-no" viewBox="0 0 24 24">

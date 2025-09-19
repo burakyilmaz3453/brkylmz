@@ -392,7 +392,47 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeQR(); });
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ... senin mevcut kodların ...
+
+  // === Kişilere Ekle: mobilde AÇ, masaüstünde İNDİR ===
+  const saveBtn = document.getElementById('saveBtn');
+  if (saveBtn) {
+    const vcfURL = saveBtn.getAttribute('href');
+    const fileName = saveBtn.dataset.filename || 'contact.vcf';
+
+    const isMobile = (navigator.userAgentData && 'mobile' in navigator.userAgentData)
+      ? navigator.userAgentData.mobile
+      : /Android|iPhone|iPad|iPod|IEMobile|Windows Phone|Mobile/i.test(navigator.userAgent);
+
+    async function downloadVCF(url, name){
+      try {
+        const resp = await fetch(url, { mode: 'cors', cache: 'no-store' });
+        const blob = await resp.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        URL.revokeObjectURL(a.href);
+        a.remove();
+      } catch (err) {
+        // bir şey olursa normal aç (fallback)
+        window.location.href = url;
+      }
+    }
+
+    saveBtn.addEventListener('click', (e) => {
+      if (!isMobile) {                 // Masaüstü: indir
+        e.preventDefault();
+        downloadVCF(vcfURL, fileName);
+      }                                // Mobil: tarayıcı açıp Rehbere Ekle akışını başlatır
+    });
+  }
+});
 </script>
 
 </body>
 </html>
+

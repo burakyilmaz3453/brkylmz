@@ -20,9 +20,8 @@
     padding-bottom: calc(env(safe-area-inset-bottom, 0) + 16px);
   }
 
-  /* sticky sarma */
-  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:25 } /* varsayılan düşük */
-  .sticky-wrap.lift{ z-index:80 } /* QR açıkken geçici yükseltme */
+  /* sticky sarma (üst kart) */
+  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:5 }
   .sticky-wrap::after{ content:""; display:block; height:var(--stack-gap) }
 
   /* kart */
@@ -46,7 +45,7 @@
   .title{ color:var(--muted); font-size:13px; margin-top:4px }
 
   .actions{
-    position:relative; /* QR popover için referans */
+    position:relative;
     display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
     gap:12px; margin-top:22px;
   }
@@ -67,7 +66,7 @@
     margin: calc(-1 * var(--stack-gap)) auto 60px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
     border-radius:16px; box-shadow:0 14px 40px rgba(0,0,0,.35);
-    position:relative; z-index:20; transform:translateZ(0);
+    position:relative; z-index:20; /* transform yok: stacking context açmasın */
   }
   .cp-grip{ display:flex; justify-content:center; padding:8px 0 4px }
   .cp-grip span{ width:58px; height:4px; border-radius:999px; background:rgba(255,255,255,.18) }
@@ -130,12 +129,13 @@
   }
   .avatar.expanded + .av-close{ display:block; }
 
-  /* QR popover */
+  /* QR popover (sadece 1 tanım; fixed + yüksek z-index) */
   .popover{
-    position:absolute; left:50%; top:100%; transform:translate(-50%, 12px);
+    position:fixed; z-index:999;
+    left:0; top:0; transform:translateX(-50%);
     background:#0f1418; border:1px solid rgba(255,255,255,.08);
     border-radius:12px; padding:12px; box-shadow:0 18px 40px rgba(0,0,0,.45);
-    display:none; z-index:90; /* yüksek, ama sticky-wrap açıkken .lift ile üstte kalır */
+    display:none;
   }
   .popover.open{ display:block; }
   .popover img{ display:block; width:260px; max-width:82vw; height:auto; border-radius:10px }
@@ -157,30 +157,6 @@
     .actions{ gap:10px }
     .btn{ padding:12px 8px }
   }
-  /* === QR üstte kalsın: küçük CSS override'ları (style bloğunun EN SONUNA ekle) === */
-
-/* cp-panel daha önce translateZ(0) ile yeni stacking context açıyordu; kapatıyoruz */
-.cp-panel { transform: none; }
-
-/* QR popover’ı tamamen bağımsız katmana alıyoruz */
-.popover{
-  position: fixed;      /* önemli: artık sticky/card/overflow’tan etkilenmez */
-  z-index: 999;         /* cp-panel ve diğer her şeyin üstünde */
-  left: 0;              /* JS ile merkezleyeceğiz */
-  top: 0;
-  transform: translateX(-50%);  /* JS, left’i buton merkezine koyacak */
-  background:#0f1418;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;
-  padding:12px;
-  box-shadow:0 18px 40px rgba(0,0,0,.45);
-  display:none;
-}
-
-.popover.open { display: block; }
-
-/* .popover img ve .popover .close için mevcut kuralların kalmasına izin ver.
-   Onları değiştirmene gerek yok. */
 </style>
 </head>
 <body>
@@ -213,7 +189,7 @@
           <span>QR</span>
         </a>
 
-        <!-- QR popover: butonun kardeşi -->
+        <!-- QR popover -->
         <div id="qrPop" class="popover" aria-hidden="true">
           <button id="qrClose" class="close" aria-label="Kapat">×</button>
           <img src="./qr.svg" alt="QR Kod">
@@ -402,53 +378,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* === QR popover (fixed) === */
-const qrBtn   = document.getElementById('qrBtn');
-const qrPop   = document.getElementById('qrPop');
-const qrClose = document.getElementById('qrClose');
+  const qrBtn   = document.getElementById('qrBtn');
+  const qrPop   = document.getElementById('qrPop');
+  const qrClose = document.getElementById('qrClose');
 
-function placeQR(){
-  // butonun ekrandaki konumunu al
-  const r = qrBtn.getBoundingClientRect();
-  // popover'ı butonun TAM altına, merkeze yerleştir
-  qrPop.style.left = (r.left + r.width / 2) + 'px';
-  qrPop.style.top  = (r.bottom + 12) + 'px';   // 12px aşağı
-}
+  function placeQR(){
+    const r = qrBtn.getBoundingClientRect();
+    qrPop.style.left = (r.left + r.width / 2) + 'px';
+    qrPop.style.top  = (r.bottom + 12) + 'px';
+  }
+  function openQR(e){ if(e) e.preventDefault(); placeQR(); qrPop.classList.add('open'); qrPop.setAttribute('aria-hidden','false'); }
+  function closeQR(){ qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true'); }
 
-function openQR(e){
-  if (e) e.preventDefault();
-  placeQR();
-  qrPop.classList.add('open');
-  qrPop.setAttribute('aria-hidden','false');
-}
-
-function closeQR(){
-  qrPop.classList.remove('open');
-  qrPop.setAttribute('aria-hidden','true');
-}
-
-if (qrBtn && qrPop && qrClose){
-  qrBtn.addEventListener('click', openQR);
-  qrClose.addEventListener('click', closeQR);
-
-  // dışına tıklayınca kapat
-  document.addEventListener('click', (e)=>{
-    if (qrPop.classList.contains('open') &&
-        !qrPop.contains(e.target) && !qrBtn.contains(e.target)) {
-      closeQR();
-    }
-  });
-
-  // ESC ile kapat
-  window.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') closeQR(); });
-
-  // sayfa kayar/yeniden boyutlanırsa konumu güncelle
-  window.addEventListener('scroll',  ()=>{ if (qrPop.classList.contains('open')) placeQR(); }, {passive:true});
-  window.addEventListener('resize',  ()=>{ if (qrPop.classList.contains('open')) placeQR(); });
-}
+  if(qrBtn && qrPop && qrClose){
+    qrBtn.addEventListener('click', openQR);
+    qrClose.addEventListener('click', closeQR);
+    document.addEventListener('click', (e)=>{ if(qrPop.classList.contains('open') && !qrPop.contains(e.target) && !qrBtn.contains(e.target)) closeQR(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeQR(); });
+    window.addEventListener('scroll',  ()=>{ if(qrPop.classList.contains('open')) placeQR(); }, {passive:true});
+    window.addEventListener('resize',  ()=>{ if(qrPop.classList.contains('open')) placeQR(); });
+  }
+}); /* <-- ÖNEMLİ: DOMContentLoaded kapanışı */
 </script>
 
 </body>
 </html>
-
-
-

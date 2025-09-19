@@ -21,7 +21,7 @@
   }
 
   /* sticky sarma */
-  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:5 } /* varsayılan düşük */
+  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:20 } /* varsayılan düşük */
   .sticky-wrap.lift{ z-index:80 } /* QR açıkken geçici yükseltme */
   .sticky-wrap::after{ content:""; display:block; height:var(--stack-gap) }
 
@@ -398,3 +398,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+

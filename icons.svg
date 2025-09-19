@@ -15,22 +15,15 @@
     <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 11.25 5.4 7h13.2z"/>
   </symbol>
 
-  <!-- Web / Site: globe + WWW + cursor -->
-<symbol id="icon-web" viewBox="0 0 24 24">
-  <!-- Küre -->
-  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M3 12h18"/>              <!-- ekvator -->
-    <path d="M12 3v18"/>              <!-- 0 meridyeni -->
-    <path d="M4.6 8a7.6 7.6 0 0 1 14.8 0"/>   <!-- üst paralel -->
-    <path d="M4.6 16a7.6 7.6 0 0 0 14.8 0"/>  <!-- alt paralel -->
-  </g>
-
-  <!-- 'WWW' (ince vuruşlarla) -->
-  <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-    <!-- soldan sağa üç W -->
-    <path d="M6.2 12.1l.45 1.8 .45-1.8 .45 1.8 .45-1.8"/>
-    <path d="M9.3 12.1l.45 1.8 .45-1.8 .45 1.8 .45-1
+ <!-- icons.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false">
+  <!-- örnekler -->
+  <symbol id="icon-mobile" viewBox="0 0 24 24">…</symbol>
+  <symbol id="icon-phone"  viewBox="0 0 24 24">…</symbol>
+  <symbol id="icon-mail"   viewBox="0 0 24 24">…</symbol>
+  <symbol id="icon-web"    viewBox="0 0 24 24">…</symbol>
+  <!-- diğerleri -->
+</svg>
 
 
 

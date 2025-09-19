@@ -302,6 +302,37 @@
 </div>
 
 <script>
+async function injectSprite() {
+  const SPRITE_URL = './icons.svg?v=8';
+  try {
+    const txt = await fetch(SPRITE_URL, { cache: 'no-store' }).then(r => r.text());
+    const wrap = document.createElement('div');
+    wrap.style.display = 'none';
+    wrap.innerHTML = txt;
+    document.body.prepend(wrap);
+
+    // <use href="/icons.svg#..."> -> <use href="#...">
+    document.querySelectorAll('use').forEach(u => {
+      const href = u.getAttribute('href') || u.getAttribute('xlink:href') || '';
+      const id = href.split('#')[1];
+      if (id) {
+        u.setAttribute('href', `#${id}`);
+        u.removeAttribute('xlink:href');
+      }
+    });
+  } catch (e) {
+    console.warn('icons.svg yüklenemedi', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await injectSprite();  // ← sprite içe alındıktan sonra devam et
+  // ... mevcut kodların burada ...
+});
+</script>
+
+
+<script>
 document.addEventListener('DOMContentLoaded', () => {
   /* ====== VCF + Kopyalama ====== */
   const saveLink=document.querySelector('.btn.save');
@@ -438,3 +469,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+

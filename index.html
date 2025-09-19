@@ -21,7 +21,7 @@
   }
 
   /* sticky sarma */
-  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:5 }
+  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:60 } /* QR popover üstte kalsın */
   .sticky-wrap::after{ content:""; display:block; height:var(--stack-gap) }
 
   /* kart */
@@ -37,6 +37,7 @@
     background:#fff url("brkylmz.jpg") center/cover no-repeat;
     box-shadow:0 0 0 4px #fff, 0 8px 24px rgba(0,0,0,.45);
     outline:6px solid #0f1418; cursor:zoom-in;
+    transition:all .25s ease;
   }
   .inner{ background:var(--panel); padding:72px 22px 22px; text-align:center }
   .name{ margin:0 0 6px; font-weight:800; font-size:clamp(22px,5vw,28px) }
@@ -106,32 +107,35 @@
     border-radius:10px; background:#0a66c2; color:#fff; text-decoration:none;
     transition:background .2s, transform .15s;
   }
+  /* LinkedIn ikonunu düzelt */
+  .social-btn svg{ width:20px; height:20px; fill:#fff; display:block }
   .social-btn:hover{ background:#004182; transform:translateY(-2px) }
 
   /* Şirket Bilgileri – kartlı liste */
   .kv2 { display: grid; gap: 10px; margin: 6px 4px 0; }
   .kv2-item{ display:flex; align-items:flex-start; gap:12px; background:#0f1418; border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:12px; }
   .kv2-ico{ width:36px; height:36px; border-radius:10px; background:#121a20; border:1px solid rgba(255,255,255,.06); display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .kv2-body{ flex:1; min-width:0 }                 /* kopyalama butonu sağda hizalansın */
   .kv2-label{ color:#9fb0bb; font-size:12px; margin-bottom:2px }
   .kv2-value{ color:#e9eef2; font-size:14px; line-height:1.35; word-break:break-word; }
-  .copy-mini{ width:32px; height:32px; border-radius:8px; margin-left:10px; background:#0b1014; border:1px solid rgba(255,255,255,.12); color:#e9eef2; }
+  .copy-mini{ width:32px; height:32px; border-radius:8px; margin-left:auto; background:#0b1014; border:1px solid rgba(255,255,255,.12); color:#e9eef2; }
 
   /* Avatar – yerinde büyütme */
-  .avatar.expanded { width:200px; height:200px; bottom:-112px; z-index:10; transition:all .25s ease; }
+  .avatar.expanded { width:200px; height:200px; bottom:-112px; z-index:40; cursor:zoom-out; }
   .av-close{
-    position:absolute; left:calc(50% + 82px); bottom:-68px;
+    position:absolute; left:calc(50% + 82px); bottom:-112px;
     width:32px; height:32px; border:0; border-radius:50%;
     background:#fff; color:#000; font-weight:700; cursor:pointer;
     box-shadow:0 6px 18px rgba(0,0,0,.35); display:none;
   }
-  .avatar.expanded + .av-close{ display:block; bottom:-112px; }
+  .avatar.expanded + .av-close{ display:block; }
 
   /* QR popover */
   .popover{
     position:absolute; left:50%; top:100%; transform:translate(-50%, 12px);
     background:#0f1418; border:1px solid rgba(255,255,255,.08);
     border-radius:12px; padding:12px; box-shadow:0 18px 40px rgba(0,0,0,.45);
-    display:none; z-index:30;
+    display:none; z-index:45; /* cp-panel'in üstünde */
   }
   .popover.open{ display:block; }
   .popover img{ display:block; width:260px; max-width:82vw; height:auto; border-radius:10px }
@@ -257,7 +261,9 @@
     <div class="cp-title">Sosyal Medya</div>
     <div class="social-list">
       <a id="linkedinId" class="social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true"><path d="M100.28 448H7.4V148.9h92.88zm-46.44-341C24 107 0 83 0 53.6 0 24.3 24 0 53.8 0 83.6 0 107 24.3 107 53.6c0 29.4-23.4 53.4-53.16 53.4zM447.9 448h-92.4V304.1c0-34.3-12.3-57.7-43.1-57.7-23.5 0-37.5 15.8-43.6 31.1-2.2 5.4-2.8 12.9-2.8 20.4V448h-92.4s1.2-272.1 0-299.1h92.4v42.4c12.3-19 34.4-46.1 83.7-46.1 61.2 0 107.2 39.9 107.2 125.4V448z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true">
+          <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341C24 107 0 83 0 53.6 0 24.3 24 0 53.8 0 83.6 0 107 24.3 107 53.6c0 29.4-23.4 53.4-53.16 53.4zM447.9 448h-92.4V304.1c0-34.3-12.3-57.7-43.1-57.7-23.5 0-37.5 15.8-43.6 31.1-2.2 5.4-2.8 12.9-2.8 20.4V448h-92.4s1.2-272.1 0-299.1h92.4v42.4c12.3-19 34.4-46.1 83.7-46.1 61.2 0 107.2 39.9 107.2 125.4V448z"/>
+        </svg>
       </a>
     </div>
   </div>
@@ -357,13 +363,18 @@ document.addEventListener('DOMContentLoaded', () => {
   function wireCopies(){ document.querySelectorAll('.copy-mini, .cp-copy').forEach(btn=>{ const orig=btn.textContent; btn.addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText(btn.dataset.copy||''); btn.textContent='✓'; setTimeout(()=>btn.textContent=orig,900); }catch{ alert('Kopyalanamadı'); } }); }); }
   loadVCF().then(wireCopies);
 
-  /* Avatar yerinde büyüt/küçült */
+  /* Avatar yerinde büyüt/küçült + dışa tıklayınca/ESC kapanış */
   const av=document.getElementById('avatar');
   const avClose=document.getElementById('avClose');
   if(av && avClose){
-    av.style.transition='all .25s ease';
     av.addEventListener('click', ()=>{ av.classList.add('expanded'); avClose.style.display='block'; });
     avClose.addEventListener('click', e=>{ e.stopPropagation(); av.classList.remove('expanded'); avClose.style.display='none'; });
+    document.addEventListener('click', (e)=>{
+      if(av.classList.contains('expanded') && !av.contains(e.target) && e.target!==avClose){
+        av.classList.remove('expanded'); avClose.style.display='none';
+      }
+    });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && av.classList.contains('expanded')){ av.classList.remove('expanded'); avClose.style.display='none'; }});
   }
 
   /* QR popover */
@@ -378,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
         qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true');
       }
     });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true'); }});
   }
 });
 </script>

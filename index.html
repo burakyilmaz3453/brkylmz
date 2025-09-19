@@ -21,7 +21,8 @@
   }
 
   /* sticky sarma */
-  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:60 } /* QR popover üstte kalsın */
+  .sticky-wrap{ position:sticky; top:env(safe-area-inset-top,0); z-index:5 } /* varsayılan düşük */
+  .sticky-wrap.lift{ z-index:80 } /* QR açıkken geçici yükseltme */
   .sticky-wrap::after{ content:""; display:block; height:var(--stack-gap) }
 
   /* kart */
@@ -52,7 +53,7 @@
   .btn{
     display:flex; flex-direction:column; align-items:center; gap:8px;
     background:#11171c; border:1px solid rgba(255,255,255,.06);
-    border-radius:14px; padding:14px 10px; color:var(--text); text-decoration:none;
+    border-radius:14px; padding:14px 10px; color:#e9eef2; text-decoration:none;
   }
   .btn svg{ width:20px; height:20px; opacity:.9 }
   .btn span{ font-size:12px; color:#d2dde6 }
@@ -92,7 +93,7 @@
   .cp-note{ color:#b9c6cf; font-size:13px; margin:6px 4px 0 }
 
   .map-card{ background:#0f1418; border:1px solid rgba(255,255,255,.05); border-radius:12px; overflow:hidden; margin:8px 4px 6px; }
-  .map-embed{ width:100%; aspect-ratio: 16/9; border:0; display:block }
+  .map-embed{ width:100%; aspect-ratio:16/9; border:0; display:block }
   .map-actions{ display:flex; justify-content:flex-end; padding:10px; }
   .btn-dir{
     display:inline-flex; align-items:center; gap:8px; text-decoration:none;
@@ -107,8 +108,7 @@
     border-radius:10px; background:#0a66c2; color:#fff; text-decoration:none;
     transition:background .2s, transform .15s;
   }
-  /* LinkedIn ikonunu düzelt */
-  .social-btn svg{ width:20px; height:20px; fill:#fff; display:block }
+  .social-btn svg{ width:20px; height:20px; fill:#fff; display:block } /* LinkedIn fix */
   .social-btn:hover{ background:#004182; transform:translateY(-2px) }
 
   /* Şirket Bilgileri – kartlı liste */
@@ -135,7 +135,7 @@
     position:absolute; left:50%; top:100%; transform:translate(-50%, 12px);
     background:#0f1418; border:1px solid rgba(255,255,255,.08);
     border-radius:12px; padding:12px; box-shadow:0 18px 40px rgba(0,0,0,.45);
-    display:none; z-index:45; /* cp-panel'in üstünde */
+    display:none; z-index:90; /* yüksek, ama sticky-wrap açıkken .lift ile üstte kalır */
   }
   .popover.open{ display:block; }
   .popover img{ display:block; width:260px; max-width:82vw; height:auto; border-radius:10px }
@@ -377,19 +377,21 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && av.classList.contains('expanded')){ av.classList.remove('expanded'); avClose.style.display='none'; }});
   }
 
-  /* QR popover */
+  /* QR popover + geçici z-index yükseltme */
   const qrBtn=document.getElementById('qrBtn');
   const qrPop=document.getElementById('qrPop');
   const qrClose=document.getElementById('qrClose');
+  const sticky=document.querySelector('.sticky-wrap');
+  function lift(on){ sticky.classList.toggle('lift', !!on); }
   if(qrBtn && qrPop && qrClose){
-    qrBtn.addEventListener('click', e=>{ e.preventDefault(); qrPop.classList.add('open'); qrPop.setAttribute('aria-hidden','false'); });
-    qrClose.addEventListener('click', ()=>{ qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true'); });
+    qrBtn.addEventListener('click', e=>{ e.preventDefault(); qrPop.classList.add('open'); qrPop.setAttribute('aria-hidden','false'); lift(true); });
+    qrClose.addEventListener('click', ()=>{ qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true'); lift(false); });
     document.addEventListener('click', e=>{
       if(qrPop.classList.contains('open') && !qrPop.contains(e.target) && !qrBtn.contains(e.target)){
-        qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true');
+        qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true'); lift(false);
       }
     });
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true'); }});
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ qrPop.classList.remove('open'); qrPop.setAttribute('aria-hidden','true'); lift(false); }});
   }
 });
 </script>

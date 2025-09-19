@@ -35,10 +35,18 @@
     <path d="M3 9l9-6 9 6H3zm2 4h2v6H5v-6zm4 0h2v6H9v-6zm4 0h2v6h-2v-6zm4 0h2v6h-2v-6z"/>
   </symbol>
 
-  <!-- Vergi No / kart -->
-  <symbol id="icon-tax-no" viewBox="0 0 24 24">
-    <path d="M3 4h18a2 2 0 012 2v12a2 2 0 01-2 2H3a2 2 0 01-2-2V6a2 2 0 012-2zm0 4h18V6H3v2zm6 4H5v2h4v-2zm10 0h-8v2h8v-2z"/>
-  </symbol>
+<!-- Vergi No / kart (outline “bank” ikon) -->
+<symbol id="icon-tax-no" viewBox="0 0 24 24">
+  <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3l9 6H3z"/>        <!-- çatı -->
+    <path d="M3 10h18"/>           <!-- saçak çizgisi -->
+    <path d="M5 10v8"/>            <!-- sütunlar -->
+    <path d="M9 10v8"/>
+    <path d="M15 10v8"/>
+    <path d="M19 10v8"/>
+    <path d="M2 22h20"/>           <!-- alt şerit -->
+  </g>
+</symbol>
 
   <!-- QR -->
   <symbol id="icon-qr" viewBox="0 0 24 24">

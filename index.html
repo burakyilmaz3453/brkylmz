@@ -178,6 +178,13 @@
   width:32px; height:32px; border-radius:8px; margin-left:10px;
   background:#0b1014; border:1px solid rgba(255,255,255,.12); color:#e9eef2;
 }
+.avatar.expanded {
+  width: 200px;   /* büyüklük */
+  height: 200px;
+  bottom: -100px; /* denge için */
+  z-index: 10;
+  transition: all .3s ease;
+}
 </style>
 </head>
 <body>
@@ -533,9 +540,20 @@
     }
   });
 })();
+loadVCF().then(wireCopies);
+})(); // senin fonksiyon kapanışı buraya kadar
+
+// === Avatar büyüt/küçült (yerinde) ===
+const avTrigger = document.getElementById('avatar');
+if (avTrigger) {
+  avTrigger.addEventListener('click', () => {
+    avTrigger.classList.toggle('expanded');
+  });
+}
 </script>
 </body>
 </html>
+
 
 
 

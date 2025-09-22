@@ -152,6 +152,16 @@ body{
 /* küçük bir gizleme */
 #addrText { display: none !important; }
 
-/* — Opsiyonel: WhatsApp markalı renk — */
-.btn.whatsapp{ background:#25D366; border-color:rgba(255,255,255,.1); color:#fff; }
-.btn.whatsapp span{ color:#fff; }
+
+/* WhatsApp butonu */
+.btn.whatsapp {
+  background: #25D366;   /* WhatsApp yeşili */
+  border-color: #25D366;
+  color: #fff;
+}
+.btn.whatsapp svg {
+  fill: #fff;            /* ikon beyaz */
+}
+.btn.whatsapp span {
+  color: #fff;           /* yazı beyaz */
+}

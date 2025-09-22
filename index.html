@@ -392,7 +392,7 @@ if (whBtn) {
   if (numSrc) {
     // wa.me yalnızca rakam ister; baştaki + işaretini ve ayraçları temizleyelim
     const num  = (numSrc || '').replace(/[^+\d]/g, '').replace(/^\+/, '');
-    const text = encodeURIComponent('Merhaba Burak Bey, dijital karttan yazıyorum.');
+    //const text = encodeURIComponent('Merhaba Burak Bey, dijital karttan yazıyorum.'); Tıkladıktan sonra otomatik yazı için bu satırı aktif et
     whBtn.href   = `https://wa.me/${num}?text=${text}`;
     whBtn.target = '_blank';
     whBtn.rel    = 'noopener';
@@ -510,6 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 

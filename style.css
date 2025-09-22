@@ -153,15 +153,18 @@ body{
 #addrText { display: none !important; }
 
 
-/* WhatsApp butonu */
+/* WhatsApp butonu - sadece logo yeşil */
 .btn.whatsapp {
-  background: #25D366;   /* WhatsApp yeşili */
-  border-color: #25D366;
-  color: #fff;
+  background: #11171c;                 /* diğer butonlarla aynı koyu arka plan */
+  border: 1px solid rgba(255,255,255,.06);
+  color: #e9eef2;                      /* yazı rengi */
 }
 .btn.whatsapp svg {
-  fill: #fff;            /* ikon beyaz */
+  fill: #25D366;                       /* sadece ikon yeşil */
 }
 .btn.whatsapp span {
-  color: #fff;           /* yazı beyaz */
+  color: #d2dde6;                      /* yazı rengi diğer butonlarla aynı */
+}
+.btn.whatsapp:active {
+  transform: translateY(1px);
 }

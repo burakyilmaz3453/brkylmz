@@ -47,7 +47,7 @@
   .title{ color:var(--muted); font-size:13px; margin-top:4px }
 
   .actions{
-    display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+    display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
     gap:12px; margin-top:22px;
   }
   .btn{
@@ -187,6 +187,8 @@
         <a class="btn" id="qrBtn" href="#" aria-label="QR Göster">
           <svg viewBox="0 0 24 24"><use href="./icons.svg#icon-qr" xlink:href="./icons.svg#icon-qr"></use></svg>
           <span>QR</span>
+            <svg viewBox="0 0 24 24"><use href="./icons.svg#icon-whatsapp" xlink:href="./icons.svg#icon-whatsapp"></use></svg>
+            <span>WhatsApp</span>
         </a>
 
         <a class="btn save" href="https://raw.githubusercontent.com/burakyilmaz3453/brkylmz/main/BurakYilmazvCard.vcf" type="text/vcard" aria-label="Rehbere ekle">
@@ -466,9 +468,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+ const whBtn = document.getElementById('whBtn');
+    if (whBtn) {
+      if (d.work) {
+        // wa.me formatı + işaretini istemez; sadece rakam.
+        const num = (d.work || '').replace(/[^+\d]/g,'').replace(/^\+/, '');
+        const text = encodeURIComponent('Merhaba Burak Bey, dijital karttan yazıyorum.');
+        whBtn.href   = `https://wa.me/${num}?text=${text}`;
+        whBtn.target = '_blank';
+        whBtn.rel    = 'noopener';
+      } else {
+        // vCard'da WORK telefonu yoksa butonu gizle
+        whBtn.style.display = 'none';
+      }
+    }
+
 </script>
 
 </body>
 </html>
+
 
 

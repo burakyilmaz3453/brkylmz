@@ -384,6 +384,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if(d.email){ const a=document.getElementById('cpMail'); a.textContent=d.email; a.href=mailHref(d.email); document.getElementById('cpCopyMail').dataset.copy=d.email; } else document.getElementById('cpMailRow').style.display='none';
     if(d.url){ const a=document.getElementById('cpWeb'); a.textContent=d.url; a.href=urlNorm(d.url); document.getElementById('cpCopyWeb').dataset.copy=d.url; } else document.getElementById('cpWebRow').style.display='none';
 
+// === WhatsApp butonu (TEL;TYPE=WORK'ten) ===
+const whBtn = document.getElementById('whBtn');
+if (whBtn) {
+  // İsterseniz sadece WORK kullanın: const numSrc = d.work;
+  const numSrc = d.work || d.cell; // WORK yoksa CELL'e düş
+  if (numSrc) {
+    // wa.me yalnızca rakam ister; baştaki + işaretini ve ayraçları temizleyelim
+    const num  = (numSrc || '').replace(/[^+\d]/g, '').replace(/^\+/, '');
+    const text = encodeURIComponent('Merhaba Burak Bey, dijital karttan yazıyorum.');
+    whBtn.href   = `https://wa.me/${num}?text=${text}`;
+    whBtn.target = '_blank';
+    whBtn.rel    = 'noopener';
+  } else {
+    // Hiç numara yoksa butonu gizle
+    whBtn.style.display = 'none';
+  }
+}
+    
     const address=d.addrLabel||d.addrAdr||'';
     if(address){ const sec=document.getElementById('secAddress'); sec.hidden=false; document.getElementById('addrText').textContent=address;
       const q=encodeURIComponent(address);
@@ -492,6 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 

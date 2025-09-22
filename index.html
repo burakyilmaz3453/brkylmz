@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const whBtn = document.getElementById('whBtn');
 if (whBtn) {
   // İsterseniz sadece WORK kullanın: const numSrc = d.work;
-  const numSrc = d.work || d.cell; // WORK yoksa CELL'e düş
+  const numSrc = d.cell; 
   if (numSrc) {
     // wa.me yalnızca rakam ister; baştaki + işaretini ve ayraçları temizleyelim
     const num  = (numSrc || '').replace(/[^+\d]/g, '').replace(/^\+/, '');
@@ -510,6 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
